@@ -3,6 +3,7 @@ package online.meinkraft.customvillagertrades;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import online.meinkraft.customvillagertrades.command.DisableCommand;
+import online.meinkraft.customvillagertrades.command.EnableCommand;
 import online.meinkraft.customvillagertrades.command.ReloadCommand;
 import online.meinkraft.customvillagertrades.listener.VillagerAcquireTradeListener;
 import online.meinkraft.customvillagertrades.util.CustomTrade;
@@ -28,6 +29,11 @@ public final class CustomVillagerTrades extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        if(isEnabled()) {
+            getLogger().warning("Plugin already enabled");
+            return;
+        }
+
         // create config files if it doesn't exist
         saveDefaultConfig();
         createTradesConfig();
@@ -43,8 +49,9 @@ public final class CustomVillagerTrades extends JavaPlugin {
         );
 
         // register commands
-        this.getCommand("reload").setExecutor(new ReloadCommand(this));
+        this.getCommand("enable").setExecutor(new EnableCommand(this));
         this.getCommand("disable").setExecutor(new DisableCommand(this));
+        this.getCommand("reload").setExecutor(new ReloadCommand(this));
 
     }
     

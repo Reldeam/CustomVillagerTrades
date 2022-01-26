@@ -7,6 +7,11 @@ load: STARTUP
 author: Reldeam
 website: meinkraft.online
 commands:
+  enable:
+    description: Enables the plugin
+    usage: /enable
+    permission: customvillagertrades.command.enable
+    aliases: cvtenable
   disable:
     description: Disables the plugin
     usage: /disable
@@ -18,9 +23,12 @@ commands:
     permission: customvillagertrades.command.reload
     aliases: cvtreload
 permissions:
+  customvillagertrades.command.enable:
+    description: Allows use of command, /customvillagertrades:enable
+    default: op
   customvillagertrades.command.disable:
-    description: Allows use of command, /cvt disable
+    description: Allows use of command, /customvillagertrades:disable
     default: op
   customvillagertrades.command.reload:
-    description: Allows use of command, /cvt reload
+    description: Allows use of command, /customvillagertrades:reload
     default: op
