@@ -10,7 +10,7 @@ acquire just like they acquire Vanilla trades.
 ## Configuration Files
 
 ### config.yml
-The _config_.yml_ contains plugin configration settings.
+The _config&#95;.yml_ contains plugin configration settings.
 The format is as follows:
 ```yaml
 # Whether a villager can acquire the same trade more than once.
