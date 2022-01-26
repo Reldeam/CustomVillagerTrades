@@ -1,4 +1,4 @@
-package online.meinkraft.customvillagertrades;
+package online.meinkraft.customvillagertrades.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +14,11 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
+
 public final class CustomTradeLoader {
 
-    static List<CustomTrade> loadTrades(CustomVillagerTrades plugin) {
+    static public List<CustomTrade> loadTrades(CustomVillagerTrades plugin) {
 
         FileConfiguration data = plugin.getTradesConfig();
         Logger logger = plugin.getLogger();
@@ -181,7 +183,7 @@ public final class CustomTradeLoader {
 
     }
 
-    static List<Villager.Type> toVillagerTypeList(ArrayList<?> list) {
+    static public List<Villager.Type> toVillagerTypeList(ArrayList<?> list) {
         if(list == null) return null;
         List<Villager.Type> types = new ArrayList<>();
         list.forEach(item -> {
@@ -194,7 +196,7 @@ public final class CustomTradeLoader {
         return null;
     }
 
-    static List<Biome> toBiomeList(ArrayList<?> list) {
+    static public List<Biome> toBiomeList(ArrayList<?> list) {
         if(list == null) return null;
         List<Biome> biomes = new ArrayList<>();
         list.forEach(item -> {
@@ -207,7 +209,7 @@ public final class CustomTradeLoader {
         return null;
     }
 
-    static List<ItemStack> toItemStackList(ArrayList<?> list) {
+    static public List<ItemStack> toItemStackList(ArrayList<?> list) {
         if(list == null) return null;
         List<ItemStack> ingredients = new ArrayList<>();
         list.forEach(item -> {
@@ -221,7 +223,7 @@ public final class CustomTradeLoader {
         return null;
     }
 
-    static ItemStack toItemStack(HashMap<?, ?> map) {
+    static public ItemStack toItemStack(HashMap<?, ?> map) {
         
         if(map == null) return null; 
 
@@ -260,7 +262,7 @@ public final class CustomTradeLoader {
 
     }
 
-    static List<String> toLore(ArrayList<?> list) {
+    static public List<String> toLore(ArrayList<?> list) {
         if(list == null) return null;
         List<String> lore = new ArrayList<>();
         list.forEach(item -> {
@@ -270,7 +272,7 @@ public final class CustomTradeLoader {
         return null;
     }
 
-    static List<Villager.Profession> toVillagerProfessionList(ArrayList<?> list) {
+    static public List<Villager.Profession> toVillagerProfessionList(ArrayList<?> list) {
         if(list == null) return null;
         List<Villager.Profession> professions = new ArrayList<>();
         list.forEach(item -> {
@@ -283,7 +285,7 @@ public final class CustomTradeLoader {
         return null;
     }
 
-    static List<Integer> toVillagerLevelList(ArrayList<?> list) {
+    static public List<Integer> toVillagerLevelList(ArrayList<?> list) {
         if(list == null) return null;
         List<Integer> levels = new ArrayList<>();
         list.forEach(item -> {
@@ -295,7 +297,7 @@ public final class CustomTradeLoader {
         return null;
     }
 
-    static List<ItemEnchantment> toItemEnchantmentList(ArrayList<?> list) {
+    static public List<ItemEnchantment> toItemEnchantmentList(ArrayList<?> list) {
 
         if(list == null) {
             return null;
@@ -335,37 +337,6 @@ public final class CustomTradeLoader {
 
         return null;
 
-    }
-
-}
-
-
-class ItemEnchantment {
-
-    private final Enchantment enchantment;
-    private final Integer level;
-    private final Boolean ignoreLevelRestriction;
-
-    public ItemEnchantment(
-        Enchantment enchantment,
-        Integer level,
-        Boolean ignoreLevelRestriction
-    ) {
-        this.enchantment = enchantment;
-        this.level = level;
-        this.ignoreLevelRestriction = ignoreLevelRestriction;
-    }
-
-    public Enchantment getEnchantment() {
-        return enchantment;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public Boolean ignoreLevelRestriction() {
-        return ignoreLevelRestriction;
     }
 
 }

@@ -1,4 +1,4 @@
-package online.meinkraft.customvillagertrades;
+package online.meinkraft.customvillagertrades.util;
 
 import java.util.List;
 

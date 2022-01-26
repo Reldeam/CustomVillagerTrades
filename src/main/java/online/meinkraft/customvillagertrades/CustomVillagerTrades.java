@@ -5,6 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import online.meinkraft.customvillagertrades.command.DisableCommand;
 import online.meinkraft.customvillagertrades.command.ReloadCommand;
 import online.meinkraft.customvillagertrades.listener.VillagerAcquireTradeListener;
+import online.meinkraft.customvillagertrades.util.CustomTrade;
+import online.meinkraft.customvillagertrades.util.CustomTradeLoader;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
