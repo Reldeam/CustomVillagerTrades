@@ -23,13 +23,16 @@ public final class CustomVillagerTrades extends JavaPlugin {
 
     private File tradesConfigFile;
     private FileConfiguration tradesConfig;
+    
+    private boolean loaded = false;
 
     private final VillagerAcquireTradeListener villagerAcquireTradeListener = new VillagerAcquireTradeListener();
 
     @Override
     public void onEnable() {
-
-        if(isEnabled()) {
+        
+        // ensure plugin doesn't get enabled more than once
+        if(loaded) {
             getLogger().warning("Plugin already enabled");
             return;
         }
@@ -53,11 +56,25 @@ public final class CustomVillagerTrades extends JavaPlugin {
         this.getCommand("disable").setExecutor(new DisableCommand(this));
         this.getCommand("reload").setExecutor(new ReloadCommand(this));
 
+        // ensure plugin doesn't get enabled more than once
+        this.loaded = true;
+
     }
     
     @Override
     public void onDisable() {
+
+        // ensure plugin doesn't get disabled more than once
+        if(!loaded) {
+            getLogger().warning("Plugin already disabled");
+            return;
+        }
+
         HandlerList.unregisterAll(villagerAcquireTradeListener);
+
+        // allow plugin to be enabled again
+        this.loaded = false;
+
     }
 
     private void createTradesConfig() {
@@ -79,6 +96,10 @@ public final class CustomVillagerTrades extends JavaPlugin {
 
     public FileConfiguration getTradesConfig() {
         return tradesConfig;
+    }
+
+    public boolean isLoaded() {
+        return this.loaded;
     }
     
 }
