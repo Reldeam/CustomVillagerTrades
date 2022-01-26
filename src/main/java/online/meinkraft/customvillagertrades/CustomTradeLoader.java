@@ -16,19 +16,26 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public final class CustomTradeLoader {
 
-    static List<CustomTrade> loadTrades(
-        FileConfiguration data,
-        Logger logger
-    ) {
+    static List<CustomTrade> loadTrades(CustomVillagerTrades plugin) {
+
+        FileConfiguration data = plugin.getTradesConfig();
+        Logger logger = plugin.getLogger();
 
         ArrayList<CustomTrade> trades = new ArrayList<>();
+        Integer tradesLoaded = 0;
 
         List<?> tradeMaps = data.getList("trades");
 
-        tradeMaps.forEach(item -> {
+        for(Object item : tradeMaps) {
 
             // check item is valid before proceeding
-            if(item == null || !(item instanceof HashMap)) return;
+            if(!(item instanceof HashMap)) {
+                logger.warning(
+                    "Skipping invalid custom trade: " + 
+                    item.toString()
+                );
+                continue;
+            }
 
             HashMap<?,?> tradeMap = (HashMap<?,?>) item;
 
@@ -88,7 +95,7 @@ public final class CustomTradeLoader {
                     "): " + 
                     item.toString()
                 );
-                return;
+                continue;
             }
             catch(ClassCastException exception) {
                 logger.warning(
@@ -97,7 +104,7 @@ public final class CustomTradeLoader {
                     "): " + 
                     item.toString()
                 );
-                return;
+                continue;
             }
 
             // set defaults for optional fields if not given
@@ -114,7 +121,7 @@ public final class CustomTradeLoader {
                     "): " + 
                     item.toString()
                 );
-                return;
+                continue;
             }
             firstIngredient = ingredients.get(0);
             if(ingredients.size() > 1) secondIngredient = ingredients.get(1);
@@ -127,7 +134,7 @@ public final class CustomTradeLoader {
                     "): " + 
                     item.toString()
                 );
-                return;
+                continue;
             }
 
             // chance
@@ -138,7 +145,7 @@ public final class CustomTradeLoader {
                     "): " + 
                     item.toString()
                 );
-                return;
+                continue;
             }
 
             trades.add(new CustomTrade(
@@ -157,7 +164,18 @@ public final class CustomTradeLoader {
                 biomes
 
             ));
-        });
+
+            tradesLoaded++;
+
+        }
+
+        logger.info(
+            "Loaded " + 
+            tradesLoaded + 
+            " out of " + 
+            tradeMaps.size() + 
+            " custom trades"
+        );
 
         return trades;
 

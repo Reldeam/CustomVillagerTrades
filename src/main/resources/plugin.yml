@@ -6,3 +6,21 @@ api-version: 1.18
 load: STARTUP
 author: Reldeam
 website: meinkraft.online
+commands:
+  disable:
+    description: Disables the plugin
+    usage: /disable
+    permission: customvillagertrades.command.disable
+    aliases: cvtdisable
+  reload:
+    description: Reloads the plugin
+    usage: /reload
+    permission: customvillagertrades.command.reload
+    aliases: cvtreload
+permissions:
+  customvillagertrades.command.disable:
+    description: Allows use of command, /cvt disable
+    default: op
+  customvillagertrades.command.reload:
+    description: Allows use of command, /cvt reload
+    default: op

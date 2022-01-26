@@ -1,6 +1,11 @@
 package online.meinkraft.customvillagertrades;
 
 import org.bukkit.plugin.java.JavaPlugin;
+
+import online.meinkraft.customvillagertrades.command.DisableCommand;
+import online.meinkraft.customvillagertrades.command.ReloadCommand;
+import online.meinkraft.customvillagertrades.listener.VillagerAcquireTradeListener;
+
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,30 +26,28 @@ public final class CustomVillagerTrades extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        getLogger().info("onEnable has been invoked!");
-
         // create config files if it doesn't exist
         saveDefaultConfig();
         createTradesConfig();
 
         // build custom trade list
-        List<CustomTrade> customTrades = CustomTradeLoader.loadTrades(
-            getTradesConfig(),
-            getLogger()
-        );
+        List<CustomTrade> customTrades = CustomTradeLoader.loadTrades(this);
         villagerAcquireTradeListener.setCustomTrades(customTrades);
 
-        // register listener
+        // register listeners
         getServer().getPluginManager().registerEvents(
             villagerAcquireTradeListener, 
             this
         );
 
+        // register commands
+        this.getCommand("reload").setExecutor(new ReloadCommand(this));
+        this.getCommand("disable").setExecutor(new DisableCommand(this));
+
     }
     
     @Override
     public void onDisable() {
-        getLogger().info("onDisable has been invoked!");
         HandlerList.unregisterAll(villagerAcquireTradeListener);
     }
 
@@ -65,7 +68,7 @@ public final class CustomVillagerTrades extends JavaPlugin {
         
     }
 
-    private FileConfiguration getTradesConfig() {
+    public FileConfiguration getTradesConfig() {
         return tradesConfig;
     }
     

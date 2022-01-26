@@ -1,4 +1,4 @@
-package online.meinkraft.customvillagertrades;
+package online.meinkraft.customvillagertrades.listener;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -9,6 +9,9 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
+
+import online.meinkraft.customvillagertrades.CustomTrade;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
