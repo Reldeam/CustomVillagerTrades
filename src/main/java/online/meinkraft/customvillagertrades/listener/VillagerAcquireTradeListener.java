@@ -10,7 +10,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
-import online.meinkraft.customvillagertrades.CustomTrade;
+import online.meinkraft.customvillagertrades.util.CustomTrade;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
