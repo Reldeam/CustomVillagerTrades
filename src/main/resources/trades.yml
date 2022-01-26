@@ -1,0 +1,38 @@
+trades:
+
+  - result:
+      material: DIAMOND_AXE
+      enchantments:
+        - type: SILK_TOUCH
+          level: 1
+          ignoreLevelRestriction: false
+      displayName: Cool Axey Boi
+      lore: 
+        - there
+        - was
+        - a thing
+    ingredients:
+      - material: EMERALD
+        amount: 16
+      - material: TROPICAL_FISH
+        amount: 4
+    maxUses: 4
+    experience: 4
+    giveExperienceToPlayer: true
+    chance: 0.8
+    professions: [MASON, BUTCHER]
+    levels: [2, 3]
+    villagerTypes: [DESERT, SNOW, TAIGA]
+    biomes: [DESERT]
+    
+  - result:
+      material: EMERALD
+      amount: 24 
+    ingredients:
+      - material: IRON_INGOT
+        amount: 10
+    maxUses: 4
+    giveExperienceToPlayer: false
+    chance: 0.5
+    professions: [MASON]
+    

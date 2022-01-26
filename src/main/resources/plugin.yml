@@ -1,0 +1,8 @@
+main: online.meinkraft.customvillagertrades.CustomVillagerTrades
+name: CustomVillagerTrades
+version: 1.0-SNAPSHOT
+description: Adds custom villager trades
+api-version: 1.18
+load: STARTUP
+author: Reldeam
+website: meinkraft.online
