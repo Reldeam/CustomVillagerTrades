@@ -39,7 +39,7 @@ public final class CustomVillagerTrades extends JavaPlugin {
         }
 
         // create config files if it doesn't exist
-        saveDefaultConfig();
+        createConfig();
         createTradesConfig();
 
         // set config values
@@ -79,6 +79,11 @@ public final class CustomVillagerTrades extends JavaPlugin {
         // allow plugin to be enabled again
         this.loaded = false;
 
+    }
+
+    private void createConfig() {
+        getConfig().options().copyDefaults(true);
+        saveConfig();
     }
 
     private void createTradesConfig() {
