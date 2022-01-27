@@ -100,7 +100,7 @@ ignoreLevelRestriction: <boolean> # (optional) (default: true) Whether the
 - [_&lt;villager type&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/Villager.Type.html) - A list of valid villager types
 - [_&lt;biome&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html) - A list of valid biomes
 - [_&lt;material&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) - A list of valid materials
-- [_&lt;enchantment type&gt;_](ttps://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/EnchantmentWrapper.html) - A list of valid enchantments
+- [_&lt;enchantment type&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/EnchantmentWrapper.html) - A list of valid enchantments
 
 **trades.yml example**
 
