@@ -45,7 +45,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.18.1-R0.1-SNAPSHOT</version><!--change this value depending on the version or use LATEST-->
+      <version>LATEST</version> <!-- 1.18.1-R0.1-SNAPSHOT -->
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
@@ -60,28 +60,5 @@
         </plugin>
     </plugins>
   </build>
-
-  <!--
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  -->
 
 </project>
