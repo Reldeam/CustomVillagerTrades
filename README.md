@@ -93,7 +93,7 @@ type: <enchantment type> # The type of enchantment
 
 level: <number> # (optional) (default: 1) The level of the enchantment
 
-ignoreLevelRestriction: <boolean> # (optional) (default: true) Whether the 
+ignoreLevelRestriction: <boolean> # (optional) (default: false) Whether the 
 # enchantment level should be capped at the usual maximum level restriction
 ```
 - [_&lt;villager profession&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/Villager.Profession.html) - A list of valid villager professions
