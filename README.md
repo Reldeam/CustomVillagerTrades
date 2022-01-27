@@ -163,6 +163,22 @@ trades:
     professions: [MASON]
 ```
 
+## Commands
+
+|Command|Alias|Description|
+|-------|-----|-----------|
+|reload|cvtreload|Reloads all configuration files including trades.yml|
+|enable|cvtenable|Enables plugin (if previously disabled)|
+|disable|cvtdisable|Disables plugin (does not remove any previously acquired custom trades, it just stops new custom trades being acquired)|
+
+## Permissions
+
+|Permission|Use|
+|---|---|
+|customvillagertrades.command.reload|Allows user to run command /customvillagertrades:reload|
+|customvillagertrades.command.enable|Allows user to run command /customvillagertrades:enable|
+|customvillagertrades.command.disable|Allows user to run command /customvillagertrades:disable|
+
 ## License
 
 CustomVillagerTrades is license under the _GNU General Public License_. Please see [LICENSE.md](https://github.com/Reldeam/CustomVillagerTrades/blob/main/LICENSE) for more information
