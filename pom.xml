@@ -9,6 +9,20 @@
   <name>CustomVillagerTrades</name>
   <url>http://maven.apache.org</url>
 
+  <distributionManagement>
+    <repository>
+      <id>github-repository</id>
+      <url>https://github.com/Reldeam/CustomVillagerTrades/</url>
+    </repository>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Reldeam/CustomVillagerTrades/</url>
+    <connection>scm:git:https://github.com/Reldeam/CustomVillagerTrades</connection>
+    <developerConnection>scm:git:https://github.com/Reldeam/CustomVillagerTrades</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
@@ -34,11 +48,6 @@
       <version>1.18.1-R0.1-SNAPSHOT</version><!--change this value depending on the version or use LATEST-->
       <type>jar</type>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <version>1.30</version>
     </dependency>
   </dependencies>
 
