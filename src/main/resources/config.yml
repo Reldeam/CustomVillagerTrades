@@ -1,1 +1,9 @@
-allowDuplicateTrades: false
+# Whether a villager can acquire the same trade more than once.
+allowDuplicateTrades: false 
+
+# true: The villager can acquire the same trade multiple times.
+
+# false: The villager cannot acquire multiple trades that have an item result 
+# of the same type (e.g. A villager cannot have two seperate trades for a 
+# DIAMOND_AXE even if they have different costs or different enchantments on 
+# the axe).

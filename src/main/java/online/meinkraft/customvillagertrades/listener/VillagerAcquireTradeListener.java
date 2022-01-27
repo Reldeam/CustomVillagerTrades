@@ -10,6 +10,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.util.CustomTrade;
 
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,12 @@ import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 
 public class VillagerAcquireTradeListener implements Listener {
 
+    private final CustomVillagerTrades plugin;
     private List<CustomTrade> customTrades;
+
+    public VillagerAcquireTradeListener(CustomVillagerTrades plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) throws FileNotFoundException{
@@ -63,15 +69,17 @@ public class VillagerAcquireTradeListener implements Listener {
             }
             
             // tader can't sell the same type of thing more than once
-            boolean resultExists = false;
-            for(MerchantRecipe recipe : merchant.getRecipes()) {
-                if(recipe.getResult().getType() == trade.getResult().getType()) {
-                    resultExists = true;
-                    break;
+            if(!this.plugin.allowDuplicateTrades()) {
+                boolean resultExists = false;
+                for(MerchantRecipe recipe : merchant.getRecipes()) {
+                    if(recipe.getResult().getType() == trade.getResult().getType()) {
+                        resultExists = true;
+                        break;
+                    }
                 }
+                if(resultExists) continue;
             }
-            if(resultExists) continue;
-
+            
             // replace recipe with custom recipe
             event.setRecipe(trade.getRecipe());
 

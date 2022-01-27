@@ -25,8 +25,9 @@ public final class CustomVillagerTrades extends JavaPlugin {
     private FileConfiguration tradesConfig;
     
     private boolean loaded = false;
+    private boolean allowDuplicateTrades = false;
 
-    private final VillagerAcquireTradeListener villagerAcquireTradeListener = new VillagerAcquireTradeListener();
+    private final VillagerAcquireTradeListener villagerAcquireTradeListener = new VillagerAcquireTradeListener(this);
 
     @Override
     public void onEnable() {
@@ -40,6 +41,9 @@ public final class CustomVillagerTrades extends JavaPlugin {
         // create config files if it doesn't exist
         saveDefaultConfig();
         createTradesConfig();
+
+        // set config values
+        this.allowDuplicateTrades = getConfig().getBoolean("allowDuplicateTrades");
 
         // build custom trade list
         List<CustomTrade> customTrades = CustomTradeLoader.loadTrades(this);
@@ -100,6 +104,10 @@ public final class CustomVillagerTrades extends JavaPlugin {
 
     public boolean isLoaded() {
         return this.loaded;
+    }
+
+    public boolean allowDuplicateTrades() {
+        return this.allowDuplicateTrades;
     }
     
 }

@@ -1,5 +1,16 @@
 trades:
 
+  # This trade can be acquired by a desert type villager that is in a desert or 
+  # badlands biome, has a weaponsmith profession, and has just become either an 
+  # apprentice (level 2) or a journeyman (level 3). There is a 10% chance they 
+  # will acquire this trade if all of those conditions are met.
+
+  # The trade is 16 emeralds and 4 tropical fish for a diamond axe that is 
+  # enchanted with silk touch and has a custom name and lore. The trade can be 
+  # made up to two times before the villager will need to refresh their stock.
+
+  # The trades give 4 experience to the villager and the player.
+
   - result:
       material: DIAMOND_AXE
       enchantments:
@@ -16,15 +27,22 @@ trades:
         amount: 16
       - material: TROPICAL_FISH
         amount: 4
-    maxUses: 4
+    maxUses: 2
     experience: 4
-    giveExperienceToPlayer: true
-    chance: 0.8
-    professions: [MASON, BUTCHER]
+    chance: 0.1
+    professions: [WEAPONSMITH]
     levels: [2, 3]
-    villagerTypes: [DESERT, SNOW, TAIGA]
-    biomes: [DESERT]
-    
+    villagerTypes: [DESERT]
+    biomes: [DESERT, BADLANDS]
+
+  # This trade can be acquired by a mason with a 50% chance each time the 
+  # villager acquires a new trade.
+
+  # The trade is 24 emeralds for 10 iron ingots, it can be made up to 4 times 
+  # before the villager will need to refresh their stock.
+
+  # The trade gives 2 experience to the villager, but none to the player.
+
   - result:
       material: EMERALD
       amount: 24 
@@ -32,7 +50,7 @@ trades:
       - material: IRON_INGOT
         amount: 10
     maxUses: 4
+    experience: 2
     giveExperienceToPlayer: false
     chance: 0.5
     professions: [MASON]
-    
