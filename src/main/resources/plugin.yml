@@ -22,6 +22,11 @@ commands:
     usage: /reload
     permission: customvillagertrades.command.reload
     aliases: cvtreload
+  reroll:
+    description: Reroll custom trades for all traders in a given radius
+    usage: /reroll [all|radius]
+    permission: customvillagertrades.command.reroll
+    aliases: cvtreroll
 permissions:
   customvillagertrades.command.enable:
     description: Allows use of command, /customvillagertrades:enable
@@ -31,4 +36,10 @@ permissions:
     default: op
   customvillagertrades.command.reload:
     description: Allows use of command, /customvillagertrades:reload
+    default: op
+  customvillagertrades.command.reroll:
+    description: Allows use of command, /customvillagertrades:reroll
+    default: op
+  customvillagertrades.use.rerollitem:
+    description: Allows player to reroll the custom trades of a villager by right clicking on them with the rerollItem
     default: op

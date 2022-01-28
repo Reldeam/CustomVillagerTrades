@@ -1,5 +1,6 @@
 package online.meinkraft.customvillagertrades.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,7 @@ public class ReloadCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         this.plugin.onDisable();
         this.plugin.onEnable();
+        sender.sendMessage(ChatColor.GREEN + "Reload complete");
         return true;
     }
     

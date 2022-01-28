@@ -1,3 +1,4 @@
+# ------------------------------------------------------------------------------
 # Whether a villager can acquire the same trade more than once.
 allowDuplicateTrades: false 
 
@@ -7,3 +8,17 @@ allowDuplicateTrades: false
 # of the same type (e.g. A villager cannot have two seperate trades for a 
 # DIAMOND_AXE even if they have different costs or different enchantments on 
 # the axe).
+
+# ------------------------------------------------------------------------------
+# Should villagers be able to learn Vanilla Minecraft trades?
+disableVanillaTrades: false
+
+# true: The villager cannot learn any Vanilla Minecraft Trades. This does not
+# effect pre-existing trades.
+
+# false: The villager can learn Vanilla Minecraft trades.
+
+# ------------------------------------------------------------------------------
+# Item that you can right click villagers with to reroll their custom trades
+# requires permission: customvillagertrades.use.rerollitem
+rerollItem: CLOCK

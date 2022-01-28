@@ -13,6 +13,7 @@ acquire just like they acquire Vanilla trades.
 The _config.yml_ contains plugin configration settings.
 The format is as follows:
 ```yaml
+# ------------------------------------------------------------------------------
 # Whether a villager can acquire the same trade more than once.
 allowDuplicateTrades: false 
 
@@ -23,7 +24,19 @@ allowDuplicateTrades: false
 # DIAMOND_AXE even if they have different costs or different enchantments on 
 # the axe).
 
+# ------------------------------------------------------------------------------
+# Should villagers be able to learn Vanilla Minecraft trades?
+disableVanillaTrades: false
 
+# true: The villager cannot learn any Vanilla Minecraft Trades. This does not
+# effect pre-existing trades.
+
+# false: The villager can learn Vanilla Minecraft trades.
+
+# ------------------------------------------------------------------------------
+# Item that you can right click villagers with to reroll their custom trades
+# requires permission: customvillagertrades.use.rerollitem
+rerollItem: CLOCK
 ```
 
 ### trades.yml
@@ -170,14 +183,23 @@ trades:
 |reload|cvtreload|Reloads all configuration files including trades.yml|
 |enable|cvtenable|Enables plugin (if previously disabled)|
 |disable|cvtdisable|Disables plugin (does not remove any previously acquired custom trades, it just stops new custom trades being acquired)|
+|reroll [all\|radius]|cvtreroll|Reroll custom trades for all traders in a given radius|
+
+reroll:
+    description: Reroll the plugin
+    usage: /reroll [radius]
+    permission: customvillagertrades.command.reroll
+    aliases: cvtreroll
 
 ## Permissions
 
-|Permission|Use|
-|---|---|
-|customvillagertrades.command.reload|Allows user to run command /customvillagertrades:reload|
-|customvillagertrades.command.enable|Allows user to run command /customvillagertrades:enable|
-|customvillagertrades.command.disable|Allows user to run command /customvillagertrades:disable|
+|Permission|Default|Use|
+|---|---|---|
+|customvillagertrades.command.reload|OP|Allows user to run command `/customvillagertrades:reload`|
+|customvillagertrades.command.enable|OP|Allows user to run command `/customvillagertrades:enable`|
+|customvillagertrades.command.disable|OP|Allows user to run command `/customvillagertrades:disable`|
+|customvillagertrades.command.reroll|OP|Allows user to run command `/customvillagertrades:reroll`|
+|customvillagertrades.use.rerollitem|OP|Allows player to reroll the custom trades of a villager by right clicking on them with the `rerollItem` specified in the _config.yml_|
 
 ## License
 
