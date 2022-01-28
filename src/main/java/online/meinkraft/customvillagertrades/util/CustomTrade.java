@@ -2,10 +2,15 @@ package online.meinkraft.customvillagertrades.util;
 
 import java.util.List;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
 public class CustomTrade {
 
@@ -26,6 +31,8 @@ public class CustomTrade {
     private final MerchantRecipe recipe;
     
     public CustomTrade(
+
+        CustomVillagerTrades plugin,
 
         ItemStack result,
         ItemStack firstIngredient,
@@ -55,6 +62,7 @@ public class CustomTrade {
         this.villagerTypes = villagerTypes;
         this.biomes = biomes;
         
+        // create recipe
         recipe = new MerchantRecipe(
             result,
             maxUses
@@ -64,6 +72,19 @@ public class CustomTrade {
         if(secondIngredient != null) recipe.addIngredient(secondIngredient);
         recipe.setExperienceReward(giveExperienceToPlayer);
         recipe.setVillagerExperience(villagerExperience);
+
+        // add CustomTrade NBT to result ItemStack
+        NamespacedKey key = new NamespacedKey(plugin, "CustomTrade");
+        byte isCustomTrade = 1;
+        ItemMeta resultMeta = recipe.getResult().getItemMeta();
+
+        resultMeta.getPersistentDataContainer().set(
+            key, 
+            PersistentDataType.BYTE, 
+            isCustomTrade
+        );
+        
+        result.setItemMeta(resultMeta);
 
     }
 

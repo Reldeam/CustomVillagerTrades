@@ -1,15 +1,9 @@
 package online.meinkraft.customvillagertrades.command;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Predicate;
-
 import org.bukkit.ChatColor;
-import org.bukkit.EntityEffect;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

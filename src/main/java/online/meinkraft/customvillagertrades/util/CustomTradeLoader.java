@@ -152,6 +152,8 @@ public final class CustomTradeLoader {
 
             trades.add(new CustomTrade(
 
+                plugin,
+
                 result,
                 firstIngredient,
                 secondIngredient,

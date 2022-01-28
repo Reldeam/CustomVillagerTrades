@@ -25,7 +25,6 @@ public class VillagerAcquireTradeListener implements Listener {
         Random rand = new Random();
         Merchant merchant = (Merchant) event.getEntity();
 
-
         List<CustomTrade> trades = plugin.getValidTrades(merchant);
         if(trades.size() == 0) {
             if(plugin.disableVanillaTrades()) event.setCancelled(true);
@@ -38,9 +37,14 @@ public class VillagerAcquireTradeListener implements Listener {
         if(
             !plugin.disableVanillaTrades() && 
             rand.nextDouble() > trade.getChance()
-        ) return;
-        
-        event.setRecipe(trade.getRecipe());
+        ) {
+            // keep vanilla trade
+            event.setRecipe(event.getRecipe());
+        }
+        else {
+            // set custom trade
+            event.setRecipe(trade.getRecipe());
+        }
 
     }
     

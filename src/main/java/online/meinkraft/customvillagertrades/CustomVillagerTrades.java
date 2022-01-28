@@ -14,6 +14,7 @@ import online.meinkraft.customvillagertrades.util.WeightedCollection;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,6 +24,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
@@ -237,28 +241,36 @@ public final class CustomVillagerTrades extends JavaPlugin {
         Integer recipeIndex = 0;
     
         for(MerchantRecipe oldRecipe : oldRecipes) {
-    
+
             Integer level = (int) Math.floor(recipeIndex++ / 2) + 1;
             if(level > 5) level = 5;
-    
             villager.setVillagerLevel(level);
-    
+
             List<CustomTrade> trades = getValidTrades(merchant);
-    
-            if(trades.size() == 0) {
-                if(!disableVanillaTrades()) {
+
+            NamespacedKey key = new NamespacedKey(this, "CustomTrade");
+            ItemMeta resultMeta = oldRecipe.getResult().getItemMeta();
+            PersistentDataContainer container = resultMeta.getPersistentDataContainer();
+
+            // don't reroll vanilla recipes
+            Byte customTrade = container.get(key, PersistentDataType.BYTE);
+            boolean isVanillaTrade = (
+                customTrade == null || 
+                Byte.compare(customTrade, (byte) 0) == 0
+            );
+            if(isVanillaTrade && !disableVanillaTrades()) {
+                newRecipes.add(oldRecipe);
+            }
+            else if(trades.size() > 0) {
+                CustomTrade trade = chooseRandomTrade(trades);
+                if(
+                    !disableVanillaTrades() && 
+                    rand.nextDouble() > trade.getChance()
+                ) {
                     newRecipes.add(oldRecipe);
                 }
-                continue;
+                else newRecipes.add(trade.getRecipe());
             }
-    
-            CustomTrade trade = chooseRandomTrade(trades);
-    
-            if(
-                !disableVanillaTrades() && 
-                rand.nextDouble() < trade.getChance()
-            ) newRecipes.add(oldRecipe);
-            else newRecipes.add(trade.getRecipe());
     
             merchant.setRecipes(newRecipes);
     
