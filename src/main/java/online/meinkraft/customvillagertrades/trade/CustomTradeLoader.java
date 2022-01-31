@@ -283,6 +283,7 @@ public final class CustomTradeLoader {
             HashMap<?,?> map = (HashMap<?,?>) item;
 
             String nameString = (String) map.get("name");
+            Attribute attribute = Attribute.valueOf(nameString.toUpperCase());
 
             Double amount;
             try {
@@ -293,11 +294,26 @@ public final class CustomTradeLoader {
             }
 
             String operationString = (String) map.get("operation");
-            String slotString = (String) map.get("slot");
+            AttributeModifier.Operation operation;
 
-            Attribute attribute = Attribute.valueOf(nameString.toUpperCase());
-            AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(operationString.toUpperCase());
-            
+            switch(operationString.toUpperCase()) {
+                case "ADD":
+                    operation = AttributeModifier.Operation.ADD_NUMBER;
+                    break;
+                case "MULTIPLY":
+                    operation = AttributeModifier.Operation.ADD_SCALAR;
+                    break;
+                case "MULTIPLY_ALL_MODIFIERS":
+                    operation = AttributeModifier.Operation.MULTIPLY_SCALAR_1;
+                    break; 
+                default:
+                    throw new IllegalArgumentException(
+                        "attributeModifier.operation must be one of " + 
+                        "ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS"
+                    );
+            }
+             
+            String slotString = (String) map.get("slot");
             EquipmentSlot slot = null;
             if(slotString != null) slot = EquipmentSlot.valueOf(slotString.toUpperCase());
 

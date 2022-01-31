@@ -24,12 +24,11 @@
     attributeModifiers:
       - name: GENERIC_ARMOR
         amount: 10
-        operation: ADD_SCALAR
+        operation: ADD
         slot: HAND
       - name: GENERIC_FLYING_SPEED
-        amount: 20
-        operation: ADD_NUMBER
-        slot: HAND
+        amount: 0.5
+        operation: MULTIPLY_ALL_MODIFIERS
   ingredients:
     - material: EMERALD
       amount: 16
