@@ -63,7 +63,7 @@ public class VanillaTradeTest {
         MerchantRecipe recipe = new MerchantRecipe(stack, 1);
         VanillaTrade trade = new VanillaTrade(1, recipe);
         Map<String, Object> map = trade.serialize();
-        VanillaTrade deserialized = new VanillaTrade(map);
+        assertInstanceOf(VanillaTrade.class, new VanillaTrade(map));
         //VanillaTrade.deserialize(map);
         //assertInstanceOf(VanillaTrade.class, VanillaTrade.deserialize(map));
         //System.out.println(VanillaTrade.deserialize(map));

@@ -22,13 +22,11 @@ import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.HandlerList;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
 

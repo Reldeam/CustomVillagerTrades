@@ -21,7 +21,7 @@ import online.meinkraft.customvillagertrades.villager.VillagerManager;
 public class CustomTradeManager {
 
     private Map<String, CustomTrade> customTrades;
-    private final JavaPlugin plugin;
+    //private final JavaPlugin plugin;
     private final PluginConfig config;
     private final VillagerManager villagerManager;
 
@@ -30,7 +30,7 @@ public class CustomTradeManager {
         PluginConfig config,
         VillagerManager villagerManager
     ) {
-        this.plugin = plugin;
+        //this.plugin = plugin;
         this.config = config;
         this.villagerManager = villagerManager;
         customTrades = CustomTradeLoader.loadTrades(plugin, config);
