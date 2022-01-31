@@ -21,8 +21,6 @@ disableVanillaTrades: false
 # rerolled, only the custom trades will be rerolled.
 
 # ------------------------------------------------------------------------------
-# Item that you can:
-# - right click villagers to reroll their custom trades
-# - shift + right click villagers to reset all their trades to vanilla trades 
+# Item that you can right click villagers with to reroll their custom trades
 # requires permission: customvillagertrades.use.rerollitem
-tool: CLOCK
+rerollItem: CLOCK

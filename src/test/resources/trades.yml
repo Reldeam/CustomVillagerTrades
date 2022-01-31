@@ -37,7 +37,6 @@
       amount: 4
   maxUses: 2
   experience: 4
-  giveExperienceToPlayer: false
   chance: 0.1
   professions: [WEAPONSMITH]
   levels: [2, 3]
@@ -54,12 +53,15 @@
 
 "ingotForEmerald":
   result:
-    material: IRON_INGOT
+    material: EMERALD
     amount: 24 
+    nbt: > 
+      {display:{Name:'[{"text":"Cool thing"}]'}}
   ingredients:
-    - material: EMERALD
+    - material: IRON_INGOT
       amount: 10
-  maxUses: 6
-  experience: 10
+  maxUses: 4
+  experience: 2
+  giveExperienceToPlayer: false
   chance: 0.5
   professions: [MASON]

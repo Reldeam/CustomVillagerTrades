@@ -1,2 +1,4 @@
 target/
 .vscode/
+BuildTools/
+src/**.jar

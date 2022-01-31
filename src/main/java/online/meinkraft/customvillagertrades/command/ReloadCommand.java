@@ -20,6 +20,7 @@ public class ReloadCommand implements CommandExecutor {
         this.plugin.onDisable();
         this.plugin.onEnable();
         sender.sendMessage(ChatColor.GREEN + "Reload complete");
+        
         return true;
     }
     

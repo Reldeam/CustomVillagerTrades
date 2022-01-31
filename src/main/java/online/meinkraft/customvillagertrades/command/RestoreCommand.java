@@ -15,11 +15,11 @@ import org.bukkit.inventory.Merchant;
 import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-public class RerollCommand implements CommandExecutor {
+public class RestoreCommand implements CommandExecutor {
 
     private final CustomVillagerTrades plugin;
 
-    public RerollCommand(CustomVillagerTrades plugin) {
+    public RestoreCommand(CustomVillagerTrades plugin) {
         this.plugin = plugin;
     }
     
@@ -76,23 +76,22 @@ public class RerollCommand implements CommandExecutor {
 
         CustomTradeManager tradeManager = plugin.getCustomTradeManager();
 
-        Integer numRerolled = 0;
         for(Entity entity : merchants) {
             Merchant merchant = (Merchant) entity;
-            if(tradeManager.rerollMerchant(merchant)) numRerolled++;
+            tradeManager.restoreMerchant(merchant);
         }
 
         if(!plugin.isVanillaTradesAllowed()) {
             sender.sendMessage(
                 ChatColor.GREEN + 
-                "Rerolled all trades for " + numRerolled + 
+                "Rerolled all trades for " + merchants.size() + 
                 " merchants on " + world.getName()
             );
         }
         else {
             sender.sendMessage(
                 ChatColor.GREEN + 
-                "Rerolled custom trades for " + numRerolled + 
+                "Rerolled custom trades for " + merchants.size() + 
                 " merchants on " + world.getName()
             );
         }

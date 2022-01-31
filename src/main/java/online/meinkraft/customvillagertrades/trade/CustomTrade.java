@@ -1,19 +1,16 @@
-package online.meinkraft.customvillagertrades.util;
+package online.meinkraft.customvillagertrades.trade;
 
 import java.util.List;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
-
-import online.meinkraft.customvillagertrades.CustomVillagerTrades;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class CustomTrade {
 
+    private final String key;
     private final ItemStack result;
     private final ItemStack firstIngredient;
     private final ItemStack secondIngredient;
@@ -27,12 +24,13 @@ public class CustomTrade {
     private final List<Villager.Type> villagerTypes;
     private final List<Biome> biomes;
     
-
     private final MerchantRecipe recipe;
     
     public CustomTrade(
 
-        CustomVillagerTrades plugin,
+        JavaPlugin plugin,
+
+        String key,
 
         ItemStack result,
         ItemStack firstIngredient,
@@ -48,6 +46,8 @@ public class CustomTrade {
         List<Biome> biomes
 
     ) {
+
+        this.key = key;
 
         this.result = result;
         this.firstIngredient = firstIngredient;
@@ -73,19 +73,10 @@ public class CustomTrade {
         recipe.setExperienceReward(giveExperienceToPlayer);
         recipe.setVillagerExperience(villagerExperience);
 
-        // add CustomTrade NBT to result ItemStack
-        NamespacedKey key = new NamespacedKey(plugin, "CustomTrade");
-        byte isCustomTrade = 1;
-        ItemMeta resultMeta = recipe.getResult().getItemMeta();
+    }
 
-        resultMeta.getPersistentDataContainer().set(
-            key, 
-            PersistentDataType.BYTE, 
-            isCustomTrade
-        );
-        
-        result.setItemMeta(resultMeta);
-
+    public String getKey() {
+        return key;
     }
 
     public ItemStack getFirstIngredient() {

@@ -1,6 +1,6 @@
 main: online.meinkraft.customvillagertrades.CustomVillagerTrades
 name: CustomVillagerTrades
-version: 1.0-SNAPSHOT
+version: 1.1-SNAPSHOT
 description: Adds custom villager trades
 api-version: 1.18
 load: STARTUP
@@ -27,6 +27,11 @@ commands:
     usage: /reroll [all|radius]
     permission: customvillagertrades.command.reroll
     aliases: cvtreroll
+  restore:
+    description: Restore vanilla trades for all traders in a given radius
+    usage: /restore [all|radius]
+    permission: customvillagertrades.command.restore
+    aliases: cvtrestore
 permissions:
   customvillagertrades.command.enable:
     description: Allows use of command, /customvillagertrades:enable
@@ -40,6 +45,12 @@ permissions:
   customvillagertrades.command.reroll:
     description: Allows use of command, /customvillagertrades:reroll
     default: op
-  customvillagertrades.use.rerollitem:
+  customvillagertrades.command.restore:
+    description: Allows use of command, /customvillagertrades:restore
+    default: op
+  customvillagertrades.item.reroll:
     description: Allows player to reroll the custom trades of a villager by right clicking on them with the rerollItem
+    default: op
+  customvillagertrades.item.restore:
+    description: Allows player to restore the vanilla trades of a villager by right clicking on them with the restoreItem
     default: op
