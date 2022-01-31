@@ -81,20 +81,11 @@ public class RestoreCommand implements CommandExecutor {
             tradeManager.restoreMerchant(merchant);
         }
 
-        if(!plugin.isVanillaTradesAllowed()) {
-            sender.sendMessage(
-                ChatColor.GREEN + 
-                "Rerolled all trades for " + merchants.size() + 
-                " merchants on " + world.getName()
-            );
-        }
-        else {
-            sender.sendMessage(
-                ChatColor.GREEN + 
-                "Rerolled custom trades for " + merchants.size() + 
-                " merchants on " + world.getName()
-            );
-        }
+        sender.sendMessage(
+            ChatColor.GREEN + 
+            "Restored all Vanilla Minecraft trades for " + merchants.size() + 
+            " merchants on " + world.getName()
+        );
         
         return true;
 
