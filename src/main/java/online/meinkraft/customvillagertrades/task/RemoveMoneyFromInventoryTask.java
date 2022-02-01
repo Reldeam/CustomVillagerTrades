@@ -10,13 +10,13 @@ import org.bukkit.persistence.PersistentDataType;
 
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-public class RemoveMoneyTask implements Runnable {
+public class RemoveMoneyFromInventoryTask implements Runnable {
 
     private final CustomVillagerTrades plugin;
     private final Inventory inventory;
     private final Player player;
 
-    public RemoveMoneyTask(
+    public RemoveMoneyFromInventoryTask(
         CustomVillagerTrades plugin, 
         Inventory inventory,
         Player player
@@ -27,7 +27,7 @@ public class RemoveMoneyTask implements Runnable {
         this.player = player;
     }
 
-    public RemoveMoneyTask(CustomVillagerTrades plugin, Inventory inventory) {
+    public RemoveMoneyFromInventoryTask(CustomVillagerTrades plugin, Inventory inventory) {
         this(plugin, inventory, null);
     }
 
@@ -35,30 +35,38 @@ public class RemoveMoneyTask implements Runnable {
     public void run() {
 
         for(int index = 0; index < inventory.getSize(); index++) {
-
             ItemStack item = inventory.getItem(index);
-            if(item == null) continue;
-            
-            ItemMeta itemMeta = item.getItemMeta();
-            if(itemMeta == null) continue;
-
-            PersistentDataContainer itemData = itemMeta.getPersistentDataContainer();
-            Double money = itemData.get(
-                NamespacedKey.fromString("money", plugin),
-                PersistentDataType.DOUBLE
-            );
-
-            if(money != null) {
-
-                if(plugin.isEconomyEnabled() && player != null) {
-                    plugin.getEconomy().depositPlayer(player, money * item.getAmount());
-                }
-                
-                inventory.clear(index);
-                
+            if(depositMoney(item)) {
+                inventory.setItem(index, null);
             }
-
         }
+
+    }
+
+    private boolean depositMoney(ItemStack item) {
+        
+        if(item == null) return false;
+        
+        ItemMeta itemMeta = item.getItemMeta();
+        if(itemMeta == null) return false;
+
+        PersistentDataContainer itemData = itemMeta.getPersistentDataContainer();
+        Double money = itemData.get(
+            NamespacedKey.fromString("money", plugin),
+            PersistentDataType.DOUBLE
+        );
+
+        if(money != null) {
+
+            if(plugin.isEconomyEnabled() && player != null) {
+                plugin.getEconomy().depositPlayer(player, money * item.getAmount());
+            }
+            
+            return true;
+            
+        }
+
+        return false;
 
     }
 

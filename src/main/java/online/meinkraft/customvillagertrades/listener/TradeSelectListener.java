@@ -22,7 +22,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
-import online.meinkraft.customvillagertrades.task.RemoveMoneyTask;
+import online.meinkraft.customvillagertrades.task.RemoveMoneyFromInventoryTask;
 import online.meinkraft.customvillagertrades.villager.VillagerData;
 
 public class TradeSelectListener implements Listener {
@@ -71,36 +71,48 @@ public class TradeSelectListener implements Listener {
                 );
 
                 if(money != null) {
-                    double balance = economy.getBalance(player);
-                    int maxStackSize = (int) Math.floor(Math.min(64, balance / money));
-                    if(maxStackSize > 1) {
-                        EconomyResponse response = plugin.getEconomy().withdrawPlayer(
-                            player, 
-                            maxStackSize * money
-                        );
-                        if(response.transactionSuccess()) {
-                            inventory.setItem(index, ingredient);
-                            inventory.getItem(index).setAmount(maxStackSize);
-                        }
-                        else {
-                            inventory.setItem(index, null);
-                            event.setCancelled(true);
-                            player.sendMessage(
-                                ChatColor.RED +
-                                "You have insufficient funds to make this trade"
+                    if(plugin.isEconomyEnabled()) {
+                        double balance = economy.getBalance(player);
+                        int maxStackSize = (int) Math.floor(Math.min(64, balance / money));
+                        if(maxStackSize > 1) {
+                            EconomyResponse response = plugin.getEconomy().withdrawPlayer(
+                                player, 
+                                maxStackSize * money
                             );
+                            if(response.transactionSuccess()) {
+                                inventory.setItem(index, ingredient);
+                                inventory.getItem(index).setAmount(maxStackSize);
+                            }
+                            else {
+                                inventory.setItem(index, null);
+                                event.setCancelled(true);
+                                player.sendMessage(
+                                    ChatColor.RED +
+                                    "You have insufficient funds to make this trade"
+                                );
+                            }
+                            
                         }
-                        
                     }
+                    else { // economy is not enabled
+                        inventory.setItem(index, null);
+                        event.setCancelled(true);
+                        player.sendMessage(
+                            ChatColor.RED +
+                            "Economy is disabled - nag a moderator about it"
+                        );
+                    }  
                 }
 
             }
         }
 
+        System.out.println("cleaning up money");
+        
         // prevent money getting into players inventories
         plugin.getServer().getScheduler().runTask(
             plugin, 
-            new RemoveMoneyTask(
+            new RemoveMoneyFromInventoryTask(
                 plugin, 
                 event.getView().getBottomInventory(),
                 player
