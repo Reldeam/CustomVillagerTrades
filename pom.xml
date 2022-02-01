@@ -34,6 +34,10 @@
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
     </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -42,6 +46,12 @@
       <artifactId>spigot-api</artifactId>
       <version>1.18.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.github.MilkBowl</groupId>
+        <artifactId>VaultAPI</artifactId>
+        <version>1.7.1</version>
+        <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

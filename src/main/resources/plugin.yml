@@ -6,6 +6,7 @@ api-version: 1.18
 load: STARTUP
 author: Reldeam
 website: meinkraft.online
+softdepend: [Vault]
 commands:
   enable:
     description: Enables the plugin

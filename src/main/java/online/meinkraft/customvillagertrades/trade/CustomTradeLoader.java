@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
@@ -20,18 +21,19 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
-import online.meinkraft.customvillagertrades.PluginConfig;
+import online.meinkraft.customvillagertrades.exception.EconomyNotEnabledException;
 import online.meinkraft.customvillagertrades.util.AttributeModifierWrapper;
 import online.meinkraft.customvillagertrades.util.ItemEnchantment;
 
 public final class CustomTradeLoader {
 
-    static public Map<String, CustomTrade> loadTrades(JavaPlugin plugin, PluginConfig config) {
+    static public Map<String, CustomTrade> loadTrades(CustomVillagerTrades plugin) {
 
-        FileConfiguration data = config.getTradesConfig();
+        FileConfiguration data = plugin.getTradesConfig();
         Logger logger = plugin.getLogger();
 
         Map<String, CustomTrade> trades = new HashMap<>();
@@ -81,10 +83,12 @@ public final class CustomTradeLoader {
                 MemorySection resultSection = (MemorySection) tradeSection.get("result");
 
                 result = CustomTradeLoader.toItemStack(
+                    plugin,
                     (Map<?, ?>) resultSection.getValues(false)
                 );  
 
                 ingredients = CustomTradeLoader.toItemStackList(
+                    plugin,
                     (List<?>) tradeSection.getMapList("ingredients")
                 );
                 
@@ -102,6 +106,14 @@ public final class CustomTradeLoader {
                 logger.warning(
                     "Skipping invalid custom trade (" +
                     "malformed trade; check variable types and line indents" +
+                    "): " + 
+                    tradeSection.toString()
+                );
+                continue;
+            } catch (EconomyNotEnabledException exception) {
+                logger.warning(
+                    "Skipping invalid custom trade (" +
+                    "trade has a money component but economy not enabled" +
                     "): " + 
                     tradeSection.toString()
                 );
@@ -168,10 +180,6 @@ public final class CustomTradeLoader {
 
     }
 
-    static public Map<String, CustomTrade> loadTrades(CustomVillagerTrades plugin) {
-        return loadTrades(plugin, plugin);
-    }
-
     static public List<Villager.Type> toVillagerTypeList(List<String> list) {
         List<Villager.Type> types = new ArrayList<>();
         for(String item : list) {
@@ -199,15 +207,44 @@ public final class CustomTradeLoader {
         return professions;
     }
 
-    static public List<ItemStack> toItemStackList(List<?> list) {
+    static public List<ItemStack> toItemStackList(CustomVillagerTrades plugin, List<?> list) throws EconomyNotEnabledException {
         List<ItemStack> ingredients = new ArrayList<>();
         for(Object item : list) {
-            ingredients.add(CustomTradeLoader.toItemStack((Map<?, ?>) item));
+            ingredients.add(CustomTradeLoader.toItemStack(plugin, (Map<?, ?>) item));
         }
         return ingredients;
     }
 
-    static public ItemStack toItemStack(Map<?, ?> map) {
+    static public ItemStack toItemStack(CustomVillagerTrades plugin, Map<?, ?> map) throws EconomyNotEnabledException {
+
+        // if it's a money item
+        if(map.containsKey("money")) {
+
+            if(!plugin.isEconomyEnabled()) {
+                throw new EconomyNotEnabledException();
+            }
+
+            Double amount;
+            try {
+                amount = (Double) map.get("money");
+            }
+            catch(ClassCastException exception) {
+                amount = Double.valueOf((Integer) map.get("money"));
+            }
+
+            ItemStack itemStack = new ItemStack(plugin.getCurrencyMaterial());
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            PersistentDataContainer data = itemMeta.getPersistentDataContainer();
+            data.set(new NamespacedKey(plugin, "money"), PersistentDataType.DOUBLE, amount);
+            itemMeta.setDisplayName(
+                plugin.getCurrencyPrefix() +
+                String.format("%,.2f", amount) +
+                plugin.getCurrencySuffix()
+            );
+            itemStack.setItemMeta(itemMeta);
+            return itemStack;
+
+        }
 
         String material = (String) map.get("material");
         Integer amount = (Integer) map.get("amount");
@@ -218,7 +255,7 @@ public final class CustomTradeLoader {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
          // set enchantments
-        List<ItemEnchantment> enchantments = CustomTradeLoader.toItemEnchantmentList(
+         List<ItemEnchantment> enchantments = CustomTradeLoader.toItemEnchantmentList(
             (ArrayList<?>) map.get("enchantments")
         );
         if(enchantments != null) {

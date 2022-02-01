@@ -26,3 +26,18 @@ disableVanillaTrades: false
 # - shift + right click villagers to reset all their trades to vanilla trades 
 # requires permission: customvillagertrades.use.rerollitem
 tool: CLOCK
+
+# ------------------------------------------------------------------------------
+# Requires Vault. This will allow you to use <money> type instead of the
+# usual <item stack> type for the result and/or the ingredients of a custom
+# trade
+enableEconomy: false
+
+# The item that will represent a trade involving your Vault Economy as an
+# ingredient or as a result
+currency: PAPER
+
+# The strings that goes before and after on the cost on a money item:
+# "<currencyPrefix><amount><currencySuffix>"
+currencyPrefix: '$'
+currencySuffix: ''

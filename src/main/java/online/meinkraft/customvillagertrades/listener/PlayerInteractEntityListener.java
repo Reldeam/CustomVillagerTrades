@@ -6,6 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 
 import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
@@ -24,8 +25,27 @@ public class PlayerInteractEntityListener implements Listener {
 
         CustomTradeManager tradeManager = plugin.getCustomTradeManager();
         Entity entity = event.getRightClicked();
-        if(entity.getType() != EntityType.VILLAGER) return;
-        if(event.getPlayer().getInventory().getItemInMainHand().getType() != plugin.getToolMaterial()) return;
+
+        // check interacted entity is a villager / merchant
+        if(
+            entity.getType() != EntityType.WANDERING_TRADER &&
+            entity.getType() != EntityType.VILLAGER
+        ) return;
+
+        // refresh the trades based on their keys
+        tradeManager.refreshTrades((Merchant) entity);
+
+        ItemStack toolUsed = event.getPlayer().getInventory().getItemInMainHand();
+        if(toolUsed.getType() == plugin.getToolMaterial()) {
+            usePluginTool(event);
+        }
+   
+    }
+
+    private void usePluginTool(PlayerInteractEntityEvent event) {
+
+        CustomTradeManager tradeManager = plugin.getCustomTradeManager();
+        Entity entity = event.getRightClicked();
 
         if(event.getPlayer().hasPermission("customvillagertrades.item.restore") && 
             event.getPlayer().isSneaking()
@@ -52,7 +72,6 @@ public class PlayerInteractEntityListener implements Listener {
                 }
             }
         }
-        
     }
 
 }

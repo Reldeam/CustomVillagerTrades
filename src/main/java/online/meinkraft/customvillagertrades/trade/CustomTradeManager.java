@@ -1,6 +1,7 @@
 package online.meinkraft.customvillagertrades.trade;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -10,38 +11,57 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
-import online.meinkraft.customvillagertrades.PluginConfig;
 import online.meinkraft.customvillagertrades.util.WeightedCollection;
 import online.meinkraft.customvillagertrades.villager.VillagerData;
 import online.meinkraft.customvillagertrades.villager.VillagerManager;
 
 public class CustomTradeManager {
 
-    private Map<String, CustomTrade> customTrades;
-    //private final JavaPlugin plugin;
-    private final PluginConfig config;
+    private Map<String, CustomTrade> customTrades = new HashMap<>();
+    private final CustomVillagerTrades plugin;
     private final VillagerManager villagerManager;
 
     public CustomTradeManager(
-        JavaPlugin plugin, 
-        PluginConfig config,
-        VillagerManager villagerManager
+        CustomVillagerTrades plugin
     ) {
-        //this.plugin = plugin;
-        this.config = config;
-        this.villagerManager = villagerManager;
-        customTrades = CustomTradeLoader.loadTrades(plugin, config);
+        this.plugin = plugin;
+        this.villagerManager = plugin.getVillagerManager();
     }
 
-    public CustomTradeManager(CustomVillagerTrades plugin) {
-        this(
-            (JavaPlugin) plugin, 
-            (PluginConfig) plugin,
-            plugin.getVillagerManager()
-        );
+    public void load() {
+        customTrades = CustomTradeLoader.loadTrades(plugin);
+    }
+
+    public void refreshTrades(Merchant merchant) {
+
+        VillagerManager villagerManager = plugin.getVillagerManager();
+        VillagerData data = villagerManager.getData((Villager) merchant);
+
+        List<MerchantRecipe> oldRecipes = merchant.getRecipes();
+        List<MerchantRecipe> newRecipes = new ArrayList<>();
+        
+        int customTradeIndex = 0;
+        for(int index = 0; index < oldRecipes.size(); index++) {
+            if(data.isCustomTrade(index)) {
+
+                String customTradeKey = data.getCustomTradeKey(customTradeIndex);
+                customTradeIndex++;
+
+                CustomTrade customTrade = customTrades.get(customTradeKey);
+
+                if(customTrade != null) newRecipes.add(customTrade.getRecipe());
+                else  newRecipes.add(oldRecipes.get(index));
+
+            }
+            else {
+                newRecipes.add(oldRecipes.get(index));
+            }
+        }
+
+        merchant.setRecipes(newRecipes);
+
     }
 
     public List<CustomTrade> getValidTrades(Merchant merchant) {
@@ -90,7 +110,7 @@ public class CustomTradeManager {
             
             // tader can't sell the same type of thing more than once
             if(
-                !config.isDuplicateTradesAllowed() &&
+                !plugin.isDuplicateTradesAllowed() &&
                 merchantHasCustomTrade(merchant, trade)
             ) {
                 continue;
@@ -108,7 +128,7 @@ public class CustomTradeManager {
     public boolean merchantHasCustomTrade(Merchant merchant, CustomTrade trade) {
 
         Villager villager = (Villager) merchant;
-        VillagerData data = villagerManager.get(villager);
+        VillagerData data = villagerManager.getData(villager);
         return data.getCustomTradeKeys().contains(trade.getKey());
 
     }
@@ -126,14 +146,16 @@ public class CustomTradeManager {
         Random rand = new Random();
         Villager villager = (Villager) merchant;
 
-        VillagerData data = villagerManager.get(villager);
+        VillagerData data = villagerManager.getData(villager);
         data.clearCustomTradeKeys();
         List<VanillaTrade> vanillaTrades = data.getVanillaTrades();
 
         int villagerLevel = villager.getVillagerLevel();
         List<MerchantRecipe> newRecipes = new ArrayList<>();
 
-        for(VanillaTrade vanillaTrade : vanillaTrades) {
+        VanillaTrade vanillaTrade;
+        for(int index = 0; index < vanillaTrades.size(); index++) {
+            vanillaTrade = vanillaTrades.get(index);
 
             villager.setVillagerLevel(vanillaTrade.getVillagerLevel());
             List<CustomTrade> validCustomTrades = getValidTrades(merchant);
@@ -141,7 +163,7 @@ public class CustomTradeManager {
 
             // chance of not getting the trade (if vanilla trades aren't disabled)
             if(
-                config.isVanillaTradesAllowed() && 
+                plugin.isVanillaTradesAllowed() && 
                 rand.nextDouble() > customTrade.getChance()
             ) {
                 // keep vanilla trade
@@ -150,7 +172,7 @@ public class CustomTradeManager {
             else {
                 // set custom trade
                 newRecipes.add(customTrade.getRecipe());
-                data.addCustomTradeKey(customTrade.getKey());
+                data.addCustomTradeKey(index, customTrade.getKey());
             }
 
             villager.setRecipes(newRecipes);
@@ -166,7 +188,7 @@ public class CustomTradeManager {
     public void restoreMerchant(Merchant merchant) {
 
         Villager villager = (Villager) merchant;
-        VillagerData data = villagerManager.get(villager);
+        VillagerData data = villagerManager.getData(villager);
         
         List<VanillaTrade> vanillaTrades = data.getVanillaTrades();
         List<MerchantRecipe> recipes = new ArrayList<>();

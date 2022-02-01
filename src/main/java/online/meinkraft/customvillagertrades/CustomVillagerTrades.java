@@ -1,15 +1,22 @@
 package online.meinkraft.customvillagertrades;
 
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
+import net.milkbowl.vault.economy.Economy;
 import online.meinkraft.customvillagertrades.command.DisableCommand;
 import online.meinkraft.customvillagertrades.command.EnableCommand;
 import online.meinkraft.customvillagertrades.command.ReloadCommand;
 import online.meinkraft.customvillagertrades.command.RerollCommand;
 import online.meinkraft.customvillagertrades.command.RestoreCommand;
+import online.meinkraft.customvillagertrades.exception.EconomyNotAvailableException;
+import online.meinkraft.customvillagertrades.exception.VaultNotAvailableException;
+import online.meinkraft.customvillagertrades.listener.InventoryClickListener;
+import online.meinkraft.customvillagertrades.listener.InventoryCloseListener;
 import online.meinkraft.customvillagertrades.listener.PlayerInteractEntityListener;
+import online.meinkraft.customvillagertrades.listener.TradeSelectListener;
 import online.meinkraft.customvillagertrades.listener.VillagerAcquireTradeListener;
 import online.meinkraft.customvillagertrades.listener.VillagerCareerChangeListener;
 import online.meinkraft.customvillagertrades.listener.VillagerDeathEventListener;
@@ -37,10 +44,17 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     
     private boolean loaded = false;
 
+    // economy
+    private Economy economy = null;
+
     // configuration variables
     private boolean isVanillaTradesAllowed = false;
     private boolean isDuplicateTradesAllowed = false;
+    private boolean isEconomyEnabled = false;
     private Material toolMaterial;
+    private Material currencyMaterial;
+    private String currencyPrefix;
+    private String currencySuffix;
 
     private VillagerManager villagerManager;
     private CustomTradeManager customTradeManager;
@@ -49,6 +63,9 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     private final PlayerInteractEntityListener playerInteractEntityListener = new PlayerInteractEntityListener(this);
     private final VillagerDeathEventListener villagerDeathEventListener = new VillagerDeathEventListener(this);
     private final VillagerCareerChangeListener villagerCareerChangeListener = new VillagerCareerChangeListener(this);
+    private final InventoryClickListener inventoryClickListener = new InventoryClickListener(this);
+    private final TradeSelectListener tradeSelectListener = new TradeSelectListener(this);
+    private final InventoryCloseListener inventoryCloseListener = new InventoryCloseListener(this);
 
     public CustomVillagerTrades() { super(); }
 
@@ -80,14 +97,38 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
             return;
         }
 
-        // create config files if it doesn't exist
+        // create config file if it doesn't exist
         createConfig();
-        createTradesConfig();
 
         // set config values
         isDuplicateTradesAllowed = getConfig().getBoolean("allowDuplicateTrades");
         isVanillaTradesAllowed = !getConfig().getBoolean("disableVanillaTrades");
+        isEconomyEnabled = getConfig().getBoolean("enableEconomy");
         toolMaterial = Material.getMaterial(getConfig().getString("tool"));
+        currencyMaterial = Material.getMaterial(getConfig().getString("currency"));
+        currencyPrefix = getConfig().getString("currencyPrefix");
+        currencySuffix = getConfig().getString("currencySuffix");
+
+        // setup economy
+        if(isEconomyEnabled()) {
+            try {
+                isEconomyEnabled = false;
+                if (setupEconomy()) {
+                    isEconomyEnabled = true;
+                }
+                else {
+                    getLogger().warning(
+                        "No economy provider (money items will not work as expect)!\n" +
+                        "If you do not have Vault and a compatible economy plugin, ensure enableEconomy is set to false in the config.yml"
+                    );
+                }
+            } catch (VaultNotAvailableException | EconomyNotAvailableException exception) {
+                getLogger().warning(exception.getMessage());   
+            }
+        }
+
+        // create the custom trade
+        createTradesConfig();
 
         // load villager manager
         villagerManager = new VillagerManager(this);
@@ -95,6 +136,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
 
         // load custom trades
         customTradeManager = new CustomTradeManager(this);
+        customTradeManager.load();
         
 
         // register listeners
@@ -114,13 +156,25 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
             villagerCareerChangeListener,
             this
         );
+        getServer().getPluginManager().registerEvents(
+            inventoryClickListener,
+            this
+        );
+        getServer().getPluginManager().registerEvents(
+            tradeSelectListener,
+            this
+        );
+        getServer().getPluginManager().registerEvents(
+            inventoryCloseListener,
+            this
+        );
 
         // register commands
+        this.getCommand("reroll").setExecutor(new RerollCommand(this));
+        this.getCommand("restore").setExecutor(new RestoreCommand(this));
         this.getCommand("enable").setExecutor(new EnableCommand(this));
         this.getCommand("disable").setExecutor(new DisableCommand(this));
         this.getCommand("reload").setExecutor(new ReloadCommand(this));
-        this.getCommand("reroll").setExecutor(new RerollCommand(this));
-        this.getCommand("restore").setExecutor(new RestoreCommand(this));
 
         // ensure plugin doesn't get enabled more than once
         this.loaded = true;
@@ -141,7 +195,10 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         HandlerList.unregisterAll(playerInteractEntityListener);
         HandlerList.unregisterAll(villagerDeathEventListener);
         HandlerList.unregisterAll(villagerCareerChangeListener);
-
+        HandlerList.unregisterAll(inventoryClickListener);
+        HandlerList.unregisterAll(tradeSelectListener);
+        HandlerList.unregisterAll(inventoryCloseListener);
+        
         // save data files
         villagerManager.save("villagers.data");
 
@@ -170,6 +227,11 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         return toolMaterial;
     }
 
+    @Override
+    public boolean isEconomyEnabled() {
+        return isEconomyEnabled;
+    }
+
     public boolean isLoaded() {
         return this.loaded;
     }
@@ -180,6 +242,10 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     
     public VillagerManager getVillagerManager() {
         return villagerManager;
+    }
+
+    public Economy getEconomy() {
+        return economy;
     }
 
     private void createConfig() {
@@ -206,6 +272,39 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         }
         
     }
+
+    private boolean setupEconomy() throws VaultNotAvailableException, EconomyNotAvailableException {
+
+        // get vault plugin
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            throw new VaultNotAvailableException();
+        }
+        
+        // get economy plugin
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) throw new EconomyNotAvailableException();
+
+        economy = rsp.getProvider();
+        return economy != null;
+
+    }
+
+    @Override
+    public Material getCurrencyMaterial() {
+        return this.currencyMaterial;
+    }
+
+    @Override
+    public String getCurrencyPrefix() {
+        return this.currencyPrefix;
+    }
+
+
+    @Override
+    public String getCurrencySuffix() {
+        return this.currencySuffix;
+    }
+
 
     
     

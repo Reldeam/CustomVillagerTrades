@@ -62,3 +62,14 @@
   experience: 10
   chance: 0.5
   professions: [MASON]
+
+# Get a diamond for 150 units of your Vault Economy currency.
+
+"diamondForMoney":
+  result:
+    material: DIAMOND
+  ingredients:
+    - money: 150
+  maxUses: 20
+  experience: 50
+  chance: 0.1

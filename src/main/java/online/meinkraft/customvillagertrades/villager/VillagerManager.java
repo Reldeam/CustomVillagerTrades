@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.entity.Villager;
+import org.bukkit.inventory.Merchant;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -24,7 +25,7 @@ public class VillagerManager {
         this.plugin = plugin;
     }
 
-    public VillagerData get(Villager villager) {
+    public VillagerData getData(Villager villager) {
         VillagerData data = villagers.get(villager.getUniqueId());
         if(data == null) data = addVillager(villager);
         return data;
@@ -41,6 +42,12 @@ public class VillagerManager {
     public VillagerData addVillager(Villager villager) {
         VillagerData data = new VillagerData(villager);
         villagers.put(villager.getUniqueId(), data);
+        return data;
+    }
+
+    public VillagerData addMerchant(Merchant merchant) {
+        VillagerData data = new VillagerData(merchant);
+        villagers.put(merchant.getTrader().getUniqueId(), data);
         return data;
     }
 

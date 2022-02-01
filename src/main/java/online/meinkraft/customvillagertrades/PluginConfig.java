@@ -10,6 +10,11 @@ public interface PluginConfig {
 
     public boolean isDuplicateTradesAllowed();
     public boolean isVanillaTradesAllowed();
+    public boolean isEconomyEnabled();
     public Material getToolMaterial();
+
+    public Material getCurrencyMaterial();
+    public String getCurrencyPrefix();
+    public String getCurrencySuffix();
 
 }

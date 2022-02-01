@@ -31,8 +31,9 @@ public class VillagerAcquireTradeListener implements Listener {
         Merchant merchant = (Merchant) event.getEntity();
 
         VillagerManager villagerManager = plugin.getVillagerManager();
-        VillagerData data = villagerManager.get(villager);
+        VillagerData data = villagerManager.getData(villager);
         data.addVanillaTrade(villager.getVillagerLevel(), event.getRecipe());
+        int index = data.getVanillaTrades().size() - 1;
 
         CustomTradeManager tradeManager = plugin.getCustomTradeManager();
 
@@ -56,7 +57,10 @@ public class VillagerAcquireTradeListener implements Listener {
         else {
             // set custom trade
             event.setRecipe(trade.getRecipe());
-            data.addCustomTradeKey(trade.getKey());
+            data.addCustomTradeKey(
+                index,
+                trade.getKey()
+            );
         }
 
     }
