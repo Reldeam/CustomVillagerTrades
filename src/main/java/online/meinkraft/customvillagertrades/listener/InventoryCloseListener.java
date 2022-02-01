@@ -22,7 +22,13 @@ public class InventoryCloseListener implements Listener {
     @EventHandler
     public void onInventoryCloseEvent(InventoryCloseEvent event) {
 
-        if(event.getView().getTopInventory().getType() == InventoryType.MERCHANT) {
+        InventoryType inventoryType = event.getView().getTopInventory().getType();
+
+        // check for money if currency isn't physical
+        if(
+            inventoryType == InventoryType.MERCHANT &&
+            !plugin.isCurrencyPhysical()
+        ) {
 
             MerchantInventory merchantInventory = (MerchantInventory) event.getView().getTopInventory();
             // delete result

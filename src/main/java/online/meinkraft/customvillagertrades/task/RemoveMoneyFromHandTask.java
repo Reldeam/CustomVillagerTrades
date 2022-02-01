@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
 public class RemoveMoneyFromHandTask implements Runnable {
@@ -51,7 +52,14 @@ public class RemoveMoneyFromHandTask implements Runnable {
         if(money != null) {
 
             if(plugin.isEconomyEnabled() && player != null) {
-                plugin.getEconomy().depositPlayer(player, money * item.getAmount());
+                double totalAmount = money * item.getAmount();
+                plugin.getEconomy().depositPlayer(player, totalAmount);
+                player.sendMessage(
+                    ChatColor.GREEN +
+                    "Deposited " +
+                    plugin.getEconomy().format(totalAmount) +
+                    " into your account"
+                );
             }
             
             return true;

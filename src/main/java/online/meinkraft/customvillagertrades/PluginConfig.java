@@ -11,6 +11,7 @@ public interface PluginConfig {
     public boolean isDuplicateTradesAllowed();
     public boolean isVanillaTradesAllowed();
     public boolean isEconomyEnabled();
+    public boolean isCurrencyPhysical();
     public Material getToolMaterial();
 
     public Material getCurrencyMaterial();

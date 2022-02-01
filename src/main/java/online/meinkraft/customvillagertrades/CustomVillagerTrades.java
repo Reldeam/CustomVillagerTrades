@@ -51,6 +51,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     private boolean isVanillaTradesAllowed = false;
     private boolean isDuplicateTradesAllowed = false;
     private boolean isEconomyEnabled = false;
+    private boolean isCurrencyPhysical = false;
     private Material toolMaterial;
     private Material currencyMaterial;
     private String currencyPrefix;
@@ -104,6 +105,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         isDuplicateTradesAllowed = getConfig().getBoolean("allowDuplicateTrades");
         isVanillaTradesAllowed = !getConfig().getBoolean("disableVanillaTrades");
         isEconomyEnabled = getConfig().getBoolean("enableEconomy");
+        isCurrencyPhysical = getConfig().getBoolean("enablePhysicalCurrency");
         toolMaterial = Material.getMaterial(getConfig().getString("tool"));
         currencyMaterial = Material.getMaterial(getConfig().getString("currencyItem"));
         currencyPrefix = getConfig().getString("currencyPrefix");
@@ -303,6 +305,11 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     @Override
     public String getCurrencySuffix() {
         return this.currencySuffix;
+    }
+
+    @Override
+    public boolean isCurrencyPhysical() {
+        return isCurrencyPhysical;
     }
 
 

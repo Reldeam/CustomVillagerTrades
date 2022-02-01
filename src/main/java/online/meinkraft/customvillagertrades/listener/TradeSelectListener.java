@@ -108,15 +108,16 @@ public class TradeSelectListener implements Listener {
         }
         
         // prevent money getting into players inventories
-        plugin.getServer().getScheduler().runTask(
-            plugin, 
-            new RemoveMoneyFromInventoryTask(
+        if(!plugin.isCurrencyPhysical()) {
+            plugin.getServer().getScheduler().runTask(
                 plugin, 
-                event.getView().getBottomInventory(),
-                player
-            )
-        );
-        
+                new RemoveMoneyFromInventoryTask(
+                    plugin, 
+                    event.getView().getBottomInventory(),
+                    player
+                )
+            );
+        }
     }
     
 }
