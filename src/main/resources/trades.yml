@@ -21,14 +21,6 @@
       - there
       - was
       - a thing
-    attributeModifiers:
-      - name: GENERIC_ARMOR
-        amount: 10
-        operation: ADD
-        slot: HAND
-      - name: GENERIC_FLYING_SPEED
-        amount: 0.5
-        operation: MULTIPLY_ALL_MODIFIERS
   ingredients:
     - material: EMERALD
       amount: 16
@@ -63,7 +55,32 @@
   chance: 0.5
   professions: [MASON]
 
-# Get a diamond for 150 units of your Vault Economy currency.
+# Upgrade a diamond pickaxe for the cost of 20 emeralds so that it has
+# attribute modifiers that increase your armor by a large amount when you
+# hold it in your hand.
+
+"bulkyPick"
+  result:
+    material: DIAMOND_PICKAXE
+    attributeModifiers:
+      - name: GENERIC_ARMOR
+        amount: 10
+        operation: ADD
+        slot: HAND
+      - name: GENERIC_ARMOR
+        amount: 0.5
+        operation: MULTIPLY_ALL_MODIFIERS
+        slot: HAND
+  ingredients:
+    - material: EMERALD
+      amount: 20
+    - material: DIAMOND_PICKAXE
+  maxUses: 1
+  experience: 100
+  chance: 0.05
+  professions: [WEAPONSMITH]    
+
+# Buy a diamond for 150 units of your Vault Economy currency.
 
 "diamondForMoney":
   result:
@@ -71,5 +88,16 @@
   ingredients:
     - money: 150
   maxUses: 20
-  experience: 50
+  experience: 10
+  chance: 0.1
+
+# Sell a diamond for 100 units of your Vault Economy currency.
+
+"moneyForDiamond":
+  result:
+    material: 100
+  ingredients:
+    - material: DIAMOND
+  maxUses: 20
+  experience: 10
   chance: 0.1

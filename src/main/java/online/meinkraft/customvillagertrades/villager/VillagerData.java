@@ -37,7 +37,7 @@ public class VillagerData implements ConfigurationSerializable {
 
     public VillagerData(Merchant merchant) {
 
-        Entity entity = (Entity) merchant.getTrader();
+        Entity entity = (Entity) merchant;
         entityId = entity.getUniqueId();
         customTradeKeys = new ArrayList<>();
         vanillaTrades = new ArrayList<>();
