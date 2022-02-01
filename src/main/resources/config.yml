@@ -35,7 +35,7 @@ enableEconomy: false
 
 # The item that will represent a trade involving your Vault Economy as an
 # ingredient or as a result
-currency: PAPER
+currencyItem: PAPER
 
 # The strings that goes before and after on the cost on a money item:
 # "<currencyPrefix><amount><currencySuffix>"

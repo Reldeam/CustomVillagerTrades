@@ -106,8 +106,6 @@ public class TradeSelectListener implements Listener {
 
             }
         }
-
-        System.out.println("cleaning up money");
         
         // prevent money getting into players inventories
         plugin.getServer().getScheduler().runTask(

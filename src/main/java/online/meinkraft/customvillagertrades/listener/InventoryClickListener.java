@@ -41,6 +41,7 @@ public class InventoryClickListener implements Listener {
             if(item != null) {
                 ItemMeta itemMeta = item.getItemMeta();
                     if(itemMeta != null) {
+                        
                         PersistentDataContainer itemData = itemMeta.getPersistentDataContainer();
                         Double money = itemData.get(
                             NamespacedKey.fromString("money", plugin),

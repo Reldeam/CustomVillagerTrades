@@ -105,7 +105,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         isVanillaTradesAllowed = !getConfig().getBoolean("disableVanillaTrades");
         isEconomyEnabled = getConfig().getBoolean("enableEconomy");
         toolMaterial = Material.getMaterial(getConfig().getString("tool"));
-        currencyMaterial = Material.getMaterial(getConfig().getString("currency"));
+        currencyMaterial = Material.getMaterial(getConfig().getString("currencyItem"));
         currencyPrefix = getConfig().getString("currencyPrefix");
         currencySuffix = getConfig().getString("currencySuffix");
 

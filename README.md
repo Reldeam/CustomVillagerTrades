@@ -61,12 +61,12 @@ The format is as follows:
 
 _&lt;custom trade&gt;_
 ```yaml
-result: <item stack> # (required) The item the trader is selling 
+result: <item stack> | <money> # (required) The item the trader is selling 
 # (see <item stack>)
 
 ingredients: 
-    - <item stack> # (required) The first item the trader wants
-    - <item stack> # (optional) The second item the trader wants
+    - <item stack> | <money> # (required) The first item the trader wants
+    - <item stack> | <money> # (optional) The second item the trader wants
 
 maxUses: <number> # (required) The number of times this trade can be made 
 # before needing to be refreshed
@@ -110,6 +110,17 @@ lore: [<string>] # (optional) The item lore (appears under the item name)
 
 attributeModifiers: [<attribute modifier>] # (optional) A list of attribute
 # modifiers
+```
+
+_&lt;money&gt;_
+
+
+
+```yaml
+money: <number>
+
+# Vault and an Economy plugin must be installed, and `enableEconomy` must be set
+# to `true` for money items to work.
 ```
 
 _&lt;enchantment&gt;_
