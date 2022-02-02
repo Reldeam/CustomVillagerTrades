@@ -1,0 +1,57 @@
+main: online.meinkraft.customvillagertrades.CustomVillagerTrades
+name: CustomVillagerTrades
+version: 1.2-SNAPSHOT
+description: Adds custom villager trades
+api-version: 1.18
+load: STARTUP
+author: Reldeam
+website: meinkraft.online
+softdepend: [Vault]
+commands:
+  enable:
+    description: Enables the plugin
+    usage: /enable
+    permission: customvillagertrades.command.enable
+    aliases: cvtenable
+  disable:
+    description: Disables the plugin
+    usage: /disable
+    permission: customvillagertrades.command.disable
+    aliases: cvtdisable
+  reload:
+    description: Reloads the plugin
+    usage: /reload
+    permission: customvillagertrades.command.reload
+    aliases: cvtreload
+  reroll:
+    description: Reroll custom trades for all traders in a given radius
+    usage: /reroll [all|radius]
+    permission: customvillagertrades.command.reroll
+    aliases: cvtreroll
+  restore:
+    description: Restore vanilla trades for all traders in a given radius
+    usage: /restore [all|radius]
+    permission: customvillagertrades.command.restore
+    aliases: cvtrestore
+permissions:
+  customvillagertrades.command.enable:
+    description: Allows use of command, /customvillagertrades:enable
+    default: op
+  customvillagertrades.command.disable:
+    description: Allows use of command, /customvillagertrades:disable
+    default: op
+  customvillagertrades.command.reload:
+    description: Allows use of command, /customvillagertrades:reload
+    default: op
+  customvillagertrades.command.reroll:
+    description: Allows use of command, /customvillagertrades:reroll
+    default: op
+  customvillagertrades.command.restore:
+    description: Allows use of command, /customvillagertrades:restore
+    default: op
+  customvillagertrades.item.reroll:
+    description: Allows player to reroll the custom trades of a villager by right clicking on them with the rerollItem
+    default: op
+  customvillagertrades.item.restore:
+    description: Allows player to restore the vanilla trades of a villager by right clicking on them with the restoreItem
+    default: op

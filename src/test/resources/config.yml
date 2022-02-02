@@ -21,6 +21,28 @@ disableVanillaTrades: false
 # rerolled, only the custom trades will be rerolled.
 
 # ------------------------------------------------------------------------------
-# Item that you can right click villagers with to reroll their custom trades
+# Item that you can:
+# - right click villagers to reroll their custom trades
+# - shift + right click villagers to reset all their trades to vanilla trades 
 # requires permission: customvillagertrades.use.rerollitem
-rerollItem: CLOCK
+tool: CLOCK
+
+# ------------------------------------------------------------------------------
+# Requires Vault. This will allow you to use <money> type instead of the
+# usual <item stack> type for the result and/or the ingredients of a custom
+# trade
+enableEconomy: false
+
+# This will allow players to pick up and carry the money generated in the
+# trading windows. They can press the DROP key while hovering over their
+# money in their inventory at any time to deposit it into their account
+enablePhysicalCurrency: false
+
+# The item that will represent a trade involving your Vault Economy as an
+# ingredient or as a result
+currencyItem: PAPER
+
+# The strings that goes before and after on the cost on a money item:
+# "<currencyPrefix><amount><currencySuffix>"
+currencyPrefix: "$"
+currencySuffix: ""

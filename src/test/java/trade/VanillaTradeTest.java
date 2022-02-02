@@ -1,3 +1,4 @@
+package trade;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.Map;
