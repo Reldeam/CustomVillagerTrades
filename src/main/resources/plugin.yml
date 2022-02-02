@@ -33,6 +33,11 @@ commands:
     usage: /restore [all|radius]
     permission: customvillagertrades.command.restore
     aliases: cvtrestore
+  editor:
+    description: Opens the GUI editor
+    usage: /editor
+    permission: customvillagertrades.command.editor
+    aliases: cvteditor
 permissions:
   customvillagertrades.command.enable:
     description: Allows use of command, /customvillagertrades:enable
@@ -48,6 +53,9 @@ permissions:
     default: op
   customvillagertrades.command.restore:
     description: Allows use of command, /customvillagertrades:restore
+    default: op
+  customvillagertrades.command.editor:
+    description: Allows use of command, /customvillagertrades:editor
     default: op
   customvillagertrades.item.reroll:
     description: Allows player to reroll the custom trades of a villager by right clicking on them with the rerollItem

@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 
 import net.milkbowl.vault.economy.Economy;
 import online.meinkraft.customvillagertrades.command.DisableCommand;
+import online.meinkraft.customvillagertrades.command.EditorCommand;
 import online.meinkraft.customvillagertrades.command.EnableCommand;
 import online.meinkraft.customvillagertrades.command.ReloadCommand;
 import online.meinkraft.customvillagertrades.command.RerollCommand;
@@ -197,6 +198,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         this.getCommand("enable").setExecutor(new EnableCommand(this));
         this.getCommand("disable").setExecutor(new DisableCommand(this));
         this.getCommand("reload").setExecutor(new ReloadCommand(this));
+        this.getCommand("editor").setExecutor(new EditorCommand(this));
 
         // ensure plugin doesn't get enabled more than once
         this.loaded = true;
