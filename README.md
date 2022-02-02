@@ -24,6 +24,10 @@ allowDuplicateTrades: false
 # DIAMOND_AXE even if they have different costs or different enchantments on 
 # the axe).
 
+# You can disable vanilla trades for specific professions. If
+# This only works if disableVanillaTrades is set to false
+disableVanillaTradesForProfessions: [<villager profession>]
+
 # ------------------------------------------------------------------------------
 # Should villagers be able to learn Vanilla Minecraft trades?
 disableVanillaTrades: false
@@ -41,6 +45,26 @@ disableVanillaTrades: false
 # - customvillagertrades.item.reroll
 # - customvillagertrades.item.restore
 tool: CLOCK
+
+# ------------------------------------------------------------------------------
+# Requires Vault. This will allow you to use <money> type instead of the
+# usual <item stack> type for the result and/or the ingredients of a custom
+# trade
+enableEconomy: false
+
+# This will allow players to pick up and carry the money generated in the
+# trading windows. They can press the DROP key while hovering over their
+# money in their inventory at any time to deposit it into their account
+enablePhysicalCurrency: false
+
+# The item that will represent a trade involving your Vault Economy as an
+# ingredient or as a result
+currencyItem: PAPER
+
+# The strings that goes before and after on the cost on a money item:
+# "<currencyPrefix><amount><currencySuffix>"
+currencyPrefix: "$"
+currencySuffix: ""
 ```
 
 ### trades.yml
