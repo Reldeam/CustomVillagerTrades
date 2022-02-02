@@ -275,4 +275,4 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 
 ## License
 
-CustomVillagerTrades is license under the _GNU General Public License_. Please see [LICENSE.md](https://github.com/Reldeam/CustomVillagerTrades/blob/main/LICENSE) for more information
+CustomVillagerTrades is license under the _GNU General Public License_. Please see [LICENSE.md](https://github.com/Reldeam/CustomVillagerTrades/blob/main/LICENSE.md) for more information
