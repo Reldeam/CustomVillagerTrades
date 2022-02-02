@@ -1,5 +1,5 @@
 # CustomVillagerTrades
-[![License](https://img.shields.io/github/license/Reldeam/CustomVillagerTrades)](LICENSE.md)
+![GitHub](https://img.shields.io/github/license/Reldeam/CustomVillagerTrades?style=for-the-badge)
 
 ## About
 A Spigot Plugin - Add custom trades that villagers can acquire.
