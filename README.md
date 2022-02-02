@@ -189,6 +189,68 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 **trades.yml example**
 
 ```yaml
+# This trade can be acquired by a mason with a 50% chance each time the 
+# villager acquires a new trade.
+
+# The trade is 24 emeralds for 10 iron ingots, it can be made up to 4 times 
+# before the villager will need to refresh their stock.
+
+# The trade gives 2 experience to the villager, but none to the player.
+
+"ingotForEmerald":
+  result:
+    material: IRON_INGOT
+    amount: 24 
+  ingredients:
+    - material: EMERALD
+      amount: 10
+  maxUses: 6
+  experience: 10
+  chance: 0.5
+  professions: [MASON]
+
+# This trade takes some arrows and a glowstone dust and give you a spectral
+# arrows in return, which might be a nice alternative to the vanilla trade
+# for spectral arrows
+
+"spectralArrows":
+  result:
+    material: SPECTRAL_ARROW 
+    amount: 5
+  ingredients:
+    - material: ARROW
+      amount: 5
+    - material: GLOWSTONE_DUST
+  maxUses: 12
+  experience: 5
+  chance: 0.2
+  levels: [5]
+  professions: [FLETCHER]
+
+# To get this trade, you need to have a SNOW type villager in the BASALT DELTA
+# biome of The Nether when the reach Master level (5) as an ARMORER. There is
+# still only a 5% chance of acquiring this trade if you meet all of those
+# conditions. 
+
+# The trade is 20 EMERALDS and a NETHER STAR for 2 NETHER SCRAP. You can make
+# this trade 2 times before the villager needs to replenish its stock.
+
+"netheriteScrapforStar":
+  result:
+    material: NETHERITE_SCRAP
+    amount: 2
+  ingredients:
+    - material: EMERALD
+      amount: 20
+    - material: NETHER_STAR
+  maxUses: 2
+  chance: 0.05
+  experience: 50
+  levels: [5]
+  villagerTypes: [SNOW]
+  professions: [ARMORER]
+  biomes: [BASALT_DELTAS]
+
 # This trade can be acquired by a desert type villager that is in a desert or 
 # badlands biome, has a weaponsmith profession, and has just become either an 
 # apprentice (level 2) or a journeyman (level 3). There is a 10% chance they 
@@ -212,14 +274,6 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
       - there
       - was
       - a thing
-    attributeModifiers:
-      - name: GENERIC_ARMOR
-        amount: 10
-        operation: ADD_SCALAR
-        slot: HAND
-      - name: GENERIC_FLYING_SPEED
-        amount: 20
-        operation: ADD_NUMBER
   ingredients:
     - material: EMERALD
       amount: 16
@@ -234,25 +288,54 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
   villagerTypes: [DESERT]
   biomes: [DESERT, BADLANDS]
 
-# This trade can be acquired by a mason with a 50% chance each time the 
-# villager acquires a new trade.
+# Upgrade a diamond pickaxe for the cost of 20 emeralds so that it has
+# attribute modifiers that increase your armor by a large amount when you
+# hold it in your hand.
 
-# The trade is 24 emeralds for 10 iron ingots, it can be made up to 4 times 
-# before the villager will need to refresh their stock.
-
-# The trade gives 2 experience to the villager, but none to the player.
-
-"ingotForEmerald":
+"bulkyPick":
   result:
-    material: IRON_INGOT
-    amount: 24 
+    material: DIAMOND_PICKAXE
+    attributeModifiers:
+      - name: GENERIC_ARMOR
+        amount: 10
+        operation: ADD
+        slot: HAND
+      - name: GENERIC_ARMOR
+        amount: 0.5
+        operation: MULTIPLY_ALL_MODIFIERS
+        slot: HAND
   ingredients:
     - material: EMERALD
-      amount: 10
-  maxUses: 6
+      amount: 20
+    - material: DIAMOND_PICKAXE
+  maxUses: 1
+  experience: 100
+  chance: 0.05
+  professions: [WEAPONSMITH]    
+
+# Buy a diamond for 150 units of your Vault Economy currency.
+# This trade requires Vault and an Econony plugin in work.
+
+"diamondForMoney":
+  result:
+    material: DIAMOND
+  ingredients:
+    - money: 150
+  maxUses: 20
   experience: 10
-  chance: 0.5
-  professions: [MASON]
+  chance: 0.1
+
+# Sell a diamond for 100 units of your Vault Economy currency.
+# This trade requires Vault and an Econony plugin in work.
+
+"moneyForDiamond":
+  result:
+    money: 100
+  ingredients:
+    - material: DIAMOND
+  maxUses: 20
+  experience: 10
+  chance: 0.1
 ```
 
 ## Commands
