@@ -26,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.EconomyNotEnabledException;
 import online.meinkraft.customvillagertrades.util.AttributeModifierWrapper;
@@ -97,27 +98,34 @@ public final class CustomTradeLoader {
             }
             catch(IllegalArgumentException exception) {
                 logger.warning(
-                    "Skipping invalid custom trade (" +
-                    exception.getMessage() +
-                    "): " + 
-                    tradeSection.toString()
+                    ChatColor.YELLOW +
+                    "Skipping invalid custom trade " +
+                    ChatColor.AQUA +
+                    tradeSection.getCurrentPath() +
+                    ChatColor.YELLOW +
+                    " (" + exception.getMessage() + ")"
                 );
                 continue;
             }
             catch(ClassCastException exception) {
                 logger.warning(
-                    "Skipping invalid custom trade (" +
-                    "malformed trade; check variable types and line indents" +
-                    "): " + 
-                    tradeSection.toString()
+                    ChatColor.YELLOW +
+                    "Skipping invalid custom trade " +
+                    ChatColor.AQUA +
+                    tradeSection.getCurrentPath() +
+                    ChatColor.YELLOW +
+                    " (malformed trade; check variable types and line indents)"
                 );
                 continue;
             } catch (EconomyNotEnabledException exception) {
                 logger.warning(
-                    "Skipping invalid custom trade (" +
-                    "trade has a money component but economy not enabled" +
-                    "): " + 
-                    tradeSection.toString()
+                    ChatColor.YELLOW +
+                    "Skipping invalid custom trade " +
+                    ChatColor.AQUA +
+                    tradeSection.getCurrentPath() +
+                    ChatColor.YELLOW +
+                    " (trade has a money component but economy is not enabled)"
+                    
                 );
                 continue;
             }
@@ -125,10 +133,12 @@ public final class CustomTradeLoader {
             // ingredients
             if(ingredients == null || ingredients.size() < 1) {
                 logger.warning(
-                    "Skipping invalid custom trade (" +
-                    "ingredients not found" +
-                    "): " + 
-                    tradeSection.toString()
+                    ChatColor.YELLOW +
+                    "Skipping invalid custom trade " +
+                    ChatColor.AQUA +
+                    tradeSection.getCurrentPath() +
+                    ChatColor.YELLOW +
+                    " (ingredients not found)"
                 );
                 continue;
             }
@@ -157,9 +167,12 @@ public final class CustomTradeLoader {
             if(trades.containsKey(tradeName)) {
                 CustomTrade duplicateTrade = trades.get(tradeName);
                 logger.warning(
+                    ChatColor.YELLOW +
                     "Trade already exists\n" +
-                    "Replacing: " + duplicateTrade.toString() + "\n" +
-                    "With: " + trade.toString()
+                    "Replacing: " + 
+                    ChatColor.AQUA + duplicateTrade.toString() + "\n" +
+                    ChatColor.YELLOW + "With: " + 
+                    ChatColor.AQUA + trade.toString()
                 );
             }
 
@@ -168,15 +181,17 @@ public final class CustomTradeLoader {
 
         }
 
+        ChatColor loadedColor = ChatColor.RED;
+        if(tradesLoaded == trades.size()) loadedColor = ChatColor.GREEN;
+        if(tradesLoaded >= trades.size() / 2) loadedColor = ChatColor.YELLOW;
+
         logger.info(
             "Loaded " + 
-            tradesLoaded + 
-            " out of " + 
-            tradeNames.size() + 
-            " custom trades"
+            loadedColor + tradesLoaded + 
+            ChatColor.RESET +" out of " + 
+            ChatColor.GREEN + tradeNames.size() + 
+            ChatColor.RESET + " custom trades"
         );
-
-      
 
         return trades;
 
