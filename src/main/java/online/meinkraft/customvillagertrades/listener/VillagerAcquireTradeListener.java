@@ -7,13 +7,13 @@ import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.villager.VillagerData;
 import online.meinkraft.customvillagertrades.villager.VillagerManager;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
+import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
-import org.bukkit.inventory.Merchant;
 
 public class VillagerAcquireTradeListener implements Listener {
 
@@ -28,7 +28,6 @@ public class VillagerAcquireTradeListener implements Listener {
 
         Random rand = new Random();
         Villager villager = (Villager) event.getEntity();
-        Merchant merchant = (Merchant) event.getEntity();
 
         VillagerManager villagerManager = plugin.getVillagerManager();
         VillagerData data = villagerManager.getData(villager);
@@ -37,10 +36,19 @@ public class VillagerAcquireTradeListener implements Listener {
 
         CustomTradeManager tradeManager = plugin.getCustomTradeManager();
 
-        List<CustomTrade> trades = tradeManager.getValidTrades(merchant);
+        List<CustomTrade> trades;
+        try {
+            trades = tradeManager.getValidTrades(villager);
+        } catch (VillagerNotMerchantException e) { return; }
+
         if(trades.size() == 0) {
             // don't allow villager to acquire vanilla trade if they are disabled
-            if(!plugin.isVanillaTradesAllowed()) event.setCancelled(true);
+            if(
+                !plugin.isVanillaTradesAllowed() ||
+                plugin.isVanillaTradesDisabledForProfession(villager.getProfession())
+            ) {
+                event.setCancelled(true);
+            }
             return;
         }
 
@@ -49,6 +57,7 @@ public class VillagerAcquireTradeListener implements Listener {
         // chance of not getting the trade (if vanilla trades aren't disabled)
         if(
             plugin.isVanillaTradesAllowed() && 
+            !plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) &&
             rand.nextDouble() > trade.getChance()
         ) {
             // keep vanilla trade

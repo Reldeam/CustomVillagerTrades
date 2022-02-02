@@ -10,10 +10,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 
 import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
+import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 
 public class RerollCommand implements CommandExecutor {
 
@@ -34,7 +36,7 @@ public class RerollCommand implements CommandExecutor {
         Player player = sender.getServer().getPlayer(sender.getName());
         World world = player.getWorld();
 
-        List<Entity> merchants;
+        List<Entity> villagers;
 
         String radiusArgument;
 
@@ -49,19 +51,21 @@ public class RerollCommand implements CommandExecutor {
         radiusArgument = args[0].toLowerCase();
         
         if(radiusArgument.equals("all")) {
-            merchants = world.getEntities().stream().filter(
+            villagers = world.getEntities().stream().filter(
                 entity -> entity instanceof Merchant
+            ).filter(
+                entity -> entity instanceof Villager
             ).collect(Collectors.toList());
         }
         else {
             try {
                 double radius = Double.parseDouble(radiusArgument);
-                merchants = world.getNearbyEntities(
+                villagers = world.getNearbyEntities(
                     player.getLocation(),
                     radius,
                     radius,
                     radius,
-                    entity -> (entity instanceof Merchant)
+                    entity -> (entity instanceof Merchant && entity instanceof Villager)
                 ).stream().toList();
             }
             catch(NumberFormatException expection) {
@@ -77,9 +81,18 @@ public class RerollCommand implements CommandExecutor {
         CustomTradeManager tradeManager = plugin.getCustomTradeManager();
 
         Integer numRerolled = 0;
-        for(Entity entity : merchants) {
-            Merchant merchant = (Merchant) entity;
-            if(tradeManager.rerollMerchant(merchant)) numRerolled++;
+        for(Entity entity : villagers) {
+            try {
+                Villager villager = (Villager) entity;
+                if(tradeManager.rerollCustomTrades(villager)) numRerolled++;
+            } catch (VillagerNotMerchantException e) {
+                plugin.getLogger().warning(
+                    sender.getName() +
+                    " tried to reroll the custom trades of an entity that is not a villager (" +
+                    entity.toString() +
+                    ")"
+                );
+            }
         }
 
         if(!plugin.isVanillaTradesAllowed()) {

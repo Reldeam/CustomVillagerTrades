@@ -30,10 +30,14 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.HandlerList;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
 
@@ -56,6 +60,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     private Material currencyMaterial;
     private String currencyPrefix;
     private String currencySuffix;
+    private List<Villager.Profession> vanillaDisabledProfessions;
 
     private VillagerManager villagerManager;
     private CustomTradeManager customTradeManager;
@@ -111,6 +116,21 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         currencyPrefix = getConfig().getString("currencyPrefix");
         currencySuffix = getConfig().getString("currencySuffix");
 
+        // add vanillaDisabledProfessions
+        List<String> vanillaDisabledProfessionStrings = getConfig().getStringList("disableVanillaTradesForProfessions");
+        vanillaDisabledProfessions = new ArrayList<>();
+        for(String professionString : vanillaDisabledProfessionStrings) {
+            Villager.Profession profession = Villager.Profession.valueOf(professionString);
+            if(profession != null) vanillaDisabledProfessions.add(profession);
+            else {
+                getLogger().warning(
+                    "Invalid profession given (" +
+                    professionString + 
+                    ") in disableVanillaTradesForProfessions"
+                );
+            }
+        }
+        
         // setup economy
         if(isEconomyEnabled()) {
             try {
@@ -310,6 +330,16 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     @Override
     public boolean isCurrencyPhysical() {
         return isCurrencyPhysical;
+    }
+
+    @Override
+    public List<Profession> getVanillaDisabledProfessions() {
+        return vanillaDisabledProfessions;
+    }
+
+    @Override
+    public boolean isVanillaTradesDisabledForProfession(Profession profession) {
+        return vanillaDisabledProfessions.contains(profession);
     }
 
 

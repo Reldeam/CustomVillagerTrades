@@ -13,6 +13,7 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
+import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 import online.meinkraft.customvillagertrades.util.WeightedCollection;
 import online.meinkraft.customvillagertrades.villager.VillagerData;
 import online.meinkraft.customvillagertrades.villager.VillagerManager;
@@ -64,10 +65,14 @@ public class CustomTradeManager {
 
     }
 
-    public List<CustomTrade> getValidTrades(Merchant merchant) {
+    public List<CustomTrade> getValidTrades(Villager villager) throws VillagerNotMerchantException {
 
         List<CustomTrade> validTrades = new ArrayList<>();
-        Villager villager = (Villager) merchant;
+        
+        if(!(villager instanceof Merchant)) {
+            throw new VillagerNotMerchantException();
+        }
+
         List<CustomTrade> allTrades = customTrades.values().stream().toList();
 
         for(CustomTrade trade : allTrades) {
@@ -111,7 +116,7 @@ public class CustomTradeManager {
             // tader can't sell the same type of thing more than once
             if(
                 !plugin.isDuplicateTradesAllowed() &&
-                merchantHasCustomTrade(merchant, trade)
+                villagerHasCustomTrade(villager, trade)
             ) {
                 continue;
             }
@@ -125,9 +130,8 @@ public class CustomTradeManager {
 
     }
 
-    public boolean merchantHasCustomTrade(Merchant merchant, CustomTrade trade) {
+    public boolean villagerHasCustomTrade(Villager villager, CustomTrade trade) {
 
-        Villager villager = (Villager) merchant;
         VillagerData data = villagerManager.getData(villager);
         return data.getCustomTradeKeys().contains(trade.getKey());
 
@@ -141,11 +145,14 @@ public class CustomTradeManager {
 
     }
 
-    public boolean rerollMerchant(Merchant merchant) {
+    public boolean rerollCustomTrades(Villager villager) throws VillagerNotMerchantException {
+
+        if(!(villager instanceof Merchant)) {
+            throw new VillagerNotMerchantException();
+        }
 
         Random rand = new Random();
-        Villager villager = (Villager) merchant;
-
+        
         VillagerData data = villagerManager.getData(villager);
         data.clearCustomTradeKeys();
         List<VanillaTrade> vanillaTrades = data.getVanillaTrades();
@@ -158,7 +165,7 @@ public class CustomTradeManager {
             vanillaTrade = vanillaTrades.get(index);
 
             villager.setVillagerLevel(vanillaTrade.getVillagerLevel());
-            List<CustomTrade> validCustomTrades = getValidTrades(merchant);
+            List<CustomTrade> validCustomTrades = getValidTrades(villager);
             CustomTrade customTrade = chooseRandomTrade(validCustomTrades);
 
             // chance of not getting the trade (if vanilla trades aren't disabled)
@@ -185,9 +192,12 @@ public class CustomTradeManager {
     
     }
  
-    public void restoreMerchant(Merchant merchant) {
+    public void restoreVanillaTrades(Villager villager) throws VillagerNotMerchantException {
 
-        Villager villager = (Villager) merchant;
+        if(!(villager instanceof Merchant)) {
+            throw new VillagerNotMerchantException();
+        }
+        
         VillagerData data = villagerManager.getData(villager);
         
         List<VanillaTrade> vanillaTrades = data.getVanillaTrades();
