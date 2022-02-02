@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,14 +16,12 @@ import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 
-public class RestoreCommand implements CommandExecutor {
-
-    private final CustomVillagerTrades plugin;
-
-    public RestoreCommand(CustomVillagerTrades plugin) {
-        this.plugin = plugin;
-    }
+public class RestoreCommand extends PluginCommand {
     
+    public RestoreCommand(CustomVillagerTrades plugin) {
+        super(plugin);
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         
