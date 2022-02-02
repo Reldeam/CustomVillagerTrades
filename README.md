@@ -1,5 +1,9 @@
 # CustomVillagerTrades
 ![GitHub](https://img.shields.io/github/license/Reldeam/CustomVillagerTrades?style=for-the-badge)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Reldeam/CustomVillagerTrades?include_prereleases&style=for-the-badge)
+![Spiget Downloads](https://img.shields.io/spiget/downloads/99540?style=for-the-badge)
+![Spiget Rating](https://img.shields.io/spiget/rating/99540?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/Reldeam/CustomVillagerTrades?style=for-the-badge)
 
 ## About
 A Spigot Plugin - Add custom trades that villagers can acquire.
