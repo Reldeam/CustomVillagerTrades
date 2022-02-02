@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -216,6 +217,7 @@ public final class CustomTradeLoader {
         return ingredients;
     }
 
+    @SuppressWarnings("deprecation")
     static public ItemStack toItemStack(CustomVillagerTrades plugin, Map<?, ?> map) throws EconomyNotEnabledException {
 
         // if it's a money item
@@ -260,7 +262,15 @@ public final class CustomTradeLoader {
         Integer amount = (Integer) map.get("amount");
         if(amount == null) amount = 1;
 
+        String nbt = (String) map.get("nbt");
+
         ItemStack itemStack = new ItemStack(Material.valueOf(material), amount);
+
+        // this is unsupported - use at your own risk
+        if(nbt != null) {
+            org.bukkit.UnsafeValues unsafe = Bukkit.getUnsafe();
+            unsafe.modifyItemStack(itemStack, nbt);
+        }
        
         ItemMeta itemMeta = itemStack.getItemMeta();
 
