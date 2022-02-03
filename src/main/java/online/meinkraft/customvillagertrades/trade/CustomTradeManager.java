@@ -35,6 +35,14 @@ public class CustomTradeManager {
         customTrades = CustomTradeLoader.loadTrades(plugin);
     }
 
+    public List<CustomTrade> getCustomTrades() {
+        return customTrades.values().stream().toList();
+    }
+
+    public CustomTrade getCustomTrade(String key) {
+        return customTrades.get(key);
+    }
+
     public void refreshTrades(Merchant merchant) {
 
         VillagerManager villagerManager = plugin.getVillagerManager();
