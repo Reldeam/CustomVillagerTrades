@@ -3,46 +3,70 @@ package online.meinkraft.customvillagertrades.gui;
 import java.util.List;
 
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
-import online.meinkraft.customvillagertrades.gui.button.DisabledSlot;
 import online.meinkraft.customvillagertrades.gui.button.NextPageButton;
 import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
+import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
 public class Editor extends GUI {
 
-    private final DisabledSlot disabledSlot;
+    private static final double TRADES_PER_PAGE = 5;
+
+    private final DisabledSlotIcon disabledSlot;
 
     public Editor(CustomVillagerTrades plugin) {
 
         super(plugin);
 
-        disabledSlot = new DisabledSlot();
+        disabledSlot = new DisabledSlotIcon();
 
-        Page testPage1 = new Page(this, "Test Page 1");
-        testPage1.addButton(45, "prevPage", new PrevPageButton());
-        testPage1.addButton(53, "nextPage", new NextPageButton());
-
-        Page testPage2 = new Page(this, "Test Page 2");
-        testPage2.addButton(45, "prevPage", new PrevPageButton());
-        testPage2.addButton(53, "nextPage", new NextPageButton());
-
+        // create custom trade list pages
         List<CustomTrade> customTrades = plugin.getCustomTradeManager().getCustomTrades();
-        CustomTradeEntry entry = new CustomTradeEntry(customTrades.get(0));
-        setCustomTradeEntry(entry, testPage2, 0);
+        int numPages = (int) Math.ceil(customTrades.size() / TRADES_PER_PAGE);
+        int index = 0;
+        for(int pageIndex = 0; pageIndex < numPages; pageIndex++) {
+            int currentPage = pageIndex + 1;
+            Page page = new Page(this, "CVT Editor - " + currentPage);
+            for(int rowIndex = 0; rowIndex < TRADES_PER_PAGE; rowIndex++) {
+                if(index >= customTrades.size()) break;
+                CustomTradeEntry entry = new CustomTradeEntry(customTrades.get(index));
+                setCustomTradeEntry(entry, page, rowIndex);
+                index++;
+            }
 
-        addPage("test", testPage1);
-        addPage("test", testPage2);
+            // add previous page button
+            if(pageIndex > 0) {
+                page.addButton(45, "prevPage", new PrevPageButton());
+            }
+
+            // add next page button
+            if(pageIndex < numPages - 1) {
+                page.addButton(53, "nextPage", new NextPageButton());
+            }
+
+            addPage("trades" + pageIndex, page);
+        }
 
     }
 
     public void setCustomTradeEntry(CustomTradeEntry entry, Page page, int row) {
+
         int index = row * 9;
+
         page.addButton(index + 0, "rename" + row, entry.getRenameButton());
-        page.addButton(index + 1, "leftDisabled" + row, disabledSlot);
-        page.addButton(index + 5, "rightDisabled" + row, disabledSlot);
+        
+        page.addIcon(index + 1, disabledSlot);
+
+        page.addItemStack(index + 2, entry.getFirstIngredient());
+        page.addItemStack(index + 3, entry.getSecondIngredient());
+        page.addItemStack(index + 4, entry.getResult());
+
+        page.addIcon(index + 5, disabledSlot);
+
         page.addButton(index + 6, "config" + row, entry.getConfigButton());
         page.addButton(index + 7, "blueprint" + row, entry.getBlueprintButton());
         page.addButton(index + 8, "delete" + row, entry.getDeleteButton());
+        
     }
     
 }

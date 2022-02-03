@@ -14,6 +14,7 @@ public class GUI {
 
     private JavaPlugin plugin;
     private final NamespacedKey buttonKey;
+    private final NamespacedKey iconKey;
 
     private final Map<String, Page> pageMap = new HashMap<>();
     private final List<Page> pageList = new ArrayList<Page>();
@@ -23,7 +24,8 @@ public class GUI {
     public GUI(JavaPlugin plugin) {
 
         this.plugin = plugin;
-        buttonKey = new NamespacedKey(plugin, "label");
+        buttonKey = new NamespacedKey(plugin, "gui-label");
+        iconKey = new NamespacedKey(plugin, "gui-icon");
         
     }
 
@@ -92,6 +94,10 @@ public class GUI {
 
     public NamespacedKey getButtonKey() {
         return buttonKey;
+    }
+
+    public NamespacedKey getIconKey() {
+        return iconKey;
     }
     
 }

@@ -16,7 +16,7 @@ public class CustomTradeRenameButton extends CustomTradeButton {
             trade,
             Material.WRITABLE_BOOK, // item material
             trade.getKey(), // display name
-            Arrays.asList(new String[]{"Rename"}) // lore
+            Arrays.asList(new String[]{"(click to rename)"}) // lore
         );
     }
 

@@ -10,7 +10,7 @@ import online.meinkraft.customvillagertrades.trade.CustomTrade;
 public class CustomTradeConfigButton extends CustomTradeButton {
 
     public CustomTradeConfigButton(CustomTrade trade) {
-        super(trade, Material.HOPPER, "Configure");
+        super(trade, Material.HOPPER, "Configure Custom Trade");
     }
 
     @Override

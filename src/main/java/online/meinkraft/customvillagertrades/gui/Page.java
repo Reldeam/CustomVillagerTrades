@@ -16,6 +16,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import online.meinkraft.customvillagertrades.gui.button.Button;
+import online.meinkraft.customvillagertrades.gui.icon.Icon;
 
 public class Page implements Listener {
 
@@ -57,19 +58,24 @@ public class Page implements Listener {
             if(itemMeta == null) return;
 
             PersistentDataContainer data = itemMeta.getPersistentDataContainer();
+            boolean isIcon = data.get(editor.getIconKey(), PersistentDataType.BYTE) != null;
             String buttonId = data.get(editor.getButtonKey(), PersistentDataType.STRING);
-            if(buttonId == null) return;
-
-            Button button = buttons.get(buttonId);
-            if(button == null) {
-                event.setCancelled(true);
-                return;
-            }
-            else {
-                Result result = button.onClick(this, event);
-                event.setResult(result);
-            }
             
+            if(isIcon) {
+                event.setCancelled(true);
+            }
+            else if(buttonId != null) {
+                Button button = buttons.get(buttonId);
+                if(button == null) {
+                    event.setCancelled(true);
+                    return;
+                }
+                else {
+                    Result result = button.onClick(this, event);
+                    event.setResult(result);
+                }
+            }
+               
         }
         
     }
@@ -81,6 +87,22 @@ public class Page implements Listener {
 
         buttons.put(buttonId, button);
 
+    }
+
+    public void addIcon(int index, Icon icon) {
+
+        ItemStack item = icon.getItem();
+        ItemMeta itemMeta = (ItemMeta) item.getItemMeta();
+        PersistentDataContainer data = itemMeta.getPersistentDataContainer();
+        data.set(editor.getIconKey(), PersistentDataType.BYTE, (byte) 1);
+        item.setItemMeta(itemMeta);
+
+        inventory.setItem(index, icon.getItem());
+
+    }
+
+    public void addItemStack(int index, ItemStack itemStack) {
+        inventory.setItem(index, itemStack);
     }
 
     public void open(Player player) {
