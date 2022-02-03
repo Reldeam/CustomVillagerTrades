@@ -97,6 +97,8 @@ public class TradeListPage extends Page {
 
         int rowIndex = row * COLUMNS_PER_ROW;
 
+        entry.updateItems();
+
         if(entry.isModified()) {
             setIcon(rowIndex + 1, modifiedSlot);
             setIcon(rowIndex + 5, modifiedSlot);

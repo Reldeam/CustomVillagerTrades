@@ -29,6 +29,8 @@ import org.bukkit.persistence.PersistentDataType;
 import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.EconomyNotEnabledException;
+import online.meinkraft.customvillagertrades.exception.IngredientsNotFoundException;
+import online.meinkraft.customvillagertrades.exception.ResultNotFoundException;
 import online.meinkraft.customvillagertrades.util.AttributeModifierWrapper;
 import online.meinkraft.customvillagertrades.util.ItemEnchantment;
 
@@ -64,6 +66,7 @@ public final class CustomTradeLoader {
             List<ItemStack> ingredients = null;
             ItemStack firstIngredient = null;
             ItemStack secondIngredient = null;
+
             Integer maxUses = tradeSection.getInt("maxUses");
             Double priceMultiplier = tradeSection.getDouble("priceMultiplier");
             Integer villagerExperience = tradeSection.getInt("experience");
@@ -84,17 +87,43 @@ public final class CustomTradeLoader {
 
             try {
                 // objects
-                MemorySection resultSection = (MemorySection) tradeSection.get("result");
 
-                result = CustomTradeLoader.toItemStack(
-                    plugin,
-                    (Map<?, ?>) resultSection.getValues(false)
-                );  
+                MemorySection editor = (MemorySection) tradeSection.get("editor");
 
-                ingredients = CustomTradeLoader.toItemStackList(
-                    plugin,
-                    (List<?>) tradeSection.getMapList("ingredients")
-                );
+                // get items from editor field
+                if(editor != null) {
+                    result = editor.getItemStack("result");
+                    firstIngredient = editor.getItemStack("firstIngredient");
+                    secondIngredient = editor.getItemStack("secondIngredient");
+                }
+                else {
+                    MemorySection resultSection = (MemorySection) tradeSection.get("result");
+
+                    if(resultSection == null) {
+                        throw new ResultNotFoundException();
+                    }
+
+                    result = CustomTradeLoader.toItemStack(
+                        plugin,
+                        (Map<?, ?>) resultSection.getValues(false)
+                    );  
+    
+                    ingredients = CustomTradeLoader.toItemStackList(
+                        plugin,
+                        (List<?>) tradeSection.getMapList("ingredients")
+                    );
+
+                    // ingredients
+                    if(ingredients == null || ingredients.size() < 1) {
+                        throw new IngredientsNotFoundException();
+                    }
+
+                    firstIngredient = ingredients.get(0);
+                    if(ingredients.size() > 1) {
+                        secondIngredient = ingredients.get(1);
+                    }
+
+                }
                 
             }
             catch(IllegalArgumentException exception) {
@@ -129,10 +158,7 @@ public final class CustomTradeLoader {
                     
                 );
                 continue;
-            }
-
-            // ingredients
-            if(ingredients == null || ingredients.size() < 1) {
+            } catch (IngredientsNotFoundException exception) {
                 logger.warning(
                     ChatColor.YELLOW +
                     "Skipping invalid custom trade " +
@@ -142,9 +168,17 @@ public final class CustomTradeLoader {
                     " (ingredients not found)"
                 );
                 continue;
+            } catch (ResultNotFoundException e) {
+                logger.warning(
+                    ChatColor.YELLOW +
+                    "Skipping invalid custom trade " +
+                    ChatColor.AQUA +
+                    tradeSection.getCurrentPath() +
+                    ChatColor.YELLOW +
+                    " (result not found)"
+                );
+                continue;
             }
-            firstIngredient = ingredients.get(0);
-            if(ingredients.size() > 1) secondIngredient = ingredients.get(1);
 
             CustomTrade trade = new CustomTrade(
                 

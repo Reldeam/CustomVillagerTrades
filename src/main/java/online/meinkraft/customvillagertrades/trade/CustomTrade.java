@@ -10,24 +10,22 @@ import org.bukkit.inventory.MerchantRecipe;
 
 public class CustomTrade implements Cloneable {
 
-   
+    private String key;
+    private ItemStack result;
+    private ItemStack firstIngredient;
+    private ItemStack secondIngredient;
+    private Integer maxUses;
+    private Double priceMultiplier;
+    private Integer villagerExperience;
+    private Boolean giveExperienceToPlayer;
 
-    private final String key;
-    private final ItemStack result;
-    private final ItemStack firstIngredient;
-    private final ItemStack secondIngredient;
-    private final Integer maxUses;
-    private final Double priceMultiplier;
-    private final Integer villagerExperience;
-    private final Boolean giveExperienceToPlayer;
-
-    private final Double chance;
-    private final List<Villager.Profession> professions;
-    private final List<Integer> levels;
-    private final List<Villager.Type> villagerTypes;
-    private final List<Biome> biomes;
+    private Double chance;
+    private List<Villager.Profession> professions;
+    private List<Integer> levels;
+    private List<Villager.Type> villagerTypes;
+    private List<Biome> biomes;
     
-    private final MerchantRecipe recipe;
+    private MerchantRecipe recipe;
     
     public CustomTrade(
 
@@ -143,9 +141,11 @@ public class CustomTrade implements Cloneable {
         ItemStack firstIngredient = null;
         ItemStack secondIngredient = null;
 
-        if(this.result != null) result = this.result.clone();
-        if(this.firstIngredient != null) firstIngredient = this.firstIngredient.clone();
-        if(this.secondIngredient != null) secondIngredient = this.secondIngredient.clone();
+        result = this.result.clone();
+        firstIngredient = this.firstIngredient.clone();
+        if(this.secondIngredient != null) {
+            secondIngredient = this.secondIngredient.clone();
+        }
 
         List<Villager.Profession> professions = new ArrayList<>();
         professions.addAll(this.professions);
@@ -177,7 +177,17 @@ public class CustomTrade implements Cloneable {
 
         );
 
-        
     }
 
+    public void setFirstIngredient(ItemStack itemStack) {
+        firstIngredient = itemStack;
+    }
+
+    public void setSecondIngredient(ItemStack itemStack) {
+        secondIngredient = itemStack;
+    }
+
+    public void setResult(ItemStack itemStack) {
+        result = itemStack;
+    }
 }

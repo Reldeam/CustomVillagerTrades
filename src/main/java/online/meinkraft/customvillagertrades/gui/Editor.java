@@ -3,6 +3,8 @@ package online.meinkraft.customvillagertrades.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.configuration.file.FileConfiguration;
+
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
@@ -69,14 +71,24 @@ public class Editor extends GUI {
         for(TradeListPage page : tradeListPages) {
             for(CustomTradeEntry entry : page.getCustomTradeEntries()) {
 
+                FileConfiguration config = getPlugin().getTradesConfig();
+                CustomTrade oldTrade = entry.getTrade();
+                CustomTrade newTrade = entry.getUpdates();
+
                 // entry is deleted
                 if(entry.isDeleted()) {
-                    CustomTrade trade = entry.getTrade();
-                    getPlugin().getTradesConfig().set(trade.getKey(), null);
+                    config.set(oldTrade.getKey(), null);
                     continue;
                 }
 
-                //TODO check if itemstacks are updated
+                // create editor entry
+                if(entry.isModified()) {
+                    String editorKey = newTrade.getKey() + ".editor";
+                    if(!config.contains(editorKey)) config.createSection(editorKey);
+                    config.set(editorKey + ".firstIngredient", newTrade.getFirstIngredient());
+                    config.set(editorKey + ".secondIngredient", newTrade.getSecondIngredient());
+                    config.set(editorKey + ".result", newTrade.getResult());
+                }
 
             }
         }

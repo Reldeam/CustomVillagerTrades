@@ -41,8 +41,7 @@ public class CustomTradeEntry {
 
     }
 
-    public boolean isModified() {
-
+    public void updateItems() {
         Inventory inventory = page.getInventory();
         int index = row * COLUMNS_PER_ROW;
 
@@ -50,26 +49,47 @@ public class CustomTradeEntry {
         ItemStack secondIngredient = inventory.getItem(index + 3);
         ItemStack result = inventory.getItem(index + 4);
 
-        if(
-            (firstIngredient == null && getFirstIngredient() != null) ||
-            (firstIngredient != null && getFirstIngredient() == null) ||
-            (firstIngredient != null && !firstIngredient.equals(getFirstIngredient()))
-        ) return true;
+        
+        // first ingredient
+        if(isItemStackModified(firstIngredient, getFirstIngredient())) {
+            updates.setFirstIngredient(firstIngredient);
+        }
+
+        // second ingredient
+        if(isItemStackModified(secondIngredient, getSecondIngredient())) {
+            updates.setSecondIngredient(secondIngredient);
+        }
+
+        // result
+        if(isItemStackModified(result, getResult())) {
+            updates.setResult(result);
+        }
+
+    }
+
+    public boolean isModified() {
 
         if(
-            (secondIngredient == null && getSecondIngredient() != null) ||
-            (secondIngredient != null && getSecondIngredient() == null) ||
-            (secondIngredient != null && !secondIngredient.equals(getSecondIngredient()))
-        ) return true;
-
-        if(
-            (result == null && getResult() != null) ||
-            (result != null && getResult() == null) ||
-            (result != null && !result.equals(getResult()))
-        ) return true;
+            isItemStackModified(trade.getFirstIngredient(), updates.getFirstIngredient()) ||
+            isItemStackModified(trade.getSecondIngredient(), updates.getSecondIngredient()) ||
+            isItemStackModified(trade.getResult(), updates.getResult())
+        ) {
+            return true;
+        }
 
         return false;
 
+    }
+
+    public boolean isItemStackModified(ItemStack oldItemStack, ItemStack newItemStack) {
+
+        if(
+            (oldItemStack == null && newItemStack != null) ||
+            (oldItemStack != null && newItemStack == null) ||
+            (oldItemStack != null && !oldItemStack.equals(newItemStack))
+        ) return true;
+
+        return false;
     }
 
     public void delete() {
@@ -97,15 +117,15 @@ public class CustomTradeEntry {
     }
 
     public ItemStack getFirstIngredient() {
-        return trade.getFirstIngredient();
+        return updates.getFirstIngredient();
     }
 
     public ItemStack getSecondIngredient() {
-        return trade.getSecondIngredient();
+        return updates.getSecondIngredient();
     }
 
     public ItemStack getResult() {
-        return trade.getResult();
+        return updates.getResult();
     }
 
     public CustomTradeRenameButton getRenameButton() {
