@@ -24,15 +24,17 @@ public class Editor extends GUI {
 
         // create custom trade list pages
         List<CustomTrade> customTrades = plugin.getCustomTradeManager().getCustomTrades();
-        int numPages = (int) Math.ceil(customTrades.size() / TRADES_PER_PAGE);
+        int totalPages = (int) Math.ceil(customTrades.size() / TRADES_PER_PAGE);
         int index = 0;
 
-        for(int pageIndex = 0; pageIndex < numPages; pageIndex++) {
+        for(int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
 
             int currentPage = pageIndex + 1;
             TradeListPage page = new TradeListPage(
                 this, 
                 "CVT Editor - " + currentPage,
+                pageIndex,
+                totalPages,
                 saveButton,
                 cancelButton
             );
@@ -42,10 +44,6 @@ public class Editor extends GUI {
                 page.addCustomTrade(customTrades.get(index));
                 index++;
             }
-
-            // add previous and next page buttons
-            if(pageIndex > 0) page.addPrevPageButton();
-            if(pageIndex < numPages - 1) page.addNextPageButton();
 
             addPage("tradeList" + currentPage, page);
 

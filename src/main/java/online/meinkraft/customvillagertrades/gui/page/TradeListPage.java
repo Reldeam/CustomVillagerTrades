@@ -23,6 +23,9 @@ public class TradeListPage extends Page {
 
     private final int COLUMNS_PER_ROW = 9;
 
+    private final int pageIndex;
+    private final int totalPages;
+
     private final DisabledSlotIcon disabledSlot;
     private final DeletedSlotIcon deletedSlot;
     private final ModifiedSlotIcon modifiedSlot;
@@ -32,16 +35,28 @@ public class TradeListPage extends Page {
     public TradeListPage(
         GUI gui, 
         String title,
+        int pageIndex,
+        int totalPages,
         SaveButton saveButton,
         CancelButton cancelButton
     ) {
         super(gui, title);
+
+        this.pageIndex = pageIndex;
+        this.totalPages = totalPages;
+
         disabledSlot = new DisabledSlotIcon();
         deletedSlot = new DeletedSlotIcon();
         modifiedSlot = new ModifiedSlotIcon();
 
         setButton(51, "cancel", cancelButton);
         setButton(52, "save", saveButton);
+
+        // add previous and next page buttons
+        if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton());
+        if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton());
+
+        setIcon(49, new PageIcon(pageIndex + 1, totalPages));
 
     }
 
@@ -90,14 +105,6 @@ public class TradeListPage extends Page {
 
     }
 
-    public void addNextPageButton() {
-        setButton(53, "nextPage", new NextPageButton());
-    }
-
-    public void addPrevPageButton() {
-        setButton(45, "prevPage", new PrevPageButton());
-    }
-
     public void addPageIcon(int currentPage, int totalPages) {
         setIcon(49, new PageIcon(currentPage, totalPages));
     }
@@ -143,4 +150,12 @@ public class TradeListPage extends Page {
         return true;
     }
     
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
 }
