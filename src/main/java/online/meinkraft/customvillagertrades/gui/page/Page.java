@@ -81,7 +81,7 @@ public class Page implements Listener {
         
     }
 
-    public void addButton(int index, String buttonId, Button button) {
+    public void setButton(int index, String buttonId, Button button) {
 
         button.setKey(gui.getButtonKey(), buttonId);
         inventory.setItem(index, button.getItem());
@@ -90,7 +90,7 @@ public class Page implements Listener {
 
     }
 
-    public void addIcon(int index, Icon icon) {
+    public void setIcon(int index, Icon icon) {
 
         ItemStack item = icon.getItem();
         ItemMeta itemMeta = (ItemMeta) item.getItemMeta();
