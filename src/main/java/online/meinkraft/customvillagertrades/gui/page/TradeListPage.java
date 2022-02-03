@@ -9,10 +9,10 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
 import online.meinkraft.customvillagertrades.gui.GUI;
-import online.meinkraft.customvillagertrades.gui.button.CancelButton;
+import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.NextPageButton;
 import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
-import online.meinkraft.customvillagertrades.gui.button.SaveButton;
+import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
 import online.meinkraft.customvillagertrades.gui.icon.DeletedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.ModifiedSlotIcon;
@@ -38,8 +38,8 @@ public class TradeListPage extends Page {
         String title,
         int pageIndex,
         int totalPages,
-        SaveButton saveButton,
-        CancelButton cancelButton
+        EditorSaveButton saveButton,
+        EditorCancelButton cancelButton
     ) {
         super(gui, title);
 
@@ -159,6 +159,10 @@ public class TradeListPage extends Page {
 
     public int getTotalPages() {
         return totalPages;
+    }
+    
+    public List<CustomTradeEntry> getCustomTradeEntries() {
+        return tradeEntries;
     }
 
 }

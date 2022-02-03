@@ -1,14 +1,16 @@
 package online.meinkraft.customvillagertrades.trade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class CustomTrade {
+public class CustomTrade implements Cloneable {
+
+   
 
     private final String key;
     private final ItemStack result;
@@ -28,8 +30,6 @@ public class CustomTrade {
     private final MerchantRecipe recipe;
     
     public CustomTrade(
-
-        JavaPlugin plugin,
 
         String key,
 
@@ -135,6 +135,49 @@ public class CustomTrade {
 
     public List<Biome> getBiomes() {
         return biomes;
+    }
+
+    public CustomTrade clone() {
+
+        ItemStack result = null;
+        ItemStack firstIngredient = null;
+        ItemStack secondIngredient = null;
+
+        if(this.result != null) result = this.result.clone();
+        if(this.firstIngredient != null) firstIngredient = this.firstIngredient.clone();
+        if(this.secondIngredient != null) secondIngredient = this.secondIngredient.clone();
+
+        List<Villager.Profession> professions = new ArrayList<>();
+        professions.addAll(this.professions);
+
+        List<Integer> levels = new ArrayList<>();
+        levels.addAll(this.levels);
+
+        List<Villager.Type> villagerTypes = new ArrayList<>();
+        villagerTypes.addAll(this.villagerTypes);
+
+        List<Biome> biomes = new ArrayList<>();
+        biomes.addAll(this.biomes);
+
+        return new CustomTrade(
+
+            getKey(), 
+            result, 
+            firstIngredient, 
+            secondIngredient, 
+            maxUses, 
+            priceMultiplier, 
+            villagerExperience, 
+            giveExperienceToPlayer, 
+            chance, 
+            professions, 
+            levels, 
+            villagerTypes, 
+            biomes
+
+        );
+
+        
     }
 
 }

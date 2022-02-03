@@ -16,6 +16,7 @@ public class CustomTradeEntry {
 
     private final int row;
     private final CustomTrade trade;
+    private final CustomTrade updates;
     private final TradeListPage page;
 
     private final CustomTradeRenameButton renameButton;
@@ -26,13 +27,18 @@ public class CustomTradeEntry {
     private boolean isDeleted = false;
 
     public CustomTradeEntry(int row, TradeListPage page, CustomTrade trade) {
+
         this.row = row;
         this.page = page;
+
         this.trade = trade;
+        updates = trade.clone();
+
         this.renameButton = new CustomTradeRenameButton(this);
         this.configButton = new CustomTradeConfigButton(this);
         this.blueprintButton = new CustomTradeBlueprintButton(this);
         this.deleteButton = new CustomTradeDeleteButton(this);
+
     }
 
     public boolean isModified() {
@@ -84,6 +90,10 @@ public class CustomTradeEntry {
 
     public CustomTrade getTrade() {
         return trade;
+    }
+
+    public CustomTrade getUpdates() {
+        return updates;
     }
 
     public ItemStack getFirstIngredient() {

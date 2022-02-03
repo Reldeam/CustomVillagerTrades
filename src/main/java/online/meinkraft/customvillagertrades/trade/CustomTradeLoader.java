@@ -147,9 +147,7 @@ public final class CustomTradeLoader {
             if(ingredients.size() > 1) secondIngredient = ingredients.get(1);
 
             CustomTrade trade = new CustomTrade(
-
-                plugin,
-
+                
                 tradeName,
                 result,
                 firstIngredient,

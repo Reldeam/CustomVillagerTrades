@@ -333,6 +333,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
          }
 
         tradesConfig = new YamlConfiguration();
+
         try {
             tradesConfig.load(tradesConfigFile);
         } catch (IOException | InvalidConfigurationException exception) {
@@ -342,6 +343,17 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
             );
         }
         
+    }
+
+    public void saveTradesConfig() {
+        try {
+            tradesConfig.save(tradesConfigFile);
+        } catch (IOException exception) {
+            getLogger().warning(
+                "Failed to save trades.yml: " +
+                exception.getMessage()
+            );
+        }
     }
 
     private boolean setupEconomy() throws VaultNotAvailableException, EconomyNotAvailableException {

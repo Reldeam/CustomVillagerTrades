@@ -4,18 +4,24 @@ import org.bukkit.Material;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import online.meinkraft.customvillagertrades.gui.Editor;
 import online.meinkraft.customvillagertrades.gui.page.Page;
 
-public class SaveButton extends Button {
+public class EditorCancelButton extends Button {
 
-    public SaveButton() {
-        super(Material.SLIME_BALL, "§aSave Changes");
+    private final Editor editor;
+
+    public EditorCancelButton(Editor editor) {
+        super(Material.BLAZE_POWDER, "§cDiscard Changes");
+        this.editor = editor;
     }
 
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
+        editor.close();
         return Result.DENY;
     }
     
 }
+
 
