@@ -73,7 +73,7 @@ public class CustomTrade {
 
         recipe.addIngredient(firstIngredient);
         if(secondIngredient != null) recipe.addIngredient(secondIngredient);
-
+        
         recipe.setPriceMultiplier(priceMultiplier.floatValue());
 
         recipe.setExperienceReward(giveExperienceToPlayer);

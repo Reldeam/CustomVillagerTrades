@@ -58,10 +58,11 @@ public class CustomTradeManager {
 
                     MerchantRecipe oldRecipe = oldRecipes.get(index);
                     MerchantRecipe newRecipe = customTrade.getRecipe();
-                    // set the uses of the previous recipe so that players
-                    // cant continually refresh uses by closing and opening
-                    // the trade window
+                    // set the uses and special price of the previous recipe so 
+                    // that players cant continually refresh uses and price by 
+                    // closing and opening the trade window
                     newRecipe.setUses(oldRecipe.getUses());
+                    newRecipe.setSpecialPrice(oldRecipe.getSpecialPrice());
 
                     // add updated recipe
                     newRecipes.add(newRecipe);
