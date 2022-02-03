@@ -16,7 +16,7 @@ import online.meinkraft.customvillagertrades.gui.icon.DeletedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.ModifiedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.PageIcon;
-import online.meinkraft.customvillagertrades.task.CheckCustomTradeEntryModified;
+import online.meinkraft.customvillagertrades.task.UpdateTradeListPageTask;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
 public class TradeListPage extends Page {
@@ -60,10 +60,16 @@ public class TradeListPage extends Page {
         if(tradeEntry != null && !tradeEntry.isDeleted()) {
             getGUI().getPlugin().getServer().getScheduler().runTask(
                 getGUI().getPlugin(), 
-                new CheckCustomTradeEntryModified(tradeEntry)
+                new UpdateTradeListPageTask(this)
             );
         }
 
+    }
+
+    public void updateEntries() {
+        for(CustomTradeEntry entry : tradeEntries) {
+            updateEntry(entry);
+        }
     }
 
     public void updateEntry(CustomTradeEntry entry) {
