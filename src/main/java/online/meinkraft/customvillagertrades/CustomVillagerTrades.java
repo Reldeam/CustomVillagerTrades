@@ -5,6 +5,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
+import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import online.meinkraft.customvillagertrades.command.DisableCommand;
 import online.meinkraft.customvillagertrades.command.EditorCommand;
@@ -23,6 +24,7 @@ import online.meinkraft.customvillagertrades.listener.VillagerCareerChangeListen
 import online.meinkraft.customvillagertrades.listener.VillagerDeathEventListener;
 import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.trade.VanillaTrade;
+import online.meinkraft.customvillagertrades.util.UpdateChecker;
 import online.meinkraft.customvillagertrades.villager.VillagerData;
 import online.meinkraft.customvillagertrades.villager.VillagerManager;
 
@@ -92,6 +94,51 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         // register ConfigurationSerializable classes
         ConfigurationSerialization.registerClass(VillagerData.class);
         ConfigurationSerialization.registerClass(VanillaTrade.class);
+
+        // check to see if there is an update
+        UpdateChecker updateChecker = new UpdateChecker(this, "99540");
+
+
+        switch(updateChecker.getUpdateType()) {
+            case RELEASE:
+            case SNAPSHOT:
+            case EXPERIMENTAL:
+                if(updateChecker.isUpdateAvailable()) {
+                    getLogger().info(
+                        ChatColor.MAGIC +
+                        "There is a new " + 
+                        updateChecker.getUpdateType().name() + 
+                        " update available (" +
+                        updateChecker.getCurrentVersion() +
+                        " → " +
+                        updateChecker.getLatestVersion() +
+                        ")"
+                    );
+                    getLogger().info(
+                        ChatColor.MAGIC + "Visit: " + 
+                        ChatColor.BLUE + updateChecker.getResourceURL()
+                    );
+                }
+                else {
+                    getLogger().info(
+                        ChatColor.MAGIC +
+                        "You are running an unreleased version of this plugin " +
+                        "(" + updateChecker.getCurrentVersion() + ")"
+                    );
+                }
+                break;
+            case CURRENT:
+                getLogger().info(
+                    "This plugin is up-to-date (" +
+                    updateChecker.getCurrentVersion() +
+                    ")"
+                );
+                break;
+            default:
+                getLogger().warning(
+                    "Unable to get the update status of this plugin"
+                );
+        }
 
     }
 

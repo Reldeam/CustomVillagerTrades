@@ -99,6 +99,11 @@ ingredients:
 maxUses: <number> # (required) The number of times this trade can be made 
 # before needing to be refreshed
 
+priceMultiplier: <number> # (required) The trade cost multiplier for items.
+# This effects how much the cost of the trade changes depending on factors such
+# as how much the villager likes or hates you, as well as how much you have
+# traded this item recently.
+
 experience: <number> # (optional) (default: 0) The amount of experience the 
 # villager/player recieves
 
@@ -138,11 +143,20 @@ lore: [<string>] # (optional) The item lore (appears under the item name)
 
 attributeModifiers: [<attribute modifier>] # (optional) A list of attribute
 # modifiers
+
+nbt: <string> # (optional) USE AT OWN RISK - This will apply a NBT tag to the 
+# item before anything else. This means that all of the other properties in 
+# <item stack> will overwrite any values that may be set here. Using this
+# property may lead to unexpected behaviour. Issues involving the use of the
+# nbt property will be closed without investigation.
+#
+# Example:
+#
+# nbt: > 
+#   {display:{Name:'[{"text":"Cool Thingy"}]'}}
 ```
 
 _&lt;money&gt;_
-
-
 
 ```yaml
 money: <number>
@@ -200,10 +214,10 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 "ingotForEmerald":
   result:
     material: IRON_INGOT
-    amount: 24 
+    amount: 10 
   ingredients:
     - material: EMERALD
-      amount: 10
+      amount: 24
   maxUses: 6
   experience: 10
   chance: 0.5
@@ -336,6 +350,25 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
   maxUses: 20
   experience: 10
   chance: 0.1
+
+# This trade uses a the nbt tag to add a custom NTB (in this case a
+# display name) to the item.
+#
+# USE THIS AT YOUR OWN RISK - If the tag is invalid you won't know about it and
+# it could cause unexpected behaviour!
+
+"coolThingy":
+  result:
+    material: GOLD_SWORD
+    amount: 1
+    nbt: >
+      {display:{Name:'[{"text":"Cool Thingy"}]'}}
+  ingredients:
+    - material: EMERALD
+      amount: 5
+  maxUses: 4
+  experience: 20
+  chance: 0.3
 ```
 
 ## Commands
