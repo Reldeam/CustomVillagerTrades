@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -49,6 +50,8 @@ public class Page implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+
+        if(event.getSlotType() == SlotType.OUTSIDE) return;
 
         if(event.getInventory().equals(inventory)) {
 

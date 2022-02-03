@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
 import online.meinkraft.customvillagertrades.gui.GUI;
@@ -65,6 +66,8 @@ public class TradeListPage extends Page {
     public void onClick(InventoryClickEvent event) {
 
         super.onClick(event);
+
+        if(event.getSlotType() == SlotType.OUTSIDE) return;
 
         int slotIndex = event.getRawSlot();
         int row = (int) Math.floor(slotIndex / COLUMNS_PER_ROW);
