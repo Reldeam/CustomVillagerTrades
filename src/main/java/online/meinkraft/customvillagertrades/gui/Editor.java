@@ -1,48 +1,26 @@
 package online.meinkraft.customvillagertrades.gui;
 
-import java.util.UUID;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import online.meinkraft.customvillagertrades.gui.button.NextPageButton;
+import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
 
-public class Editor {
+public class Editor extends GUI {
 
-    private final Inventory inventory;
+    public Editor(JavaPlugin plugin) {
+        super(plugin);
 
-    public Editor() {
-        inventory = Bukkit.createInventory(
-            null, 
-            54, 
-            "Custom Villager Trades Editor"
-        );
+        Page testPage1 = new Page(this, "Test Page 1");
+        testPage1.addButton(45, "prevPage", new PrevPageButton());
+        testPage1.addButton(53, "nextPage", new NextPageButton());
 
-        ItemStack leftArrow = new ItemStack(Material.PLAYER_WALL_HEAD, 1);
+        Page testPage2 = new Page(this, "Test Page 2");
+        testPage2.addButton(45, "prevPage", new PrevPageButton());
+        testPage2.addButton(53, "nextPage", new NextPageButton());
 
-        SkullMeta skullMeta = (SkullMeta) leftArrow.getItemMeta();
+        addPage("test", testPage1);
+        addPage("test", testPage2);
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(
-            UUID.fromString("35c589bd-7536-4fdb-946f-d872bd843d4a")
-        );
-
-        skullMeta.setDisplayName("Previous Page");
-        skullMeta.setOwningPlayer(offlinePlayer);
-        leftArrow.setItemMeta(skullMeta);
-
-        inventory.setItem(45, leftArrow);
-        
-    }
-    
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void open(Player player) {
-        player.openInventory(inventory);
     }
     
 }

@@ -24,7 +24,7 @@ public class EditorCommand extends PluginCommand {
 
         Player player = (Player) sender;
 
-        Editor editor = new Editor();
+        Editor editor = new Editor(plugin);
         editor.open(player);
 
         return true;
