@@ -47,12 +47,26 @@ public class CustomTradeManager {
         for(int index = 0; index < oldRecipes.size(); index++) {
             if(data.isCustomTrade(index)) {
 
+                // get the corresponding customTradeKey for this index
                 String customTradeKey = data.getCustomTradeKey(customTradeIndex);
                 customTradeIndex++;
 
                 CustomTrade customTrade = customTrades.get(customTradeKey);
 
-                if(customTrade != null) newRecipes.add(customTrade.getRecipe());
+                // replace old trade with new trade if it is a custom trade
+                if(customTrade != null) {
+
+                    MerchantRecipe oldRecipe = oldRecipes.get(index);
+                    MerchantRecipe newRecipe = customTrade.getRecipe();
+                    // set the uses of the previous recipe so that players
+                    // cant continually refresh uses by closing and opening
+                    // the trade window
+                    newRecipe.setUses(oldRecipe.getUses());
+
+                    // add updated recipe
+                    newRecipes.add(newRecipe);
+                    
+                }
                 else  newRecipes.add(oldRecipes.get(index));
 
             }
