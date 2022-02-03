@@ -99,10 +99,10 @@ ingredients:
 maxUses: <number> # (required) The number of times this trade can be made 
 # before needing to be refreshed
 
-priceMultiplier: <number> # (required) The trade cost multiplier for items.
-# This effects how much the cost of the trade changes depending on factors such
-# as how much the villager likes or hates you, as well as how much you have
-# traded this item recently.
+priceMultiplier: <number> # (optional) (default: 0) The trade cost multiplier 
+# for items. This effects how much the cost of the trade changes depending on 
+# factors such as how much the villager likes or hates you, as well as how much 
+# you have traded this item recently.
 
 experience: <number> # (optional) (default: 0) The amount of experience the 
 # villager/player recieves
