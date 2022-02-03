@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import online.meinkraft.customvillagertrades.gui.Page;
+import online.meinkraft.customvillagertrades.gui.page.Page;
 
 public class NextPageButton extends Button {
 
@@ -19,7 +19,7 @@ public class NextPageButton extends Button {
 
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
-        page.getEditor().nextPage((Player) event.getWhoClicked());
+        page.getGUI().nextPage((Player) event.getWhoClicked());
         return Result.DENY;
     }
     

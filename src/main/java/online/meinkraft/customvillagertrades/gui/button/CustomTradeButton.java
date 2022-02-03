@@ -3,32 +3,38 @@ package online.meinkraft.customvillagertrades.gui.button;
 import java.util.List;
 
 import org.bukkit.Material;
+
+import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
 public abstract class CustomTradeButton extends Button {
 
-    protected final CustomTrade trade;
+    CustomTradeEntry tradeEntry;
 
     public CustomTradeButton(
-        CustomTrade trade, 
+        CustomTradeEntry tradeEntry, 
         Material material,
         String label, 
         List<String> lore
     ) {
         super(material, label, lore);
-        this.trade = trade;
+        this.tradeEntry = tradeEntry;
     }
 
     public CustomTradeButton(
-        CustomTrade trade, 
+        CustomTradeEntry tradeEntry,
         Material material,
         String label
     ) {
-        this(trade, material, label, null);
+        this(tradeEntry, material, label, null);
+    }
+
+    public CustomTradeEntry getCustomTradeEntry() {
+        return tradeEntry;
     }
 
     public CustomTrade getCustomTrade() {
-        return trade;
+        return tradeEntry.getTrade();
     }
     
 }

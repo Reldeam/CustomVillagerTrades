@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import online.meinkraft.customvillagertrades.gui.Page;
+import online.meinkraft.customvillagertrades.gui.page.Page;
 
 public class CancelButton extends Button {
 
@@ -14,6 +14,7 @@ public class CancelButton extends Button {
 
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
+        page.getGUI().close();
         return Result.DENY;
     }
     

@@ -6,23 +6,30 @@ import online.meinkraft.customvillagertrades.gui.button.CustomTradeBlueprintButt
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeConfigButton;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeDeleteButton;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeRenameButton;
+import online.meinkraft.customvillagertrades.gui.page.TradeListPage;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
 public class CustomTradeEntry {
 
     private final CustomTrade trade;
+    private final TradeListPage page;
 
     private final CustomTradeRenameButton renameButton;
     private final CustomTradeConfigButton configButton;
     private final CustomTradeBlueprintButton blueprintButton;
     private final CustomTradeDeleteButton deleteButton;
 
-    public CustomTradeEntry(CustomTrade trade) {
+    public CustomTradeEntry(TradeListPage page, CustomTrade trade) {
+        this.page = page;
         this.trade = trade;
-        this.renameButton = new CustomTradeRenameButton(trade);
-        this.configButton = new CustomTradeConfigButton(trade);
-        this.blueprintButton = new CustomTradeBlueprintButton(trade);
-        this.deleteButton = new CustomTradeDeleteButton(trade);
+        this.renameButton = new CustomTradeRenameButton(this);
+        this.configButton = new CustomTradeConfigButton(this);
+        this.blueprintButton = new CustomTradeBlueprintButton(this);
+        this.deleteButton = new CustomTradeDeleteButton(this);
+    }
+
+    public TradeListPage getPage() {
+        return page;
     }
 
     public CustomTrade getTrade() {

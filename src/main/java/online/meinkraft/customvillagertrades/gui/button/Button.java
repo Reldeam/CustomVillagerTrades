@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import online.meinkraft.customvillagertrades.gui.Page;
+import online.meinkraft.customvillagertrades.gui.page.Page;
 
 public abstract class Button {
 

@@ -8,14 +8,14 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import online.meinkraft.customvillagertrades.gui.Page;
-import online.meinkraft.customvillagertrades.trade.CustomTrade;
+import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
+import online.meinkraft.customvillagertrades.gui.page.Page;
 
 public class CustomTradeBlueprintButton extends CustomTradeButton {
 
-    public CustomTradeBlueprintButton(CustomTrade trade) {
+    public CustomTradeBlueprintButton(CustomTradeEntry tradeEntry) {
         
-        super(trade, Material.FILLED_MAP, "Get Blueprint");
+        super(tradeEntry, Material.FILLED_MAP, "Get Blueprint");
 
         ItemStack item = getItem();
         item.addUnsafeEnchantment(Enchantment.MENDING, 1);

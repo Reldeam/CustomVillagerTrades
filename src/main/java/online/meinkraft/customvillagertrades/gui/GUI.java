@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import online.meinkraft.customvillagertrades.gui.page.Page;
+
 public class GUI {
 
     private JavaPlugin plugin;
@@ -20,6 +22,9 @@ public class GUI {
     private final List<Page> pageList = new ArrayList<Page>();
     
     private Page currentPage = null;
+
+    private boolean isOpen = false;
+    private Player player = null;
 
     public GUI(JavaPlugin plugin) {
 
@@ -55,10 +60,28 @@ public class GUI {
         return currentPage;
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
     public boolean open(Player player) {
         if(pageList.size() == 0) return false;
         currentPage = pageList.get(0);
         currentPage.open(player);
+        isOpen = true;
+        this.player = player;
+        return true;
+    }
+
+    public boolean close() {
+        if(!isOpen()) return false;
+        player.closeInventory();
+        isOpen = false;
+        player = null;
         return true;
     }
 
