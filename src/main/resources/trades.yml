@@ -59,6 +59,9 @@
 # The trade is 20 EMERALDS and a NETHER STAR for 2 NETHER SCRAP. You can make
 # this trade 2 times before the villager needs to replenish its stock.
 
+# You can also set the priceMultiplier to make it more expensive if the
+# villager doesn't like you or if you trade too much.
+
 "netheriteScrapforStar":
   result:
     material: NETHERITE_SCRAP
@@ -68,6 +71,7 @@
       amount: 20
     - material: NETHER_STAR
   maxUses: 2
+  priceMultiplier: 0.2
   chance: 0.05
   experience: 50
   levels: [5]
@@ -152,11 +156,14 @@
 # Sell a diamond for 100 units of your Vault Economy currency.
 # This trade requires Vault and an Econony plugin in work.
 
+# You can even add a priceMultipler onto a money item
+
 "moneyForDiamond":
   result:
     money: 100
   ingredients:
     - material: DIAMOND
   maxUses: 20
+  priceMultiplier: 0.5
   experience: 10
   chance: 0.1

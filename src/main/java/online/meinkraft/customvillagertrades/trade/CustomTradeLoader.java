@@ -65,6 +65,7 @@ public final class CustomTradeLoader {
             ItemStack firstIngredient = null;
             ItemStack secondIngredient = null;
             Integer maxUses = tradeSection.getInt("maxUses");
+            Double priceMultiplier = tradeSection.getDouble("priceMultiplier");
             Integer villagerExperience = tradeSection.getInt("experience");
             Boolean giveExperienceToPlayer = tradeSection.getBoolean("giveExperienceToPlayer");
                 
@@ -154,6 +155,7 @@ public final class CustomTradeLoader {
                 firstIngredient,
                 secondIngredient,
                 maxUses,
+                priceMultiplier,
                 villagerExperience,
                 giveExperienceToPlayer,
                 chance,

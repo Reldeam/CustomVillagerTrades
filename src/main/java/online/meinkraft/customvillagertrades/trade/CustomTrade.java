@@ -15,6 +15,7 @@ public class CustomTrade {
     private final ItemStack firstIngredient;
     private final ItemStack secondIngredient;
     private final Integer maxUses;
+    private final Double priceMultiplier;
     private final Integer villagerExperience;
     private final Boolean giveExperienceToPlayer;
 
@@ -36,6 +37,7 @@ public class CustomTrade {
         ItemStack firstIngredient,
         ItemStack secondIngredient,
         Integer maxUses,
+        Double priceMultiplier,
         Integer villagerExperience,
         Boolean giveExperienceToPlayer,
 
@@ -53,6 +55,7 @@ public class CustomTrade {
         this.firstIngredient = firstIngredient;
         this.secondIngredient = secondIngredient;
         this.maxUses = maxUses;
+        this.priceMultiplier = priceMultiplier;
         this.villagerExperience = villagerExperience;
         this.giveExperienceToPlayer = giveExperienceToPlayer;
 
@@ -70,6 +73,9 @@ public class CustomTrade {
 
         recipe.addIngredient(firstIngredient);
         if(secondIngredient != null) recipe.addIngredient(secondIngredient);
+
+        recipe.setPriceMultiplier(priceMultiplier.floatValue());
+
         recipe.setExperienceReward(giveExperienceToPlayer);
         recipe.setVillagerExperience(villagerExperience);
 
@@ -93,6 +99,10 @@ public class CustomTrade {
 
     public Integer getMaxUses() {
         return maxUses;
+    }
+
+    public Double getPriceMultiplier() {
+        return priceMultiplier;
     }
 
     public Double getChance() {
