@@ -1,6 +1,7 @@
 package online.meinkraft.customvillagertrades.listener;
 
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
@@ -9,7 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
+import online.meinkraft.customvillagertrades.trade.CustomTrade;
 import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
@@ -35,12 +40,32 @@ public class PlayerInteractEntityListener implements Listener {
         ) return;
 
         Villager villager = (Villager) entity;
+        Merchant merchant = (Merchant) entity;
 
         // refresh the trades based on their keys
-        tradeManager.refreshTrades((Merchant) entity);
+        tradeManager.refreshTrades(merchant);
 
         ItemStack toolUsed = event.getPlayer().getInventory().getItemInMainHand();
-        if(toolUsed.getType() == plugin.getToolMaterial()) {
+
+        PersistentDataContainer data = null;
+        String blueprint = null;
+
+        ItemMeta meta = toolUsed.getItemMeta();
+        if(meta != null) data = meta.getPersistentDataContainer();
+        if(data != null) blueprint = data.get(
+            NamespacedKey.fromString("blueprint", plugin), 
+            PersistentDataType.STRING
+        );
+        
+        if(blueprint != null) {
+            CustomTrade trade = tradeManager.getCustomTrade(blueprint);
+
+            if(trade != null) {
+                tradeManager.forceCustomTrade(villager, trade); 
+            }
+            
+        }
+        else if(toolUsed.getType() == plugin.getToolMaterial()) {
             try {
                 usePluginTool(event, villager);
             } catch (VillagerNotMerchantException e) {

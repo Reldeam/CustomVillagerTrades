@@ -43,6 +43,29 @@ public class CustomTradeManager {
         return customTrades.get(key);
     }
 
+    public void forceCustomTrade(Villager villager, CustomTrade customTrade) {
+
+        VillagerData data = villagerManager.getData(villager);
+        if(data == null) data = villagerManager.addVillager(villager);
+
+        data.addVanillaTrade(
+            villager.getVillagerLevel(), 
+            customTrade.getRecipe()
+        );
+
+        data.addCustomTradeKey(
+            data.getVanillaTrades().size() - 1, 
+            customTrade.getKey()
+        );
+
+        Merchant merchant = (Merchant) villager;
+        List<MerchantRecipe> recipes = new ArrayList<>();
+        recipes.addAll(merchant.getRecipes());
+        recipes.add(customTrade.getRecipe());
+        merchant.setRecipes(recipes);
+
+    }
+
     public void refreshTrades(Merchant merchant) {
 
         VillagerManager villagerManager = plugin.getVillagerManager();
@@ -189,20 +212,28 @@ public class CustomTradeManager {
 
             villager.setVillagerLevel(vanillaTrade.getVillagerLevel());
             List<CustomTrade> validCustomTrades = getValidTrades(villager);
-            CustomTrade customTrade = chooseRandomTrade(validCustomTrades);
 
-            // chance of not getting the trade (if vanilla trades aren't disabled)
-            if(
-                plugin.isVanillaTradesAllowed() && 
-                rand.nextDouble() > customTrade.getChance()
-            ) {
+            // no trades available - continue
+            if(validCustomTrades.size() == 0) {
                 // keep vanilla trade
                 newRecipes.add(vanillaTrade.getRecipe());
             }
             else {
-                // set custom trade
-                newRecipes.add(customTrade.getRecipe());
-                data.addCustomTradeKey(index, customTrade.getKey());
+                CustomTrade customTrade = chooseRandomTrade(validCustomTrades);
+
+                // chance of not getting the trade (if vanilla trades aren't disabled)
+                if(
+                    plugin.isVanillaTradesAllowed() && 
+                    rand.nextDouble() > customTrade.getChance()
+                ) {
+                    // keep vanilla trade
+                    newRecipes.add(vanillaTrade.getRecipe());
+                }
+                else {
+                    // set custom trade
+                    newRecipes.add(customTrade.getRecipe());
+                    data.addCustomTradeKey(index, customTrade.getKey());
+                }
             }
 
             villager.setRecipes(newRecipes);
