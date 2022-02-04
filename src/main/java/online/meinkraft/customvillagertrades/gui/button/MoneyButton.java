@@ -56,15 +56,6 @@ public class MoneyButton extends Button implements PromptListener {
             double amount = Double.parseDouble(input);
             ItemStack money = MoneyItem.create(plugin, amount);
             player.getInventory().addItem(money);
-            
-            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-
-                @Override
-                public void run() {
-                    player.getInventory().addItem(money);
-                }
-    
-            }); 
 
         }
         catch(NumberFormatException exception) {
