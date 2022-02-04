@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
+import online.meinkraft.customvillagertrades.gui.button.MoneyButton;
 import online.meinkraft.customvillagertrades.gui.page.TradeListPage;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
@@ -19,6 +20,7 @@ public class Editor extends GUI {
 
     private final EditorSaveButton saveButton;
     private final EditorCancelButton cancelButton;
+    private final MoneyButton moneyButton;
 
     public Editor(CustomVillagerTrades plugin) {
 
@@ -29,6 +31,17 @@ public class Editor extends GUI {
         saveButton = new EditorSaveButton(this);
         cancelButton = new EditorCancelButton(this);
 
+        if(plugin.isEconomyEnabled()) {
+            moneyButton = new MoneyButton(
+                plugin.getCurrencyMaterial(), 
+                plugin.getCurrencyPrefix(),
+                plugin.getCurrencySuffix()
+            );
+        }
+        else {
+            moneyButton = null;
+        }
+        
         // create custom trade list pages
         List<CustomTrade> customTrades = plugin.getCustomTradeManager().getCustomTrades();
         int totalPages = (int) Math.ceil(customTrades.size() / TRADES_PER_PAGE);
@@ -42,7 +55,8 @@ public class Editor extends GUI {
                 pageIndex,
                 totalPages,
                 saveButton,
-                cancelButton
+                cancelButton,
+                moneyButton
             );
 
             for(int rowIndex = 0; rowIndex < TRADES_PER_PAGE; rowIndex++) {

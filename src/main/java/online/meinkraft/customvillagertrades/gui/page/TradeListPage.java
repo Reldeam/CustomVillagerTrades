@@ -13,6 +13,7 @@ import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.NextPageButton;
 import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
+import online.meinkraft.customvillagertrades.gui.button.MoneyButton;
 import online.meinkraft.customvillagertrades.gui.icon.DeletedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.ModifiedSlotIcon;
@@ -39,7 +40,8 @@ public class TradeListPage extends Page {
         int pageIndex,
         int totalPages,
         EditorSaveButton saveButton,
-        EditorCancelButton cancelButton
+        EditorCancelButton cancelButton,
+        MoneyButton moneyButton
     ) {
         super(gui, title);
 
@@ -50,8 +52,12 @@ public class TradeListPage extends Page {
         deletedSlot = new DeletedSlotIcon();
         modifiedSlot = new ModifiedSlotIcon();
 
+        // save and discard buttons
         setButton(51, "cancel", cancelButton);
         setButton(52, "save", saveButton);
+
+        // create money button
+        if(moneyButton != null) setButton(47, "money", moneyButton);
 
         // add previous and next page buttons
         if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton());
