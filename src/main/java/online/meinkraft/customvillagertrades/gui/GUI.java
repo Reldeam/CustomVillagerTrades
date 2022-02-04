@@ -77,19 +77,34 @@ public class GUI {
         return true;
     }
 
-    public boolean close() {
-        if(!isOpen()) return false;
-        player.closeInventory();
-        isOpen = false;
-        player = null;
+    public boolean openPage(Page page, Player player) {
+        if(!pageList.contains(page)) return false;
+        currentPage = page;
+        this.player = player;
+        this.isOpen = true;
+        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+
+            @Override
+            public void run() {
+                currentPage.open(player);
+
+            }
+
+        }); 
         return true;
     }
 
     public boolean openPage(String key, Player player) {
         Page page = pageMap.get(key);
-        if(page == null) return false;
-        currentPage = page;
-        currentPage.open(player);
+        if(page != null) return openPage(page, player);
+        return false;
+    }
+
+    public boolean close() {
+        if(!isOpen()) return false;
+        player.closeInventory();
+        isOpen = false;
+        player = null;
         return true;
     }
 

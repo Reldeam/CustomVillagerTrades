@@ -51,6 +51,27 @@ public class TradeSelectListener implements Listener {
         Villager villager = (Villager) inventory.getHolder();
         VillagerData data = plugin.getVillagerManager().getData(villager);
 
+        // remove money ingredients from the previous trade
+        if(plugin.isEconomyEnabled() && !plugin.isCurrencyPhysical()) {
+
+            // first ingredient
+            new RemoveMoneyFromInventoryTask(
+                plugin, 
+                event.getInventory(),
+                player,
+                0
+            ).run();
+
+            // second ingredient
+            new RemoveMoneyFromInventoryTask(
+                plugin, 
+                event.getInventory(),
+                player,
+                1
+            ).run();
+
+        }
+
         // add money ingredients to the trade inventory
         if(data.isCustomTrade(event.getIndex())) {
 
@@ -74,7 +95,7 @@ public class TradeSelectListener implements Listener {
                     if(plugin.isEconomyEnabled()) {
                         double balance = economy.getBalance(player);
                         int maxStackSize = (int) Math.floor(Math.min(64, balance / money));
-                        if(maxStackSize > 1) {
+                        if(maxStackSize > 0) {
                             EconomyResponse response = plugin.getEconomy().withdrawPlayer(
                                 player, 
                                 maxStackSize * money
@@ -82,6 +103,12 @@ public class TradeSelectListener implements Listener {
                             if(response.transactionSuccess()) {
                                 inventory.setItem(index, ingredient);
                                 inventory.getItem(index).setAmount(maxStackSize);
+                                player.sendMessage(
+                                    ChatColor.YELLOW +
+                                    "Withdrew " +
+                                    plugin.getEconomy().format(maxStackSize * money) +
+                                    " from your account"
+                                );
                             }
                             else {
                                 inventory.setItem(index, null);
@@ -106,9 +133,10 @@ public class TradeSelectListener implements Listener {
 
             }
         }
-        
+
         // prevent money getting into players inventories
-        if(!plugin.isCurrencyPhysical()) {
+        if(plugin.isEconomyEnabled() && !plugin.isCurrencyPhysical()) {
+
             plugin.getServer().getScheduler().runTask(
                 plugin, 
                 new RemoveMoneyFromInventoryTask(
@@ -117,7 +145,9 @@ public class TradeSelectListener implements Listener {
                     player
                 )
             );
+            
         }
+        
     }
     
 }

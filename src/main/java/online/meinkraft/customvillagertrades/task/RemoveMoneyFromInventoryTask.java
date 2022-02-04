@@ -16,32 +16,52 @@ public class RemoveMoneyFromInventoryTask implements Runnable {
     private final CustomVillagerTrades plugin;
     private final Inventory inventory;
     private final Player player;
+    private final Integer slot;
+
+    public RemoveMoneyFromInventoryTask(
+        CustomVillagerTrades plugin, 
+        Inventory inventory,
+        Player player,
+        Integer slot
+    ) {
+        super();
+        this.plugin = plugin;
+        this.inventory = inventory;
+        this.player = player;
+        this.slot = slot;
+    }
 
     public RemoveMoneyFromInventoryTask(
         CustomVillagerTrades plugin, 
         Inventory inventory,
         Player player
     ) {
-        super();
-        this.plugin = plugin;
-        this.inventory = inventory;
-        this.player = player;
+        this(plugin, inventory, player, null);
     }
 
     public RemoveMoneyFromInventoryTask(CustomVillagerTrades plugin, Inventory inventory) {
-        this(plugin, inventory, null);
+        this(plugin, inventory, null, null);
     }
 
     @Override
     public void run() {
 
-        for(int index = 0; index < inventory.getSize(); index++) {
-            ItemStack item = inventory.getItem(index);
+        if(slot != null) {
+            ItemStack item = inventory.getItem(slot);
             if(depositMoney(item)) {
-                inventory.setItem(index, null);
+                inventory.setItem(slot, null);
             }
         }
-
+        
+        else {
+            for(int index = 0; index < inventory.getSize(); index++) {
+                ItemStack item = inventory.getItem(index);
+                if(depositMoney(item)) {
+                    inventory.setItem(index, null);
+                }
+            }
+        }
+        
     }
 
     private boolean depositMoney(ItemStack item) {

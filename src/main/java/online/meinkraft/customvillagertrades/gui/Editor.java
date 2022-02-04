@@ -33,6 +33,7 @@ public class Editor extends GUI {
 
         if(plugin.isEconomyEnabled()) {
             moneyButton = new MoneyButton(
+                plugin,
                 plugin.getCurrencyMaterial(), 
                 plugin.getCurrencyPrefix(),
                 plugin.getCurrencySuffix()
