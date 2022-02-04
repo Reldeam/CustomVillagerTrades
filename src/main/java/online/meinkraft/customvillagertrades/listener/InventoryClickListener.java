@@ -34,7 +34,7 @@ public class InventoryClickListener implements Listener {
         if(plugin.isEconomyEnabled()) {
 
             InventoryType inventoryType = event.getClickedInventory().getType();
-            ItemStack item = event.getClickedInventory().getItem(event.getRawSlot());
+            ItemStack item = event.getClickedInventory().getItem(event.getSlot());
             Player player = (Player) event.getWhoClicked();
 
             // check for clicking money ingredients in a merchant inventory
@@ -80,9 +80,10 @@ public class InventoryClickListener implements Listener {
                         plugin,
                         event.getClickedInventory(),
                         player,
-                        event.getRawSlot()
+                        event.getSlot()
                     )
                 ); 
+                event.setCancelled(true);
             }
 
         }

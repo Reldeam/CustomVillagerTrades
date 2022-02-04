@@ -26,6 +26,7 @@ public class MoneyItem {
         PersistentDataContainer data = itemMeta.getPersistentDataContainer();
 
         data.set(new NamespacedKey(plugin, "money"), PersistentDataType.DOUBLE, amount);
+        
         itemMeta.setDisplayName(
             plugin.getCurrencyPrefix() +
             String.format("%,.2f", amount) +

@@ -51,10 +51,11 @@ public class TradeSelectListener implements Listener {
         Villager villager = (Villager) inventory.getHolder();
         VillagerData data = plugin.getVillagerManager().getData(villager);
 
-        // remove money ingredients from the previous trade
-        if(plugin.isEconomyEnabled() && !plugin.isCurrencyPhysical()) {
+        // remove money from inventory before trying to add money to the
+        // ingredients since this could cause issues if the denominations
+        // are the same
+        if(plugin.isEconomyEnabled()) {
 
-            // first ingredient
             new RemoveMoneyFromInventoryTask(
                 plugin, 
                 event.getInventory(),
@@ -62,12 +63,17 @@ public class TradeSelectListener implements Listener {
                 0
             ).run();
 
-            // second ingredient
             new RemoveMoneyFromInventoryTask(
                 plugin, 
                 event.getInventory(),
                 player,
                 1
+            ).run();
+
+            new RemoveMoneyFromInventoryTask(
+                plugin, 
+                event.getView().getBottomInventory(),
+                player
             ).run();
 
         }
@@ -137,13 +143,14 @@ public class TradeSelectListener implements Listener {
         // prevent money getting into players inventories
         if(plugin.isEconomyEnabled() && !plugin.isCurrencyPhysical()) {
 
-            plugin.getServer().getScheduler().runTask(
+            plugin.getServer().getScheduler().runTaskLater(
                 plugin, 
                 new RemoveMoneyFromInventoryTask(
                     plugin, 
                     event.getView().getBottomInventory(),
                     player
-                )
+                ),
+                0
             );
             
         }

@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
@@ -20,11 +19,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
@@ -33,6 +29,7 @@ import online.meinkraft.customvillagertrades.exception.IngredientsNotFoundExcept
 import online.meinkraft.customvillagertrades.exception.ResultNotFoundException;
 import online.meinkraft.customvillagertrades.util.AttributeModifierWrapper;
 import online.meinkraft.customvillagertrades.util.ItemEnchantment;
+import online.meinkraft.customvillagertrades.util.MoneyItem;
 
 public final class CustomTradeLoader {
 
@@ -284,26 +281,7 @@ public final class CustomTradeLoader {
                 amount = Double.valueOf((Integer) map.get("money"));
             }
 
-            ItemStack itemStack = new ItemStack(plugin.getCurrencyMaterial());
-
-            // Make item look shiny
-            itemStack.addUnsafeEnchantment(Enchantment.VANISHING_CURSE, 1);
-
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            PersistentDataContainer data = itemMeta.getPersistentDataContainer();
-
-            data.set(new NamespacedKey(plugin, "money"), PersistentDataType.DOUBLE, amount);
-            itemMeta.setDisplayName(
-                plugin.getCurrencyPrefix() +
-                String.format("%,.2f", amount) +
-                plugin.getCurrencySuffix()
-            );
-
-            // Hide the enchantment details
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-            itemStack.setItemMeta(itemMeta);
-            return itemStack;
+            return MoneyItem.create(plugin, amount);
 
         }
 
