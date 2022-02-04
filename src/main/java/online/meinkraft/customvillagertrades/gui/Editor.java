@@ -9,6 +9,7 @@ import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
 import online.meinkraft.customvillagertrades.gui.button.MoneyButton;
+import online.meinkraft.customvillagertrades.gui.page.TradeConfigPage;
 import online.meinkraft.customvillagertrades.gui.page.TradeListPage;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
@@ -17,6 +18,7 @@ public class Editor extends GUI {
     private static final double TRADES_PER_PAGE = 5;
 
     private List<TradeListPage> tradeListPages;
+    private TradeConfigPage configPage;
 
     private final EditorSaveButton saveButton;
     private final EditorCancelButton cancelButton;
@@ -27,6 +29,7 @@ public class Editor extends GUI {
         super(plugin);
 
         tradeListPages = new ArrayList<>();
+        configPage = new TradeConfigPage(this, "CVT Editor - Configuration");
 
         saveButton = new EditorSaveButton(this);
         cancelButton = new EditorCancelButton(this);
@@ -62,7 +65,7 @@ public class Editor extends GUI {
 
             for(int rowIndex = 0; rowIndex < TRADES_PER_PAGE; rowIndex++) {
                 if(index >= customTrades.size()) break;
-                page.addCustomTrade(customTrades.get(index));
+                page.addCustomTrade(customTrades.get(index), configPage);
                 index++;
             }
 
@@ -70,6 +73,7 @@ public class Editor extends GUI {
 
         }
 
+        addPage("config", configPage);
     }
 
     public void addTradeListPage(TradeListPage page) {

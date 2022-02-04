@@ -15,9 +15,9 @@ import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
 import online.meinkraft.customvillagertrades.gui.button.MoneyButton;
 import online.meinkraft.customvillagertrades.gui.icon.DeletedSlotIcon;
-import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.ModifiedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.PageIcon;
+import online.meinkraft.customvillagertrades.gui.icon.UnmodifiedSlotIcon;
 import online.meinkraft.customvillagertrades.task.UpdateTradeListPageTask;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
@@ -28,7 +28,7 @@ public class TradeListPage extends Page {
     private final int pageIndex;
     private final int totalPages;
 
-    private final DisabledSlotIcon disabledSlot;
+    private final UnmodifiedSlotIcon unmodifiedSlot;
     private final DeletedSlotIcon deletedSlot;
     private final ModifiedSlotIcon modifiedSlot;
 
@@ -48,7 +48,7 @@ public class TradeListPage extends Page {
         this.pageIndex = pageIndex;
         this.totalPages = totalPages;
 
-        disabledSlot = new DisabledSlotIcon();
+        unmodifiedSlot = new UnmodifiedSlotIcon();
         deletedSlot = new DeletedSlotIcon();
         modifiedSlot = new ModifiedSlotIcon();
 
@@ -110,8 +110,8 @@ public class TradeListPage extends Page {
             setIcon(rowIndex + 5, modifiedSlot);
         }
         else {
-            setIcon(rowIndex + 1, disabledSlot);
-            setIcon(rowIndex + 5, disabledSlot);
+            setIcon(rowIndex + 1, unmodifiedSlot);
+            setIcon(rowIndex + 5, unmodifiedSlot);
         }
 
     }
@@ -120,25 +120,25 @@ public class TradeListPage extends Page {
         setIcon(49, new PageIcon(currentPage, totalPages));
     }
 
-    public boolean addCustomTrade(CustomTrade trade) {
+    public boolean addCustomTrade(CustomTrade trade, TradeConfigPage configPage) {
 
         int row = tradeEntries.size();
         if(row > 4) return false;
 
-        CustomTradeEntry entry = new CustomTradeEntry(row, this, trade);
+        CustomTradeEntry entry = new CustomTradeEntry(row, this, configPage, trade);
         tradeEntries.add(entry);
 
         int index = row * 9;
 
         setIcon(index + 0, entry.getKeyIcon());
         
-        setIcon(index + 1, disabledSlot);
+        setIcon(index + 1, unmodifiedSlot);
 
         addItemStack(index + 2, entry.getFirstIngredient());
         addItemStack(index + 3, entry.getSecondIngredient());
         addItemStack(index + 4, entry.getResult());
 
-        setIcon(index + 5, disabledSlot);
+        setIcon(index + 5, unmodifiedSlot);
 
         setButton(index + 6, "config" + row, entry.getConfigButton());
         setButton(index + 7, "blueprint" + row, entry.getBlueprintButton());

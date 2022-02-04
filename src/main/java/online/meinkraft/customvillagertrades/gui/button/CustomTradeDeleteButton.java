@@ -15,7 +15,7 @@ public class CustomTradeDeleteButton extends CustomTradeButton {
 
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
-        getCustomTradeEntry().getPage().removeCustomTradeEntry(getCustomTradeEntry());
+        getCustomTradeEntry().getTradeListPage().removeCustomTradeEntry(getCustomTradeEntry());
         return Result.DENY;
     }
     

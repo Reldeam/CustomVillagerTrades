@@ -9,7 +9,7 @@ import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
 public abstract class CustomTradeButton extends Button {
 
-    CustomTradeEntry tradeEntry;
+    protected CustomTradeEntry tradeEntry;
 
     public CustomTradeButton(
         CustomTradeEntry tradeEntry, 

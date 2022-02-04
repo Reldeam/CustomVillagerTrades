@@ -6,7 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeBlueprintButton;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeConfigButton;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeDeleteButton;
-import online.meinkraft.customvillagertrades.gui.icon.CustomTradeEntryKeyIcon;
+import online.meinkraft.customvillagertrades.gui.icon.BookIcon;
+import online.meinkraft.customvillagertrades.gui.page.TradeConfigPage;
 import online.meinkraft.customvillagertrades.gui.page.TradeListPage;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
@@ -17,9 +18,10 @@ public class CustomTradeEntry {
     private final int row;
     private final CustomTrade trade;
     private final CustomTrade updates;
-    private final TradeListPage page;
+    private final TradeListPage tradeListPage;
+    private final TradeConfigPage tradeConfigPage;
 
-    private final CustomTradeEntryKeyIcon keyIcon;
+    private final BookIcon keyIcon;
 
     private final CustomTradeConfigButton configButton;
     private final CustomTradeBlueprintButton blueprintButton;
@@ -27,24 +29,30 @@ public class CustomTradeEntry {
 
     private boolean isDeleted = false;
 
-    public CustomTradeEntry(int row, TradeListPage page, CustomTrade trade) {
+    public CustomTradeEntry(
+        int row, 
+        TradeListPage tradeListPage, 
+        TradeConfigPage tradeConfigPage,
+        CustomTrade trade
+    ) {
 
         this.row = row;
-        this.page = page;
+        this.tradeListPage = tradeListPage;
+        this.tradeConfigPage = tradeConfigPage;
 
         this.trade = trade;
         updates = trade.clone();
 
-        this.keyIcon = new CustomTradeEntryKeyIcon(trade.getKey());
+        this.keyIcon = new BookIcon(trade.getKey());
 
-        this.configButton = new CustomTradeConfigButton(this);
+        this.configButton = new CustomTradeConfigButton(tradeConfigPage, this);
         this.blueprintButton = new CustomTradeBlueprintButton(this);
         this.deleteButton = new CustomTradeDeleteButton(this);
 
     }
 
     public void updateItems() {
-        Inventory inventory = page.getInventory();
+        Inventory inventory = tradeListPage.getInventory();
         int index = row * COLUMNS_PER_ROW;
 
         ItemStack firstIngredient = inventory.getItem(index + 2);
@@ -106,8 +114,12 @@ public class CustomTradeEntry {
         return row;
     }
 
-    public TradeListPage getPage() {
-        return page;
+    public TradeListPage getTradeListPage() {
+        return tradeListPage;
+    }
+
+    public TradeConfigPage gTradeConfigPage() {
+        return tradeConfigPage;
     }
 
     public CustomTrade getTrade() {
@@ -130,7 +142,7 @@ public class CustomTradeEntry {
         return updates.getResult();
     }
 
-    public CustomTradeEntryKeyIcon getKeyIcon() {
+    public BookIcon getKeyIcon() {
         return keyIcon;
     }
 

@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class Icon {
 
-    private ItemStack item;
+    protected ItemStack item;
 
     public Icon(
         Material material,
