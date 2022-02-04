@@ -36,10 +36,9 @@ public class Editor extends GUI {
 
         for(int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
 
-            int currentPage = pageIndex + 1;
             TradeListPage page = new TradeListPage(
                 this, 
-                "CVT Editor - " + currentPage,
+                "CVT Editor - Custom Trades",
                 pageIndex,
                 totalPages,
                 saveButton,
