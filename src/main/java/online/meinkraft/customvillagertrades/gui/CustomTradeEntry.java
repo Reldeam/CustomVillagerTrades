@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeBlueprintButton;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeConfigButton;
 import online.meinkraft.customvillagertrades.gui.button.CustomTradeDeleteButton;
-import online.meinkraft.customvillagertrades.gui.button.CustomTradeRenameButton;
+import online.meinkraft.customvillagertrades.gui.icon.CustomTradeEntryKeyIcon;
 import online.meinkraft.customvillagertrades.gui.page.TradeListPage;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
@@ -19,7 +19,8 @@ public class CustomTradeEntry {
     private final CustomTrade updates;
     private final TradeListPage page;
 
-    private final CustomTradeRenameButton renameButton;
+    private final CustomTradeEntryKeyIcon keyIcon;
+
     private final CustomTradeConfigButton configButton;
     private final CustomTradeBlueprintButton blueprintButton;
     private final CustomTradeDeleteButton deleteButton;
@@ -34,7 +35,8 @@ public class CustomTradeEntry {
         this.trade = trade;
         updates = trade.clone();
 
-        this.renameButton = new CustomTradeRenameButton(this);
+        this.keyIcon = new CustomTradeEntryKeyIcon(trade.getKey());
+
         this.configButton = new CustomTradeConfigButton(this);
         this.blueprintButton = new CustomTradeBlueprintButton(this);
         this.deleteButton = new CustomTradeDeleteButton(this);
@@ -128,8 +130,8 @@ public class CustomTradeEntry {
         return updates.getResult();
     }
 
-    public CustomTradeRenameButton getRenameButton() {
-        return renameButton;
+    public CustomTradeEntryKeyIcon getKeyIcon() {
+        return keyIcon;
     }
 
     public CustomTradeConfigButton getConfigButton() {

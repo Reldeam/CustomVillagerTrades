@@ -124,8 +124,8 @@ public class TradeListPage extends Page {
 
         int index = row * 9;
 
-        setButton(index + 0, "rename" + row, entry.getRenameButton());
-
+        setIcon(index + 0, entry.getKeyIcon());
+        
         setIcon(index + 1, disabledSlot);
 
         addItemStack(index + 2, entry.getFirstIngredient());
