@@ -66,7 +66,10 @@ public class Editor extends GUI {
 
     public void save() {
 
-        getPlugin().getLogger().info(getPlayer() + " has made changes using the in-game editor");
+        getPlugin().getLogger().info(
+            getPlayer().getName() + 
+            " has made changes using the in-game editor"
+        );
 
         for(TradeListPage page : tradeListPages) {
             for(CustomTradeEntry entry : page.getCustomTradeEntries()) {
