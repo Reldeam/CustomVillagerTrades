@@ -109,11 +109,6 @@ public class Editor extends GUI {
                 if(entry.isModified()) {
                     
                     String tradeKey = newTrade.getKey();
-                    String editorKey = tradeKey + ".editor";
-                    if(!config.contains(editorKey)) config.createSection(editorKey);
-                    config.set(editorKey + ".firstIngredient", newTrade.getFirstIngredient());
-                    config.set(editorKey + ".secondIngredient", newTrade.getSecondIngredient());
-                    config.set(editorKey + ".result", newTrade.getResult());
 
                     config.set(tradeKey + ".maxUses", newTrade.getMaxUses());
                     config.set(tradeKey + ".priceMultiplier", newTrade.getPriceMultiplier());
@@ -135,6 +130,14 @@ public class Editor extends GUI {
                     config.set(tradeKey + ".levels", newTrade.getLevels());
                     config.set(tradeKey + ".villagerTypes", villagerTypes);
                     config.set(tradeKey + ".biomes", biomes);
+
+                    if(entry.isItemsModified()) {
+                        String editorKey = tradeKey + ".editor";
+                        if(!config.contains(editorKey)) config.createSection(editorKey);
+                        config.set(editorKey + ".firstIngredient", newTrade.getFirstIngredient());
+                        config.set(editorKey + ".secondIngredient", newTrade.getSecondIngredient());
+                        config.set(editorKey + ".result", newTrade.getResult());
+                    }
 
                 }
 

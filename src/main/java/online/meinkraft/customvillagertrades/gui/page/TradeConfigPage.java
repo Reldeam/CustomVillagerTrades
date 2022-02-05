@@ -4,12 +4,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.entity.Villager;
+
 import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
 import online.meinkraft.customvillagertrades.gui.GUI;
 import online.meinkraft.customvillagertrades.gui.button.ConfigBackButton;
 import online.meinkraft.customvillagertrades.gui.button.TextInputButton;
 import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
+import online.meinkraft.customvillagertrades.gui.icon.EmptySlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.ModifiedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.PropertyIcon;
 import online.meinkraft.customvillagertrades.gui.icon.UnmodifiedSlotIcon;
@@ -21,6 +26,7 @@ public class TradeConfigPage extends Page {
     private final DisabledSlotIcon disabledSlot;
     private final UnmodifiedSlotIcon unmodifiedSlot;
     private final ModifiedSlotIcon modifiedSlot;
+    private final EmptySlotIcon emptySlot;
     
     private final ConfigBackButton backButton;
 
@@ -35,6 +41,7 @@ public class TradeConfigPage extends Page {
         disabledSlot = new DisabledSlotIcon();
         unmodifiedSlot = new UnmodifiedSlotIcon();
         modifiedSlot = new ModifiedSlotIcon();
+        emptySlot = new EmptySlotIcon();
 
         backButton = new ConfigBackButton();
         setButton(Slot.BACK_BUTTON.index(), "back", backButton);
@@ -153,7 +160,7 @@ public class TradeConfigPage extends Page {
             })
         ));
 
-        // create prompts
+        // create text prompts
 
         TextInputButton maxUsesPrompt = new TextInputButton(
             "Edit maxUses", 
@@ -233,6 +240,32 @@ public class TradeConfigPage extends Page {
             gui.openPage(this, gui.getPlayer());
         });
 
+        TextInputButton giveExperienceToPlayerPrompt = new TextInputButton(
+            "Edit giveExperienceToPlayer", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a new value for giveExperienceToPlayer")
+        );
+        giveExperienceToPlayerPrompt.onResponse(response -> {
+            try {
+                Boolean giveExperienceToPlayer = Boolean.parseBoolean(response);
+                this.tradeEntry.getUpdates().giveExperienceToPlayer(giveExperienceToPlayer);
+
+                icons.get("giveExperienceToPlayer").setCurrentValue(response.toUpperCase());
+                setIcon(Slot.GIVE_EXPERIENCE_TO_PLAYER_ICON.index(), icons.get("giveExperienceToPlayer"));
+
+                if(this.tradeEntry.isGiveExperienceToPlayerModified()) 
+                    setIcon(Slot.GIVE_EXPERIENCE_TO_PLAYER_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.GIVE_EXPERIENCE_TO_PLAYER_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
         TextInputButton chancePrompt = new TextInputButton(
             "Edit chance", 
             new PlayerPrompt(gui.getPlugin(), "Enter a new value for chance")
@@ -259,11 +292,243 @@ public class TradeConfigPage extends Page {
             gui.openPage(this, gui.getPlayer());
         });
 
+        // create add prompts
+
+        TextInputButton addProfessionPrompt = new TextInputButton(
+            Material.AXOLOTL_BUCKET,
+            "Add profession", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a profession to add")
+        );
+        addProfessionPrompt.onResponse(response -> {
+            try {
+                Villager.Profession profession = Villager.Profession.valueOf(response.toUpperCase());
+                this.tradeEntry.getUpdates().addProfession(profession);
+
+                icons.get("professions").setCurrentValue(this.tradeEntry.getUpdates().getProfessions().toString());
+                setIcon(Slot.PROFESSIONS_ICON.index(), icons.get("professions"));
+
+                if(this.tradeEntry.isProfessionsModified()) 
+                    setIcon(Slot.PROFESSIONS_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.PROFESSIONS_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton removeProfessionPrompt = new TextInputButton(
+            Material.WATER_BUCKET,
+            "Remove profession", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a profession to remove")
+        );
+        removeProfessionPrompt.onResponse(response -> {
+            try {
+                Villager.Profession profession = Villager.Profession.valueOf(response.toUpperCase());
+                this.tradeEntry.getUpdates().removeProfession(profession);
+
+                icons.get("professions").setCurrentValue(this.tradeEntry.getUpdates().getProfessions().toString());
+                setIcon(Slot.PROFESSIONS_ICON.index(), icons.get("professions"));
+
+                if(this.tradeEntry.isProfessionsModified()) 
+                    setIcon(Slot.PROFESSIONS_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.PROFESSIONS_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton addLevelPrompt = new TextInputButton(
+            Material.AXOLOTL_BUCKET,
+            "Add level", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a level to add")
+        );
+        addLevelPrompt.onResponse(response -> {
+            try {
+                Integer level = Integer.parseInt(response);
+                this.tradeEntry.getUpdates().addLevel(level);
+
+                icons.get("levels").setCurrentValue(this.tradeEntry.getUpdates().getLevels().toString());
+                setIcon(Slot.LEVELS_ICON.index(), icons.get("levels"));
+
+                if(this.tradeEntry.isLevelsModified()) 
+                    setIcon(Slot.LEVELS_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.LEVELS_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton removeLevelPrompt = new TextInputButton(
+            Material.WATER_BUCKET,
+            "Remove level", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a level to remove")
+        );
+        removeLevelPrompt.onResponse(response -> {
+            try {
+                Integer level = Integer.parseInt(response);
+                this.tradeEntry.getUpdates().removeLevel(level);
+
+                icons.get("levels").setCurrentValue(this.tradeEntry.getUpdates().getLevels().toString());
+                setIcon(Slot.LEVELS_ICON.index(), icons.get("levels"));
+
+                if(this.tradeEntry.isLevelsModified()) 
+                    setIcon(Slot.LEVELS_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.LEVELS_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton addVillagerTypePrompt = new TextInputButton(
+            Material.AXOLOTL_BUCKET,
+            "Add villager type", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a villager type to add")
+        );
+        addVillagerTypePrompt.onResponse(response -> {
+            try {
+                Villager.Type type = Villager.Type.valueOf(response.toUpperCase());
+                this.tradeEntry.getUpdates().addVillagerType(type);
+
+                icons.get("villagerTypes").setCurrentValue(this.tradeEntry.getUpdates().getVillagerTypes().toString());
+                setIcon(Slot.VILLAGER_TYPES_ICON.index(), icons.get("villagerTypes"));
+
+                if(this.tradeEntry.isVillagerTypesModified()) 
+                    setIcon(Slot.VILLAGER_TYPES_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.VILLAGER_TYPES_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton removeVillagerTypePrompt = new TextInputButton(
+            Material.WATER_BUCKET,
+            "Remove villager type", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a villager type to remove")
+        );
+        removeVillagerTypePrompt.onResponse(response -> {
+            try {
+                Villager.Type type = Villager.Type.valueOf(response.toUpperCase());
+                this.tradeEntry.getUpdates().removeVillagerType(type);
+
+                icons.get("villagerTypes").setCurrentValue(this.tradeEntry.getUpdates().getVillagerTypes().toString());
+                setIcon(Slot.VILLAGER_TYPES_ICON.index(), icons.get("villagerTypes"));
+
+                if(this.tradeEntry.isVillagerTypesModified()) 
+                    setIcon(Slot.VILLAGER_TYPES_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.VILLAGER_TYPES_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton addBiomePrompt = new TextInputButton(
+            Material.AXOLOTL_BUCKET,
+            "Add biome", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a biome to add")
+        );
+        addBiomePrompt.onResponse(response -> {
+            try {
+                Biome biome = Biome.valueOf(response.toUpperCase());
+                this.tradeEntry.getUpdates().addBiome(biome);
+
+                icons.get("biomes").setCurrentValue(this.tradeEntry.getUpdates().getBiomes().toString());
+                setIcon(Slot.BIOMES_ICON.index(), icons.get("biomes"));
+
+                if(this.tradeEntry.isBiomesModified()) 
+                    setIcon(Slot.BIOMES_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.BIOMES_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton removeBiomePrompt = new TextInputButton(
+            Material.WATER_BUCKET,
+            "Remove biome", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a biome to remove")
+        );
+        removeBiomePrompt.onResponse(response -> {
+            try {
+                Biome biome = Biome.valueOf(response.toUpperCase());
+                this.tradeEntry.getUpdates().removeBiome(biome);
+
+                icons.get("biomes").setCurrentValue(this.tradeEntry.getUpdates().getBiomes().toString());
+                setIcon(Slot.BIOMES_ICON.index(), icons.get("biomes"));
+
+                if(this.tradeEntry.isBiomesModified()) 
+                    setIcon(Slot.BIOMES_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.BIOMES_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
         // place prompts
         setButton(Slot.MAX_USES_PROMPT.index(), "maxUsesPrompt", maxUsesPrompt);
         setButton(Slot.PRICE_MULTIPLIER_PROMPT.index(), "priceMultiplierPrompt", priceMultiplierPrompt);
         setButton(Slot.EXPERIENCE_PROMPT.index(), "villagerExperiencePrompt", villagerExperiencePrompt);
+        setButton(Slot.GIVE_EXPERIENCE_TO_PLAYER_PROMPT.index(), "giveExperienceToPlayerPrompt", giveExperienceToPlayerPrompt);
+        
         setButton(Slot.CHANCE_PROMPT.index(), "chancePrompt", chancePrompt);
+
+        setButton(Slot.PROFESSIONS_ADD_PROMPT.index(), "addProfessionPrompt", addProfessionPrompt);
+        setButton(Slot.PROFESSIONS_REMOVE_PROMPT.index(), "removeProfessionPrompt", removeProfessionPrompt);
+
+        setButton(Slot.LEVELS_ADD_PROMPT.index(), "addLevelPrompt", addLevelPrompt);
+        setButton(Slot.LEVELS_REMOVE_PROMPT.index(), "removeLevelPrompt", removeLevelPrompt);
+
+        setButton(Slot.VILLAGER_TYPES_ADD_PROMPT.index(), "addVillagerTypePrompt", addVillagerTypePrompt);
+        setButton(Slot.VILLAGER_TYPES_REMOVE_PROMPT.index(), "removeVillagerTypePrompt", removeVillagerTypePrompt);
+
+        setButton(Slot.BIOMES_ADD_PROMPT.index(), "addBiomePrompt", addBiomePrompt);
+        setButton(Slot.BIOMES_REMOVE_PROMPT.index(), "removeBiomePrompt", removeBiomePrompt);
 
         // disabled slots
         setIcon(4, disabledSlot);
@@ -272,6 +537,27 @@ public class TradeConfigPage extends Page {
         setIcon(31, disabledSlot);
         setIcon(40, disabledSlot);
         setIcon(49, disabledSlot);
+
+        //empty slots
+        setIcon(2, emptySlot);
+        setIcon(11, emptySlot);
+        setIcon(20, emptySlot);
+        setIcon(29, emptySlot);
+        setIcon(38, emptySlot);
+        
+        setIcon(41, emptySlot);
+        setIcon(42, emptySlot);
+        setIcon(43, emptySlot);
+        setIcon(44, emptySlot);
+
+        setIcon(46, emptySlot);
+        setIcon(47, emptySlot);
+        setIcon(48, emptySlot);
+
+        setIcon(50, emptySlot);
+        setIcon(51, emptySlot);
+        setIcon(52, emptySlot);
+        setIcon(53, emptySlot);
 
     }
 
@@ -392,10 +678,8 @@ public class TradeConfigPage extends Page {
         MAX_USES_PROMPT(3),
         PRICE_MULTIPLIER_PROMPT(12),
         EXPERIENCE_PROMPT(21),
+        GIVE_EXPERIENCE_TO_PLAYER_PROMPT(30),
         CHANCE_PROMPT(39),
-        
-        GIVE_EXPERIENCE_TO_PLAYER_TOGGLE_OFF(29),
-        GIVE_EXPERIENCE_TO_PLAYER_TOGGLE_ON(30),
         
         PROFESSIONS_ADD_PROMPT(8),
         LEVELS_ADD_PROMPT(17),

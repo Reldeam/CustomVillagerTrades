@@ -80,9 +80,7 @@ public class CustomTradeEntry {
     public boolean isModified() {
 
         if(
-            isItemStackModified(trade.getFirstIngredient(), updates.getFirstIngredient()) ||
-            isItemStackModified(trade.getSecondIngredient(), updates.getSecondIngredient()) ||
-            isItemStackModified(trade.getResult(), updates.getResult()) ||
+            isItemsModified() ||
             isMaxUsesModified() ||
             isPriceMultiplierModified() ||
             isVillagerExperienceModified() ||
@@ -100,7 +98,15 @@ public class CustomTradeEntry {
 
     }
 
-    private boolean isItemStackModified(ItemStack oldItemStack, ItemStack newItemStack) {
+    public boolean isItemsModified() {
+        return (
+            isItemStackModified(trade.getFirstIngredient(), updates.getFirstIngredient()) ||
+            isItemStackModified(trade.getSecondIngredient(), updates.getSecondIngredient()) ||
+            isItemStackModified(trade.getResult(), updates.getResult())
+        );
+    }
+
+    public boolean isItemStackModified(ItemStack oldItemStack, ItemStack newItemStack) {
 
         if(
             (oldItemStack == null && newItemStack != null) ||

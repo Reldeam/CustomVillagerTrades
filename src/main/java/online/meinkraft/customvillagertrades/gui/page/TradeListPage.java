@@ -15,6 +15,7 @@ import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorSaveButton;
 import online.meinkraft.customvillagertrades.gui.button.MoneyButton;
 import online.meinkraft.customvillagertrades.gui.icon.DeletedSlotIcon;
+import online.meinkraft.customvillagertrades.gui.icon.EmptySlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.ModifiedSlotIcon;
 import online.meinkraft.customvillagertrades.gui.icon.PageIcon;
 import online.meinkraft.customvillagertrades.gui.icon.UnmodifiedSlotIcon;
@@ -31,6 +32,7 @@ public class TradeListPage extends Page {
     private final UnmodifiedSlotIcon unmodifiedSlot;
     private final DeletedSlotIcon deletedSlot;
     private final ModifiedSlotIcon modifiedSlot;
+    private final EmptySlotIcon emptySlot;
 
     private List<CustomTradeEntry> tradeEntries = new ArrayList<>();
 
@@ -51,6 +53,7 @@ public class TradeListPage extends Page {
         unmodifiedSlot = new UnmodifiedSlotIcon();
         deletedSlot = new DeletedSlotIcon();
         modifiedSlot = new ModifiedSlotIcon();
+        emptySlot = new EmptySlotIcon();
 
         // save and discard buttons
         setButton(51, "cancel", cancelButton);
@@ -58,12 +61,21 @@ public class TradeListPage extends Page {
 
         // create money button
         if(moneyButton != null) setButton(47, "money", moneyButton);
+        else setIcon(47, emptySlot);
 
         // add previous and next page buttons
         if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton());
+        else setIcon(45, emptySlot);
+        
         if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton());
+        else setIcon(53, emptySlot);
 
         setIcon(49, new PageIcon(pageIndex + 1, totalPages));
+
+        // add empty slots
+        setIcon(46, emptySlot);
+        setIcon(48, emptySlot);
+        setIcon(50, emptySlot);
 
     }
 

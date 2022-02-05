@@ -27,7 +27,7 @@ public abstract class Button {
         ItemMeta itemMeta = (ItemMeta) item.getItemMeta();
 
         itemMeta.setDisplayName(label);
-        if(lore != null) itemMeta.setLore(lore);
+        itemMeta.setLore(lore);
 
         item.setItemMeta(itemMeta);
 
