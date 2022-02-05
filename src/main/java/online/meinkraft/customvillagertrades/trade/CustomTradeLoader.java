@@ -213,8 +213,8 @@ public final class CustomTradeLoader {
         }
 
         ChatColor loadedColor = ChatColor.RED;
-        if(tradesLoaded == trades.size()) loadedColor = ChatColor.GREEN;
-        else if(tradesLoaded >= trades.size() / 2) loadedColor = ChatColor.YELLOW;
+        if(tradesLoaded == tradeNames.size()) loadedColor = ChatColor.GREEN;
+        else if(tradesLoaded >= tradeNames.size() / 2) loadedColor = ChatColor.YELLOW;
 
         logger.info(
             "Loaded " + 

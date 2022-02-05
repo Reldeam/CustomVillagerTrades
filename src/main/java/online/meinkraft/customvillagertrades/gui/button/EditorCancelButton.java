@@ -18,7 +18,7 @@ public class EditorCancelButton extends Button {
 
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
-        editor.close();
+        editor.close(true);
         return Result.DENY;
     }
     

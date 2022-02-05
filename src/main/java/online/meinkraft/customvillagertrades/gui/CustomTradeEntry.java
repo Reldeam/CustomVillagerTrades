@@ -27,18 +27,23 @@ public class CustomTradeEntry {
     private final CustomTradeBlueprintButton blueprintButton;
     private final CustomTradeDeleteButton deleteButton;
 
+    private final boolean isNew;
+
     private boolean isDeleted = false;
 
     public CustomTradeEntry(
         int row, 
         TradeListPage tradeListPage, 
         TradeConfigPage tradeConfigPage,
-        CustomTrade trade
+        CustomTrade trade,
+        boolean isNew
     ) {
 
         this.row = row;
         this.tradeListPage = tradeListPage;
         this.tradeConfigPage = tradeConfigPage;
+
+        this.isNew = isNew;
 
         this.trade = trade;
         updates = trade.clone();
@@ -75,6 +80,10 @@ public class CustomTradeEntry {
             updates.setResult(result);
         }
 
+    }
+
+    public boolean isNew() {
+        return isNew;
     }
 
     public boolean isModified() {

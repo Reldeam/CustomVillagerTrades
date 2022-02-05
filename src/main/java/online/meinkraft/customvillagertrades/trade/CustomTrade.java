@@ -52,15 +52,32 @@ public class CustomTrade implements Cloneable {
         this.result = result;
         this.firstIngredient = firstIngredient;
         this.secondIngredient = secondIngredient;
+
+        if(maxUses == null) maxUses = 1;
         this.maxUses = maxUses;
+
+        if(priceMultiplier == null) priceMultiplier = (double) 0;
         this.priceMultiplier = priceMultiplier;
+
+        if(villagerExperience == null) villagerExperience = 0;
         this.villagerExperience = villagerExperience;
+
+        if(giveExperienceToPlayer == null) giveExperienceToPlayer = false;
         this.giveExperienceToPlayer = giveExperienceToPlayer;
 
+        if(chance == null) chance = (double) 0;
         this.chance = chance;
+
+        if(professions == null) professions = new ArrayList<>();
         this.professions = professions;
+
+        if(levels == null) levels = new ArrayList<>();
         this.levels = levels;
+
+        if(villagerTypes == null) villagerTypes = new ArrayList<>();
         this.villagerTypes = villagerTypes;
+
+        if(biomes == null) biomes = new ArrayList<>();
         this.biomes = biomes;
         
         // create recipe
@@ -69,7 +86,7 @@ public class CustomTrade implements Cloneable {
             maxUses
         );
 
-        recipe.addIngredient(firstIngredient);
+        if(firstIngredient != null) recipe.addIngredient(firstIngredient);
         if(secondIngredient != null) recipe.addIngredient(secondIngredient);
         
         recipe.setPriceMultiplier(priceMultiplier.floatValue());
@@ -141,23 +158,29 @@ public class CustomTrade implements Cloneable {
         ItemStack firstIngredient = null;
         ItemStack secondIngredient = null;
 
-        result = this.result.clone();
-        firstIngredient = this.firstIngredient.clone();
+        if(this.result != null) {
+            result = this.result.clone();
+        }
+
+        if(this.firstIngredient != null) {
+            firstIngredient = this.firstIngredient.clone();
+        }
+
         if(this.secondIngredient != null) {
             secondIngredient = this.secondIngredient.clone();
         }
 
         List<Villager.Profession> professions = new ArrayList<>();
-        professions.addAll(this.professions);
+        if(this.professions != null) professions.addAll(this.professions);
 
         List<Integer> levels = new ArrayList<>();
-        levels.addAll(this.levels);
+        if(this.levels != null) levels.addAll(this.levels);
 
         List<Villager.Type> villagerTypes = new ArrayList<>();
-        villagerTypes.addAll(this.villagerTypes);
+        if(this.villagerTypes != null) villagerTypes.addAll(this.villagerTypes);
 
         List<Biome> biomes = new ArrayList<>();
-        biomes.addAll(this.biomes);
+        if(this.biomes != null) biomes.addAll(this.biomes);
 
         return new CustomTrade(
 

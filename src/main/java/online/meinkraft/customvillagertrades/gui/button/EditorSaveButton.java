@@ -21,7 +21,7 @@ public class EditorSaveButton extends Button {
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
         editor.save();
-        editor.close();
+        editor.close(true);
         return Result.DENY;
     }
     

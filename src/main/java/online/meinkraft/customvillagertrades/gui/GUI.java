@@ -7,12 +7,15 @@ import java.util.Map;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import online.meinkraft.customvillagertrades.gui.page.Page;
 
-public class GUI {
+public class GUI implements Listener {
 
     private JavaPlugin plugin;
     private final NamespacedKey buttonKey;
@@ -24,6 +27,7 @@ public class GUI {
     private Page currentPage = null;
 
     private boolean isOpen = false;
+    private boolean closePerminently = true;
     private Player player = null;
 
     public GUI(JavaPlugin plugin) {
@@ -43,6 +47,7 @@ public class GUI {
     public void addPage(int index, String key, Page page) {
         pageMap.put(key, page);
         pageList.add(index, page);
+        plugin.getServer().getPluginManager().registerEvents(page, plugin);
     }
 
     public boolean removePage(String key) {
@@ -73,6 +78,7 @@ public class GUI {
         currentPage = pageList.get(0);
         currentPage.open(player);
         isOpen = true;
+        closePerminently = true;
         this.player = player;
         return true;
     }
@@ -81,7 +87,8 @@ public class GUI {
         if(!pageList.contains(page)) return false;
         currentPage = page;
         this.player = player;
-        this.isOpen = true;
+        isOpen = true;
+        closePerminently = true;
         plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
 
             @Override
@@ -100,11 +107,29 @@ public class GUI {
         return false;
     }
 
-    public boolean close() {
+    public boolean close(boolean perminently) {
         if(!isOpen()) return false;
+        closePerminently = perminently;
         player.closeInventory();
         isOpen = false;
         return true;
+    }
+
+    public boolean close() {
+        return close(false);
+    }
+
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+
+        // clean up event handlers if GUI is being closed for the last time
+        if(
+            event.getInventory().equals(currentPage.getInventory()) &&
+            closePerminently
+        ) {
+            for(Page page : pageList) HandlerList.unregisterAll(page);
+        }
+
     }
 
     public boolean nextPage(Player player) {

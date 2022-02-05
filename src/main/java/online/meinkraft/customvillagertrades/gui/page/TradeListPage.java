@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
 import online.meinkraft.customvillagertrades.gui.GUI;
+import online.meinkraft.customvillagertrades.gui.button.AddCustomTradeEntryButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.NextPageButton;
 import online.meinkraft.customvillagertrades.gui.button.PrevPageButton;
@@ -26,8 +27,8 @@ public class TradeListPage extends Page {
 
     private final int COLUMNS_PER_ROW = 9;
 
-    private final int pageIndex;
-    private final int totalPages;
+    private int pageIndex;
+    private int totalPages;
 
     private final UnmodifiedSlotIcon unmodifiedSlot;
     private final DeletedSlotIcon deletedSlot;
@@ -41,6 +42,7 @@ public class TradeListPage extends Page {
         String title,
         int pageIndex,
         int totalPages,
+        AddCustomTradeEntryButton newButton,
         EditorSaveButton saveButton,
         EditorCancelButton cancelButton,
         MoneyButton moneyButton
@@ -59,6 +61,9 @@ public class TradeListPage extends Page {
         setButton(51, "cancel", cancelButton);
         setButton(52, "save", saveButton);
 
+        // new Button
+        setButton(46, "new", newButton);
+
         // create money button
         if(moneyButton != null) setButton(47, "money", moneyButton);
         else setIcon(47, emptySlot);
@@ -73,7 +78,6 @@ public class TradeListPage extends Page {
         setIcon(49, new PageIcon(pageIndex + 1, totalPages));
 
         // add empty slots
-        setIcon(46, emptySlot);
         setIcon(48, emptySlot);
         setIcon(50, emptySlot);
 
@@ -100,6 +104,18 @@ public class TradeListPage extends Page {
             );
         }
 
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+        setIcon(49, new PageIcon(pageIndex + 1, totalPages));
+        
+        // add previous and next page buttons
+        if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton());
+        else setIcon(45, emptySlot);
+        
+        if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton());
+        else setIcon(53, emptySlot);
     }
 
     public void updateEntries() {
@@ -132,12 +148,18 @@ public class TradeListPage extends Page {
         setIcon(49, new PageIcon(currentPage, totalPages));
     }
 
-    public boolean addCustomTrade(CustomTrade trade, TradeConfigPage configPage) {
-
+    
+    public boolean addCustomTrade(CustomTrade trade, TradeConfigPage configPage, boolean isNew) {
         int row = tradeEntries.size();
         if(row > 4) return false;
 
-        CustomTradeEntry entry = new CustomTradeEntry(row, this, configPage, trade);
+        CustomTradeEntry entry = new CustomTradeEntry(
+            row, 
+            this, 
+            configPage, 
+            trade, 
+            isNew
+        );
         tradeEntries.add(entry);
 
         int index = row * 9;
@@ -157,8 +179,14 @@ public class TradeListPage extends Page {
         setButton(index + 8, "delete" + row, entry.getDeleteButton());
 
         return true;
-        
     }
+
+    public boolean addCustomTrade(CustomTrade trade, TradeConfigPage configPage) {
+        return addCustomTrade(trade, configPage, false);
+    }
+
+
+    
 
     public boolean removeCustomTradeEntry(CustomTradeEntry entry) {
 
