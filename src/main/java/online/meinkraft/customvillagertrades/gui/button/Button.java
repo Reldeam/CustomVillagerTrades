@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -28,6 +29,10 @@ public abstract class Button {
 
         itemMeta.setDisplayName(label);
         itemMeta.setLore(lore);
+
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 
         item.setItemMeta(itemMeta);
 

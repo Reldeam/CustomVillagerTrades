@@ -246,10 +246,18 @@ public class TradeConfigPage extends Page {
         );
         giveExperienceToPlayerPrompt.onResponse(response -> {
             try {
+
+                if(
+                    !response.toUpperCase().equals("TRUE") ||
+                    !response.toUpperCase().equals("FALSE")
+                ) {
+                    throw new IllegalArgumentException("value must be TRUE or FALSE");
+                }
+
                 Boolean giveExperienceToPlayer = Boolean.parseBoolean(response);
                 this.tradeEntry.getUpdates().giveExperienceToPlayer(giveExperienceToPlayer);
 
-                icons.get("giveExperienceToPlayer").setCurrentValue(response.toUpperCase());
+                icons.get("giveExperienceToPlayer").setCurrentValue(giveExperienceToPlayer.toString().toUpperCase());
                 setIcon(Slot.GIVE_EXPERIENCE_TO_PLAYER_ICON.index(), icons.get("giveExperienceToPlayer"));
 
                 if(this.tradeEntry.isGiveExperienceToPlayerModified()) 
