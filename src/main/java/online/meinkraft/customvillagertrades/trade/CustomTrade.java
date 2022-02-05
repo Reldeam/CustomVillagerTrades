@@ -190,4 +190,75 @@ public class CustomTrade implements Cloneable {
     public void setResult(ItemStack itemStack) {
         result = itemStack;
     }
+
+    public void setMaxUses(Integer maxUses) {
+        if(maxUses < 0) throw new IllegalArgumentException("value must be postitive");
+        this.maxUses = maxUses;
+    }
+
+    public void setPriceMultiplier(double priceMultiplier) {
+        this.priceMultiplier = priceMultiplier;
+    }
+
+    public void setVillagerExperience(Integer villagerExperience) {
+        if(villagerExperience < 0) throw new IllegalArgumentException("value must be postitive");
+        this.villagerExperience = villagerExperience;
+    }
+
+    public void giveExperienceToPlayer(boolean giveExperienceToPlayer) {
+        this.giveExperienceToPlayer = giveExperienceToPlayer;
+    }
+
+    public void setChance(Double chance) {
+        if(chance < 0 | chance > 1) throw new IllegalArgumentException("chance must be between 0 - 1 (inclusive)");
+        this.chance = chance;
+    }
+
+    public void addProfession(Villager.Profession profession) {
+        if(professions.contains(profession)) {
+            throw new IllegalArgumentException("profession already added");
+        }
+        professions.add(profession);
+    }
+
+    public void removeProfession(Villager.Profession profession) {
+        professions.remove(profession);
+    }
+
+    public void addLevel(Integer level) {
+        if(level < 1 || level > 5) {
+            throw new IllegalArgumentException("level must be between 1 - 5 (inclusive)");
+        }
+        if(levels.contains(level)) {
+            throw new IllegalArgumentException("profession already added");
+        }
+        levels.add(level);
+    }
+
+    public void removeLevel(Integer level) {
+        levels.remove(level);
+    }
+
+    public void addVillagerType(Villager.Type type) {
+        if(villagerTypes.contains(type)) {
+            throw new IllegalArgumentException("villager type already added");
+        }
+        villagerTypes.add(type);
+    }
+
+    public void removeVillagerType(Villager.Type type) {
+        villagerTypes.remove(type);
+    }
+
+    public void addBiome(Biome biome) {
+        if(biomes.contains(biome)) {
+            throw new IllegalArgumentException("biome already added");
+        }
+        biomes.add(biome);
+    }
+
+    public void removeBiome(Biome biome) {
+        biomes.remove(biome);
+    }
+
 }

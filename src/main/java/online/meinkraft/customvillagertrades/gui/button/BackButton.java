@@ -35,6 +35,10 @@ public class BackButton extends Button {
     public void setPage(Page page) {
         this.page = page;
     }
+
+    public Page getPage() {
+        return page;
+    }
     
 }
 

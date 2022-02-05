@@ -2,8 +2,11 @@ package online.meinkraft.customvillagertrades.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Villager;
 
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
@@ -104,11 +107,35 @@ public class Editor extends GUI {
 
                 // create editor entry
                 if(entry.isModified()) {
-                    String editorKey = newTrade.getKey() + ".editor";
+                    
+                    String tradeKey = newTrade.getKey();
+                    String editorKey = tradeKey + ".editor";
                     if(!config.contains(editorKey)) config.createSection(editorKey);
                     config.set(editorKey + ".firstIngredient", newTrade.getFirstIngredient());
                     config.set(editorKey + ".secondIngredient", newTrade.getSecondIngredient());
                     config.set(editorKey + ".result", newTrade.getResult());
+
+                    config.set(tradeKey + ".maxUses", newTrade.getMaxUses());
+                    config.set(tradeKey + ".priceMultiplier", newTrade.getPriceMultiplier());
+                    config.set(tradeKey + ".experience", newTrade.getVillagerExperience());
+                    config.set(tradeKey + ".giveExperienceToPlayer", newTrade.giveExperienceToPlayer());
+                    config.set(tradeKey + ".chance", newTrade.getChance());
+
+                    List<String> professions = newTrade.getProfessions().stream()
+                    .map(Villager.Profession::name).collect(Collectors.toList());
+
+                    List<String> villagerTypes = newTrade.getVillagerTypes().stream()
+                    .map(Villager.Type::name).collect(Collectors.toList());
+
+                    List<String> biomes = newTrade.getBiomes().stream()
+                    .map(Biome::name).collect(Collectors.toList());
+
+                    //TODO Check if this saves correctly
+                    config.set(tradeKey + ".professions", professions);
+                    config.set(tradeKey + ".levels", newTrade.getLevels());
+                    config.set(tradeKey + ".villagerTypes", villagerTypes);
+                    config.set(tradeKey + ".biomes", biomes);
+
                 }
 
             }

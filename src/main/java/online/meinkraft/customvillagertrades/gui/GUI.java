@@ -104,7 +104,6 @@ public class GUI {
         if(!isOpen()) return false;
         player.closeInventory();
         isOpen = false;
-        player = null;
         return true;
     }
 

@@ -82,7 +82,16 @@ public class CustomTradeEntry {
         if(
             isItemStackModified(trade.getFirstIngredient(), updates.getFirstIngredient()) ||
             isItemStackModified(trade.getSecondIngredient(), updates.getSecondIngredient()) ||
-            isItemStackModified(trade.getResult(), updates.getResult())
+            isItemStackModified(trade.getResult(), updates.getResult()) ||
+            isMaxUsesModified() ||
+            isPriceMultiplierModified() ||
+            isVillagerExperienceModified() ||
+            isGiveExperienceToPlayerModified() ||
+            isChanceModified() ||
+            isProfessionsModified() ||
+            isLevelsModified() ||
+            isVillagerTypesModified() ||
+            isBiomesModified()
         ) {
             return true;
         }
@@ -91,7 +100,7 @@ public class CustomTradeEntry {
 
     }
 
-    public boolean isItemStackModified(ItemStack oldItemStack, ItemStack newItemStack) {
+    private boolean isItemStackModified(ItemStack oldItemStack, ItemStack newItemStack) {
 
         if(
             (oldItemStack == null && newItemStack != null) ||
@@ -100,6 +109,42 @@ public class CustomTradeEntry {
         ) return true;
 
         return false;
+    }
+
+    public boolean isMaxUsesModified() {
+        return !trade.getMaxUses().equals(updates.getMaxUses());
+    }
+
+    public boolean isPriceMultiplierModified() {
+        return !trade.getPriceMultiplier().equals(updates.getPriceMultiplier());
+    }
+
+    public boolean isVillagerExperienceModified() {
+        return !trade.getVillagerExperience().equals(updates.getVillagerExperience());
+    }
+
+    public boolean isGiveExperienceToPlayerModified() {
+        return !trade.giveExperienceToPlayer().equals(updates.giveExperienceToPlayer());
+    }
+
+    public boolean isChanceModified() {
+        return !trade.getChance().equals(updates.getChance());
+    }
+
+    public boolean isProfessionsModified() {
+        return !trade.getProfessions().equals(updates.getProfessions());
+    }
+
+    public boolean isLevelsModified() {
+        return !trade.getLevels().equals(updates.getLevels());
+    }
+
+    public boolean isVillagerTypesModified() {
+        return !trade.getVillagerTypes().equals(updates.getVillagerTypes());
+    }
+
+    public boolean isBiomesModified() {
+        return !trade.getBiomes().equals(updates.getBiomes());
     }
 
     public void delete() {
