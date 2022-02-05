@@ -386,6 +386,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 |disable|cvtdisable|Disables plugin (does not remove any previously acquired custom trades, it just stops new custom trades being acquired)|
 |reroll [all\|radius]|cvtreroll|Reroll custom trades for all traders in a given radius|
 |restore [all\|radius]|cvtrestore|Restore all vanilla trades (removes all custom trades and replaces them with their original vanilla trades) for all traders in a given radius|
+|editor|cvteditor|Open the in-game editor|
 
 ## Permissions
 
@@ -396,6 +397,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 |customvillagertrades.command.disable|OP|Allows user to run command `/customvillagertrades:disable`|
 |customvillagertrades.command.reroll|OP|Allows user to run command `/customvillagertrades:reroll`|
 |customvillagertrades.command.restore|OP|Allows user to run command `/customvillagertrades:restore`|
+|customvillagertrades.command.editor|OP|Allows user to run command `/customvillagertrades:editor`|
 |customvillagertrades.item.reroll|OP|Allows player to reroll the custom trades of a villager by _`right clicking`_ on them with the `tool` specified in the _config.yml_|
 |customvillagertrades.item.restore|OP|Allows player to retore vanilla trades of a villager by _`shift`_ + _`right clicking`_ on them with the `tool` specified in the _config.yml_|
 
