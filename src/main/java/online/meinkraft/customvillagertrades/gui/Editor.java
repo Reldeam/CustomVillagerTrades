@@ -72,6 +72,9 @@ public class Editor extends GUI {
         int totalPages = (int) Math.ceil((double) customTrades.size() / TRADES_PER_PAGE);
         int index = 0;
 
+        // make an empty trade list page if there are no custom trades
+        if(totalPages < 1) totalPages = 1;
+
         for(int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
 
             TradeListPage page = new TradeListPage(
@@ -275,6 +278,11 @@ public class Editor extends GUI {
 
         getPlugin().saveTradesConfig();
         getPlugin().getCustomTradeManager().load();
+
+        getPlayer().sendMessage(
+            ChatColor.GREEN + 
+            "Custom trades have been updated"
+        );
 
     }
 
