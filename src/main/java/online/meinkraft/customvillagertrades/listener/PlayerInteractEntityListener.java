@@ -56,8 +56,21 @@ public class PlayerInteractEntityListener implements Listener {
             NamespacedKey.fromString("blueprint", plugin), 
             PersistentDataType.STRING
         );
+
+        // don't allow nitwits or villagers with no profession to acquire trades
+        if(
+            villager.getProfession().equals(Villager.Profession.NONE) ||
+            villager.getProfession().equals(Villager.Profession.NITWIT)
+        ) {
+            return;
+        }
         
-        if(blueprint != null) {
+        // give blueprint to villager (only if they have a profession)
+        if(
+            blueprint != null ||
+            villager.getProfession().equals(Villager.Profession.NONE) ||
+            villager.getProfession().equals(Villager.Profession.NITWIT)
+        ) {
             CustomTrade trade = tradeManager.getCustomTrade(blueprint);
 
             if(trade != null) {

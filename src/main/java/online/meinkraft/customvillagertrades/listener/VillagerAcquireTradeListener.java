@@ -10,6 +10,7 @@ import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +28,21 @@ public class VillagerAcquireTradeListener implements Listener {
     public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) {
 
         Random rand = new Random();
+
+        // only allow villagers to acquire trades
+        if(!event.getEntity().getType().equals(EntityType.VILLAGER)) {
+            return;
+        }
+
         Villager villager = (Villager) event.getEntity();
+
+        // don't allow nitwits or villagers with no profession to acquire trades
+        if(
+            villager.getProfession().equals(Villager.Profession.NONE) ||
+            villager.getProfession().equals(Villager.Profession.NITWIT)
+        ) {
+            return;
+        }
 
         VillagerManager villagerManager = plugin.getVillagerManager();
         VillagerData data = villagerManager.getData(villager);
