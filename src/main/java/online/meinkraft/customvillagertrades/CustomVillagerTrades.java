@@ -320,6 +320,10 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     }
 
     private void createConfig() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        if(!configFile.exists()) {
+            saveDefaultConfig();
+        }
         getConfig().options().copyDefaults(true);
         saveConfig();
     }
