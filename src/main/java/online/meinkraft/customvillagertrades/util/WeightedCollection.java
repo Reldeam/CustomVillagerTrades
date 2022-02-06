@@ -3,6 +3,7 @@ package online.meinkraft.customvillagertrades.util;
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 public class WeightedCollection<E> {
     private final NavigableMap<Double, E> map = new TreeMap<Double, E>();
@@ -26,6 +27,8 @@ public class WeightedCollection<E> {
 
     public E next() {
         double value = random.nextDouble() * total;
+        Entry<Double, E> result = map.higherEntry(value);
+        if(result == null) return null;
         return map.higherEntry(value).getValue();
     }
 
