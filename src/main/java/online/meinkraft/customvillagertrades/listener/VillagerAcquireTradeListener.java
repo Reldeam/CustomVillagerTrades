@@ -69,6 +69,9 @@ public class VillagerAcquireTradeListener implements Listener {
 
         CustomTrade trade = tradeManager.chooseRandomTrade(trades);
 
+        // it can happen if all of the trades have a zero chance
+        if(trade == null) return;
+
         // chance of not getting the trade (if vanilla trades aren't disabled)
         if(
             plugin.isVanillaTradesAllowed() && 

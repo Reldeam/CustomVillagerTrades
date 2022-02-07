@@ -59,14 +59,23 @@ public class PlayerInteractEntityListener implements Listener {
         
         // give blueprint to villager (only if they have a profession)
         if(
-            blueprint != null ||
-            villager.getProfession().equals(Villager.Profession.NONE) ||
-            villager.getProfession().equals(Villager.Profession.NITWIT)
+            blueprint != null &&
+            !villager.getProfession().equals(Villager.Profession.NONE) &&
+            !villager.getProfession().equals(Villager.Profession.NITWIT)
         ) {
+
             CustomTrade trade = tradeManager.getCustomTrade(blueprint);
 
             if(trade != null) {
-                tradeManager.forceCustomTrade(villager, trade); 
+                // try to remove custom trade if sneaking
+                if(event.getPlayer().isSneaking()) {
+                    tradeManager.removeCustomTrade(villager, trade);
+                }
+                // try to add custom trade
+                else {
+                    tradeManager.forceCustomTrade(villager, trade); 
+                }
+                
             }
             
         }

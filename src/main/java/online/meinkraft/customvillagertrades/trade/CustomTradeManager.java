@@ -66,6 +66,29 @@ public class CustomTradeManager {
 
     }
 
+    public void removeCustomTrade(Villager villager, CustomTrade trade) {
+
+        VillagerData data = villagerManager.getData(villager);
+        if(data == null) return;
+
+        data.removeCustomTrade(trade);
+
+        Merchant merchant = (Merchant) villager;
+        List<MerchantRecipe> recipes = new ArrayList<>();
+
+        for(int index = 0; index < data.getVanillaTrades().size(); index ++) {
+            VanillaTrade vanillaTrade = data.getVanillaTrade(index);
+            boolean isCustomTrade = data.isCustomTrade(index);
+            String customTradeKey = data.getCustomTradeKey(index);
+            CustomTrade customTrade = getCustomTrade(customTradeKey);
+            if(isCustomTrade) recipes.add(customTrade.getRecipe());
+            else recipes.add(vanillaTrade.getRecipe());
+        }
+
+        merchant.setRecipes(recipes);
+
+    }
+
     public void refreshTrades(Merchant merchant) {
 
         VillagerManager villagerManager = plugin.getVillagerManager();
@@ -185,8 +208,13 @@ public class CustomTradeManager {
 
     public CustomTrade chooseRandomTrade(List<CustomTrade> trades) {
 
+        if(trades.size() == 0) return null;
         WeightedCollection<CustomTrade> weightedTrades = new WeightedCollection<>();
-        trades.forEach(trade -> weightedTrades.add(100 * trade.getChance(), trade));
+        trades.forEach(trade -> {
+            if(trade.getChance() == 0) return;
+            weightedTrades.add(100 * trade.getChance(), trade);
+        });
+        if(weightedTrades.size() == 0) return null;
         return weightedTrades.next();
 
     }
