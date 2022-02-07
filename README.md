@@ -28,26 +28,40 @@ allowDuplicateTrades: false
 # DIAMOND_AXE even if they have different costs or different enchantments on 
 # the axe).
 
-# You can disable vanilla trades for specific professions. If
-# This only works if disableVanillaTrades is set to false
-disableVanillaTradesForProfessions: [<villager profession>]
-
 # ------------------------------------------------------------------------------
 # Should villagers be able to learn Vanilla Minecraft trades?
+# If set to true then all villagers cannot learn a Vanilla Minecraft trade.
 disableVanillaTrades: false
 
-# true: The villager cannot learn any Vanilla Minecraft Trades. This does not
-# effect pre-existing trades.
+# You can disable vanilla trades for specific professions. If
+# This only works if disableVanillaTrades is set to false
+disableVanillaTradesForProfessions: []
 
-# false: The villager can learn Vanilla Minecraft trades.
+# true: The villager cannot learn any Vanilla Minecraft Trades. This does not
+# effect pre-existing trades. If a villager is rerolled then it will lose all
+# of it's Vanilla Minecraft trades.
+
+# false: The villager can learn Vanilla Minecraft trades. If a villager is
+# rerolled, only the custom trades will be rerolled.
+
+# ------------------------------------------------------------------------------
+# Should villagers forget custom trades they have acquired but are no longer
+# valid (i.e. if a custom trade requires a villager to be in a DESERT biome 
+# and the villager moves to another biome, then they will forget that custom
+# trade and it will revert back to the original vanilla trade).
+forgetInvalidCustomTrades: false
+
+# true: Villagers forget custom trades when they no longer meet the requirements
+# to acquire that trade (this includes level requirements)
+
+# false: The villager will no lose custom trades they have acquired even if
+# they do not meet the requirements for that trade any longer
 
 # ------------------------------------------------------------------------------
 # Item that you can:
 # - right click villagers to reroll their custom trades
-# - shift + right click villagers to restore all of their vanilla trades
-# requires permissions: 
-# - customvillagertrades.item.reroll
-# - customvillagertrades.item.restore
+# - shift + right click villagers to reset all their trades to vanilla trades 
+# requires permission: customvillagertrades.use.rerollitem
 tool: CLOCK
 
 # ------------------------------------------------------------------------------

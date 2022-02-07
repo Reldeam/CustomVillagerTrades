@@ -26,6 +26,19 @@ disableVanillaTradesForProfessions: []
 # rerolled, only the custom trades will be rerolled.
 
 # ------------------------------------------------------------------------------
+# Should villagers forget custom trades they have acquired but are no longer
+# valid (i.e. if a custom trade requires a villager to be in a DESERT biome 
+# and the villager moves to another biome, then they will forget that custom
+# trade and it will revert back to the original vanilla trade).
+forgetInvalidCustomTrades: false
+
+# true: Villagers forget custom trades when they no longer meet the requirements
+# to acquire that trade (this includes level requirements)
+
+# false: The villager will no lose custom trades they have acquired even if
+# they do not meet the requirements for that trade any longer
+
+# ------------------------------------------------------------------------------
 # Item that you can:
 # - right click villagers to reroll their custom trades
 # - shift + right click villagers to reset all their trades to vanilla trades 

@@ -8,10 +8,12 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
+import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 import online.meinkraft.customvillagertrades.util.WeightedCollection;
@@ -89,7 +91,9 @@ public class CustomTradeManager {
 
     }
 
-    public void refreshTrades(Merchant merchant) {
+    public void refreshTrades(Villager villager, Player player) {
+
+        Merchant merchant = (Merchant) villager;
 
         VillagerManager villagerManager = plugin.getVillagerManager();
         VillagerData data = villagerManager.getData((Villager) merchant);
@@ -110,8 +114,36 @@ public class CustomTradeManager {
                 // replace old trade with new trade if it is a custom trade
                 if(customTrade != null) {
 
+                    // the villager might forget the trade if it is not valid
+                    // anymore
+                    if(plugin.forgetInvalidCustomTrades()) {
+
+                        List<CustomTrade> validCustomTrades;
+                        try {
+                            validCustomTrades = getValidTrades(villager, true);
+                        } catch (VillagerNotMerchantException e) {
+                            validCustomTrades = new ArrayList<>();
+                        }
+
+                        if(!validCustomTrades.contains(customTrade)) {
+
+                            if(player != null) player.sendMessage(
+                                ChatColor.YELLOW + 
+                                "The villager no longer trades " + 
+                                ChatColor.AQUA + customTrade.getKey()
+                            );
+
+                            newRecipes.add(data.getVanillaTrade(index).getRecipe());
+                            data.removeCustomTrade(customTrade);
+                            continue;
+                                
+                        }
+
+                    }
+
                     MerchantRecipe oldRecipe = oldRecipes.get(index);
                     MerchantRecipe newRecipe = customTrade.getRecipe();
+
                     // set the uses and special price of the previous recipe so 
                     // that players cant continually refresh uses and price by 
                     // closing and opening the trade window
@@ -134,7 +166,11 @@ public class CustomTradeManager {
 
     }
 
-    public List<CustomTrade> getValidTrades(Villager villager) throws VillagerNotMerchantException {
+    public void refreshTrades(Villager villager) {
+        refreshTrades(villager, null);
+    }
+
+    public List<CustomTrade> getValidTrades(Villager villager, boolean ingoreDuplicates) throws VillagerNotMerchantException {
 
         List<CustomTrade> validTrades = new ArrayList<>();
         
@@ -184,6 +220,7 @@ public class CustomTradeManager {
             
             // tader can't sell the same type of thing more than once
             if(
+                !ingoreDuplicates &&
                 !plugin.isDuplicateTradesAllowed() &&
                 villagerHasCustomTrade(villager, trade)
             ) {
@@ -197,6 +234,10 @@ public class CustomTradeManager {
 
         return validTrades;
 
+    }
+
+    public List<CustomTrade> getValidTrades(Villager villager) throws VillagerNotMerchantException {
+        return getValidTrades(villager, false);
     }
 
     public boolean villagerHasCustomTrade(Villager villager, CustomTrade trade) {

@@ -40,10 +40,9 @@ public class PlayerInteractEntityListener implements Listener {
         ) return;
 
         Villager villager = (Villager) entity;
-        Merchant merchant = (Merchant) entity;
 
         // refresh the trades based on their keys
-        tradeManager.refreshTrades(merchant);
+        tradeManager.refreshTrades(villager, event.getPlayer());
 
         ItemStack toolUsed = event.getPlayer().getInventory().getItemInMainHand();
 
