@@ -23,5 +23,6 @@ public interface PluginConfig {
 
     public List<Villager.Profession> getVanillaDisabledProfessions();
     public boolean isVanillaTradesDisabledForProfession(Villager.Profession profession);
+    public boolean forgetInvalidCustomTrades();
 
 }
