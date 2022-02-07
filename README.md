@@ -222,7 +222,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 
 - [_&lt;attribute&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/attribute/Attribute.html) - A list of valid attributes
 - [_&lt;equipment slot&gt;_](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/EquipmentSlot.html) - A list of valid equipment slots
-- _&lt;world&gt;_ - A string representation of world name (i.e. WORLD, WORLD_THE_END, etc.)
+- _&lt;world&gt;_ - A case-sensitive string representation of world name (i.e. world, world_nether, world_the_end, etc.)
 
 **trades.yml example**
 
