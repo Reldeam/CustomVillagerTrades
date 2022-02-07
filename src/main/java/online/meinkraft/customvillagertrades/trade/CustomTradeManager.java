@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -100,6 +101,20 @@ public class CustomTradeManager {
 
         List<MerchantRecipe> oldRecipes = merchant.getRecipes();
         List<MerchantRecipe> newRecipes = new ArrayList<>();
+
+        // preload valid trades (ignoring duplicates) to not have to do this
+        // multiple times as it is expensive
+        List<CustomTrade> validCustomTrades;
+        try {
+            if(plugin.forgetInvalidCustomTrades()) {
+                validCustomTrades = getValidTrades(villager, true);
+            }
+            else {
+                validCustomTrades = new ArrayList<>();
+            }
+        } catch (VillagerNotMerchantException e) {
+            validCustomTrades = new ArrayList<>();
+        }
         
         int customTradeIndex = 0;
         for(int index = 0; index < oldRecipes.size(); index++) {
@@ -117,13 +132,6 @@ public class CustomTradeManager {
                     // the villager might forget the trade if it is not valid
                     // anymore
                     if(plugin.forgetInvalidCustomTrades()) {
-
-                        List<CustomTrade> validCustomTrades;
-                        try {
-                            validCustomTrades = getValidTrades(villager, true);
-                        } catch (VillagerNotMerchantException e) {
-                            validCustomTrades = new ArrayList<>();
-                        }
 
                         if(!validCustomTrades.contains(customTrade)) {
 
@@ -186,6 +194,7 @@ public class CustomTradeManager {
             List<Integer> levels = trade.getLevels();
             List<Villager.Type> villagerTypes = trade.getVillagerTypes();
             List<Biome> biomes = trade.getBiomes();
+            List<String> worlds = trade.getWorlds();
 
             // trader must have the right profession(s)
             if(
@@ -216,6 +225,12 @@ public class CustomTradeManager {
                 Location location = villager.getLocation();
                 Biome biome = location.getWorld().getBiome(location);
                 if(!biomes.contains(biome)) continue;
+            }
+
+            // trader must be in the right worlds(s)
+            if(worlds.size() > 0) {
+                World world = villager.getLocation().getWorld();
+                if(!worlds.contains(world.getName())) continue;
             }
             
             // tader can't sell the same type of thing more than once

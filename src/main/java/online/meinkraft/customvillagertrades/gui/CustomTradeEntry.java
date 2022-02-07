@@ -98,7 +98,8 @@ public class CustomTradeEntry {
             isProfessionsModified() ||
             isLevelsModified() ||
             isVillagerTypesModified() ||
-            isBiomesModified()
+            isBiomesModified() ||
+            isWorldsModified()
         ) {
             return true;
         }
@@ -160,6 +161,10 @@ public class CustomTradeEntry {
 
     public boolean isBiomesModified() {
         return !trade.getBiomes().equals(updates.getBiomes());
+    }
+
+    public boolean isWorldsModified() {
+        return !trade.getWorlds().equals(updates.getWorlds());
     }
 
     public void delete() {

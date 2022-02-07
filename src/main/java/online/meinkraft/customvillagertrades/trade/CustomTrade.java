@@ -24,6 +24,7 @@ public class CustomTrade implements Cloneable {
     private List<Integer> levels;
     private List<Villager.Type> villagerTypes;
     private List<Biome> biomes;
+    private List<String> worlds;
     
     private MerchantRecipe recipe;
     
@@ -43,7 +44,8 @@ public class CustomTrade implements Cloneable {
         List<Villager.Profession> professions,
         List<Integer> levels,
         List<Villager.Type> villagerTypes,
-        List<Biome> biomes
+        List<Biome> biomes,
+        List<String> worlds
 
     ) {
 
@@ -79,6 +81,9 @@ public class CustomTrade implements Cloneable {
 
         if(biomes == null) biomes = new ArrayList<>();
         this.biomes = biomes;
+
+        if(worlds == null) worlds = new ArrayList<>();
+        this.worlds = worlds;
         
         // create recipe
         recipe = new MerchantRecipe(
@@ -152,6 +157,10 @@ public class CustomTrade implements Cloneable {
         return biomes;
     }
 
+    public List<String> getWorlds() {
+        return worlds;
+    }
+
     public CustomTrade clone() {
 
         ItemStack result = null;
@@ -182,6 +191,9 @@ public class CustomTrade implements Cloneable {
         List<Biome> biomes = new ArrayList<>();
         if(this.biomes != null) biomes.addAll(this.biomes);
 
+        List<String> worlds = new ArrayList<>();
+        if(this.worlds != null) worlds.addAll(this.worlds);
+
         return new CustomTrade(
 
             getKey(), 
@@ -196,7 +208,8 @@ public class CustomTrade implements Cloneable {
             professions, 
             levels, 
             villagerTypes, 
-            biomes
+            biomes,
+            worlds
 
         );
 
@@ -282,6 +295,17 @@ public class CustomTrade implements Cloneable {
 
     public void removeBiome(Biome biome) {
         biomes.remove(biome);
+    }
+
+    public void addWorld(String worldName) {
+        if(worlds.contains(worldName)) {
+            throw new IllegalArgumentException("world already added");
+        }
+        worlds.add(worldName);
+    }
+
+    public void removeWorld(String worldName) {
+        worlds.remove(worldName);
     }
 
 }

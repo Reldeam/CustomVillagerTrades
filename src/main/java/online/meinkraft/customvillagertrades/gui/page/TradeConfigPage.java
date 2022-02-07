@@ -150,13 +150,25 @@ public class TradeConfigPage extends Page {
         icons.put("biomes", new PropertyIcon(
             "biomes",
             Arrays.asList(new String[]{
-                "The biome(S) the villager must be in to be able",
-                "to acquire this trade. No biome means that the",
+                "The biome(s) the villager must be in to be able",
+                "to acquire this trade. No biome(s) means that the",
                 "villager could acquire the trade in any biome."
             }),  
             Arrays.asList(new String[]{
                 "You can find a full list here:",
                 "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html"
+            })
+        ));
+
+        icons.put("worlds", new PropertyIcon(
+            "worlds",
+            Arrays.asList(new String[]{
+                "The worlds(s) the villager must be in to be able",
+                "to acquire this trade (CASE SENSITIVE). No world(s) means that",
+                "the villager could acquire the trade in any world."
+            }),  
+            Arrays.asList(new String[]{
+                "e.g. world, world_nether, world_the_end, etc."
             })
         ));
 
@@ -518,6 +530,58 @@ public class TradeConfigPage extends Page {
             gui.openPage(this, gui.getPlayer());
         });
 
+        TextInputButton addWorldPrompt = new TextInputButton(
+            Material.AXOLOTL_BUCKET,
+            "Add world", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a world to add")
+        );
+        addWorldPrompt.onResponse(response -> {
+            try {
+                this.tradeEntry.getUpdates().addWorld(response);
+
+                icons.get("worlds").setCurrentValue(this.tradeEntry.getUpdates().getWorlds().toString());
+                setIcon(Slot.WORLDS_ICON.index(), icons.get("worlds"));
+
+                if(this.tradeEntry.isWorldsModified()) 
+                    setIcon(Slot.WORLDS_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.WORLDS_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
+        TextInputButton removeWorldPrompt = new TextInputButton(
+            Material.WATER_BUCKET,
+            "Remove world", 
+            new PlayerPrompt(gui.getPlugin(), "Enter a world to remove")
+        );
+        removeWorldPrompt.onResponse(response -> {
+            try {
+                this.tradeEntry.getUpdates().removeWorld(response);
+
+                icons.get("worlds").setCurrentValue(this.tradeEntry.getUpdates().getWorlds().toString());
+                setIcon(Slot.WORLDS_ICON.index(), icons.get("worlds"));
+
+                if(this.tradeEntry.isWorldsModified()) 
+                    setIcon(Slot.WORLDS_MODIFY_INDICATOR.index(), modifiedSlot);
+                else setIcon(Slot.WORLDS_MODIFY_INDICATOR.index(), unmodifiedSlot);
+            }
+            catch(IllegalArgumentException exception) {
+                gui.getPlayer().sendMessage(
+                    ChatColor.RED + "Failed to edit value: " +
+                    exception.getMessage()
+                );
+            }  
+
+            gui.openPage(this, gui.getPlayer());
+        });
+
         // place prompts
         setButton(Slot.MAX_USES_PROMPT.index(), "maxUsesPrompt", maxUsesPrompt);
         setButton(Slot.PRICE_MULTIPLIER_PROMPT.index(), "priceMultiplierPrompt", priceMultiplierPrompt);
@@ -538,6 +602,9 @@ public class TradeConfigPage extends Page {
         setButton(Slot.BIOMES_ADD_PROMPT.index(), "addBiomePrompt", addBiomePrompt);
         setButton(Slot.BIOMES_REMOVE_PROMPT.index(), "removeBiomePrompt", removeBiomePrompt);
 
+        setButton(Slot.WORLDS_ADD_PROMPT.index(), "addWorldPrompt", addWorldPrompt);
+        setButton(Slot.WORLDS_REMOVE_PROMPT.index(), "removeWorldPrompt", removeWorldPrompt);
+
         // disabled slots
         setIcon(4, disabledSlot);
         setIcon(13, disabledSlot);
@@ -552,11 +619,6 @@ public class TradeConfigPage extends Page {
         setIcon(20, emptySlot);
         setIcon(29, emptySlot);
         setIcon(38, emptySlot);
-        
-        setIcon(41, emptySlot);
-        setIcon(42, emptySlot);
-        setIcon(43, emptySlot);
-        setIcon(44, emptySlot);
 
         setIcon(46, emptySlot);
         setIcon(47, emptySlot);
@@ -586,6 +648,7 @@ public class TradeConfigPage extends Page {
         String levels = Arrays.toString(trade.getLevels().toArray());
         String villagerTypes = Arrays.toString(trade.getVillagerTypes().toArray());
         String biomes = Arrays.toString(trade.getBiomes().toArray());
+        String worlds = Arrays.toString(trade.getWorlds().toArray());
 
         icons.get("maxUses").setCurrentValue(maxUses);
         icons.get("priceMultiplier").setCurrentValue(priceMultiplier);
@@ -597,6 +660,7 @@ public class TradeConfigPage extends Page {
         icons.get("levels").setCurrentValue(levels);
         icons.get("villagerTypes").setCurrentValue(villagerTypes);
         icons.get("biomes").setCurrentValue(biomes);
+        icons.get("worlds").setCurrentValue(worlds);
 
         // set previous values
 
@@ -612,6 +676,7 @@ public class TradeConfigPage extends Page {
         levels = Arrays.toString(trade.getLevels().toArray());
         villagerTypes = Arrays.toString(trade.getVillagerTypes().toArray());
         biomes = Arrays.toString(trade.getBiomes().toArray());
+        worlds = Arrays.toString(trade.getWorlds().toArray());
 
         icons.get("maxUses").setPreviousValue(maxUses);
         icons.get("priceMultiplier").setPreviousValue(priceMultiplier);
@@ -623,6 +688,7 @@ public class TradeConfigPage extends Page {
         icons.get("levels").setPreviousValue(levels);
         icons.get("villagerTypes").setPreviousValue(villagerTypes);
         icons.get("biomes").setPreviousValue(biomes);
+        icons.get("worlds").setPreviousValue(worlds);
 
         // update icons
         setIcon(Slot.MAX_USES_ICON.index(), icons.get("maxUses"));
@@ -635,6 +701,7 @@ public class TradeConfigPage extends Page {
         setIcon(Slot.LEVELS_ICON.index(), icons.get("levels"));
         setIcon(Slot.VILLAGER_TYPES_ICON.index(), icons.get("villagerTypes"));
         setIcon(Slot.BIOMES_ICON.index(), icons.get("biomes"));
+        setIcon(Slot.WORLDS_ICON.index(), icons.get("worlds"));
 
         // update modification indication slots 
         updateIndicator(tradeEntry.isMaxUsesModified(), Slot.MAX_USES_MODIFY_INDICATOR);
@@ -646,6 +713,7 @@ public class TradeConfigPage extends Page {
         updateIndicator(tradeEntry.isLevelsModified(), Slot.LEVELS_MODIFY_INDICATOR);
         updateIndicator(tradeEntry.isVillagerTypesModified(), Slot.VILLAGER_TYPES_MODIFY_INDICATOR);
         updateIndicator(tradeEntry.isBiomesModified(), Slot.BIOMES_MODIFY_INDICATOR);
+        updateIndicator(tradeEntry.isWorldsModified(), Slot.WORLDS_MODIFY_INDICATOR);
 
         // set navigation properties
         backButton.setPage(tradeEntry.getTradeListPage());
@@ -672,6 +740,7 @@ public class TradeConfigPage extends Page {
         LEVELS_ICON(15),
         VILLAGER_TYPES_ICON(24),
         BIOMES_ICON(33),
+        WORLDS_ICON(42),
         
         MAX_USES_MODIFY_INDICATOR(0),
         PRICE_MULTIPLIER_MODIFY_INDICATOR(9),
@@ -682,6 +751,7 @@ public class TradeConfigPage extends Page {
         LEVELS_MODIFY_INDICATOR(14),
         VILLAGER_TYPES_MODIFY_INDICATOR(23),
         BIOMES_MODIFY_INDICATOR(32),
+        WORLDS_MODIFY_INDICATOR(41),
         
         MAX_USES_PROMPT(3),
         PRICE_MULTIPLIER_PROMPT(12),
@@ -693,11 +763,13 @@ public class TradeConfigPage extends Page {
         LEVELS_ADD_PROMPT(17),
         VILLAGER_TYPES_ADD_PROMPT(26),
         BIOMES_ADD_PROMPT(35),
+        WORLDS_ADD_PROMPT(44),
         
         PROFESSIONS_REMOVE_PROMPT(7),
         LEVELS_REMOVE_PROMPT(16),
         VILLAGER_TYPES_REMOVE_PROMPT(25),
         BIOMES_REMOVE_PROMPT(34),
+        WORLDS_REMOVE_PROMPT(43),
         
         BACK_BUTTON(45);
 

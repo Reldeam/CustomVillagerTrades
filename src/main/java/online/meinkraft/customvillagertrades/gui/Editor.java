@@ -131,6 +131,7 @@ public class Editor extends GUI {
                 null, 
                 null, 
                 null, 
+                null,
                 null
             );
 
@@ -257,11 +258,11 @@ public class Editor extends GUI {
                     List<String> biomes = newTrade.getBiomes().stream()
                     .map(Biome::name).collect(Collectors.toList());
 
-                    //TODO Check if this saves correctly
                     config.set(tradeKey + ".professions", professions);
                     config.set(tradeKey + ".levels", newTrade.getLevels());
                     config.set(tradeKey + ".villagerTypes", villagerTypes);
                     config.set(tradeKey + ".biomes", biomes);
+                    config.set(tradeKey + ".worlds", newTrade.getWorlds());
 
                     if(entry.isItemsModified()) {
                         String editorKey = tradeKey + ".editor";

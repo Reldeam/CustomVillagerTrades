@@ -81,6 +81,7 @@ public final class CustomTradeLoader {
             List<Biome> biomes = CustomTradeLoader.toBiomeList(
                 (List<String>) tradeSection.getStringList("biomes")
             );
+            List<String> worlds = tradeSection.getStringList("worlds");
 
             try {
                 // objects
@@ -191,7 +192,8 @@ public final class CustomTradeLoader {
                 professions,
                 levels,
                 villagerTypes,
-                biomes
+                biomes,
+                worlds
 
             );
 
