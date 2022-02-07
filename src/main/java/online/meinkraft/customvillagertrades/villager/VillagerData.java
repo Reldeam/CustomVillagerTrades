@@ -89,6 +89,12 @@ public class VillagerData implements ConfigurationSerializable {
             vanillaTrades.add(new VanillaTrade(serializedVanillaTrade));
         });
 
+        // make sure keys are set to the same length (solves issue with data
+        // change from the customTradeKeyMask deprication).
+        while(customTradeKeys.size() < vanillaTrades.size()) {
+            customTradeKeys.add(null);
+        }
+
     }
     
     @Override
@@ -147,7 +153,12 @@ public class VillagerData implements ConfigurationSerializable {
     }
 
     public String getCustomTradeKey(int index) {
-        return customTradeKeys.get(index);
+        try {
+            return customTradeKeys.get(index);
+        }
+        catch(IndexOutOfBoundsException exception) {
+            return null;
+        }
     }
 
     public void clearCustomTradeKeys() {
@@ -163,7 +174,12 @@ public class VillagerData implements ConfigurationSerializable {
     }
     
     public Boolean isCustomTrade(int index) {
-        return customTradeKeys.get(index) != null;
+        try {
+            return customTradeKeys.get(index) != null;
+        }
+        catch(IndexOutOfBoundsException exception) {
+            return false;
+        } 
     }
 
     public Boolean isVanillaTrade(int index) {
