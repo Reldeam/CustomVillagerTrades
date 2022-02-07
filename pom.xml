@@ -5,7 +5,7 @@
   <groupId>online.meinkraft</groupId>
   <artifactId>customvillagertrades</artifactId>
   <packaging>jar</packaging>
-  <version>1.6-SNAPSHOT</version>
+  <version>1.7-SNAPSHOT</version>
   <name>CustomVillagerTrades</name>
   <url>http://maven.apache.org</url>
 
