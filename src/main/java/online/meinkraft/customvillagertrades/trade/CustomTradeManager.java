@@ -306,8 +306,13 @@ public class CustomTradeManager {
             else {
                 CustomTrade customTrade = chooseRandomTrade(validCustomTrades);
 
+                // can happen if all custom trades have 0 chance
+                if(customTrade == null) {
+                    // keep vanilla trade
+                    newRecipes.add(vanillaTrade.getRecipe());
+                }
                 // chance of not getting the trade (if vanilla trades aren't disabled)
-                if(
+                else if(
                     plugin.isVanillaTradesAllowed() && 
                     rand.nextDouble() > customTrade.getChance()
                 ) {
