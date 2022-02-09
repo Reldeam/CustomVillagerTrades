@@ -48,7 +48,7 @@ public class CustomTradeManager {
 
     public void forceCustomTrade(Villager villager, CustomTrade customTrade) {
 
-        VillagerData data = villagerManager.getData(villager);
+        VillagerData data = villagerManager.loadVillagerData(villager);
         if(data == null) data = villagerManager.addVillager(villager);
 
         data.addVanillaTrade(
@@ -61,6 +61,8 @@ public class CustomTradeManager {
             customTrade.getKey()
         );
 
+        villagerManager.saveVillagerData(data);
+
         Merchant merchant = (Merchant) villager;
         List<MerchantRecipe> recipes = new ArrayList<>();
         recipes.addAll(merchant.getRecipes());
@@ -71,10 +73,11 @@ public class CustomTradeManager {
 
     public void removeCustomTrade(Villager villager, CustomTrade trade) {
 
-        VillagerData data = villagerManager.getData(villager);
+        VillagerData data = villagerManager.loadVillagerData(villager);
         if(data == null) return;
 
         data.removeCustomTrade(trade);
+        villagerManager.saveVillagerData(data);
 
         Merchant merchant = (Merchant) villager;
         List<MerchantRecipe> recipes = new ArrayList<>();
@@ -97,7 +100,7 @@ public class CustomTradeManager {
         Merchant merchant = (Merchant) villager;
 
         VillagerManager villagerManager = plugin.getVillagerManager();
-        VillagerData data = villagerManager.getData((Villager) merchant);
+        VillagerData villagerData = villagerManager.loadVillagerData(villager);
 
         List<MerchantRecipe> oldRecipes = merchant.getRecipes();
         List<MerchantRecipe> newRecipes = new ArrayList<>();
@@ -107,7 +110,7 @@ public class CustomTradeManager {
         List<CustomTrade> validCustomTrades;
         try {
             if(plugin.forgetInvalidCustomTrades()) {
-                validCustomTrades = getValidTrades(villager, true);
+                validCustomTrades = getValidTrades(villager, villagerData, true);
             }
             else {
                 validCustomTrades = new ArrayList<>();
@@ -118,10 +121,10 @@ public class CustomTradeManager {
         
         int customTradeIndex = 0;
         for(int index = 0; index < oldRecipes.size(); index++) {
-            if(data.isCustomTrade(index)) {
+            if(villagerData.isCustomTrade(index)) {
 
                 // get the corresponding customTradeKey for this index
-                String customTradeKey = data.getCustomTradeKey(customTradeIndex);
+                String customTradeKey = villagerData.getCustomTradeKey(customTradeIndex);
                 customTradeIndex++;
 
                 CustomTrade customTrade = customTrades.get(customTradeKey);
@@ -141,8 +144,8 @@ public class CustomTradeManager {
                                 ChatColor.AQUA + customTrade.getKey()
                             );
 
-                            newRecipes.add(data.getVanillaTrade(index).getRecipe());
-                            data.removeCustomTrade(customTrade);
+                            newRecipes.add(villagerData.getVanillaTrade(index).getRecipe());
+                            villagerData.removeCustomTrade(customTrade);
                             continue;
                                 
                         }
@@ -171,6 +174,7 @@ public class CustomTradeManager {
         }
 
         merchant.setRecipes(newRecipes);
+        villagerManager.saveVillagerData(villagerData);
 
     }
 
@@ -178,7 +182,7 @@ public class CustomTradeManager {
         refreshTrades(villager, null);
     }
 
-    public List<CustomTrade> getValidTrades(Villager villager, boolean ingoreDuplicates) throws VillagerNotMerchantException {
+    public List<CustomTrade> getValidTrades(Villager villager, VillagerData villagerData, boolean ingoreDuplicates) throws VillagerNotMerchantException {
 
         List<CustomTrade> validTrades = new ArrayList<>();
         
@@ -237,7 +241,7 @@ public class CustomTradeManager {
             if(
                 !ingoreDuplicates &&
                 !plugin.isDuplicateTradesAllowed() &&
-                villagerHasCustomTrade(villager, trade)
+                villagerHasCustomTrade(villagerData, trade)
             ) {
                 continue;
             }
@@ -251,15 +255,12 @@ public class CustomTradeManager {
 
     }
 
-    public List<CustomTrade> getValidTrades(Villager villager) throws VillagerNotMerchantException {
-        return getValidTrades(villager, false);
+    public List<CustomTrade> getValidTrades(Villager villager, VillagerData villagerData) throws VillagerNotMerchantException {
+        return getValidTrades(villager, villagerData, false);
     }
 
-    public boolean villagerHasCustomTrade(Villager villager, CustomTrade trade) {
-
-        VillagerData data = villagerManager.getData(villager);
-        return data.getCustomTradeKeys().contains(trade.getKey());
-
+    public boolean villagerHasCustomTrade(VillagerData villagerData, CustomTrade trade) {
+        return villagerData.getCustomTradeKeys().contains(trade.getKey());
     }
 
     public CustomTrade chooseRandomTrade(List<CustomTrade> trades) {
@@ -283,9 +284,9 @@ public class CustomTradeManager {
 
         Random rand = new Random();
         
-        VillagerData data = villagerManager.getData(villager);
-        data.clearCustomTradeKeys();
-        List<VanillaTrade> vanillaTrades = data.getVanillaTrades();
+        VillagerData villagerData = villagerManager.loadVillagerData(villager);
+        villagerData.clearCustomTradeKeys();
+        List<VanillaTrade> vanillaTrades = villagerData.getVanillaTrades();
 
         int villagerLevel = villager.getVillagerLevel();
         List<MerchantRecipe> newRecipes = new ArrayList<>();
@@ -295,7 +296,7 @@ public class CustomTradeManager {
             vanillaTrade = vanillaTrades.get(index);
 
             villager.setVillagerLevel(vanillaTrade.getVillagerLevel());
-            List<CustomTrade> validCustomTrades = getValidTrades(villager);
+            List<CustomTrade> validCustomTrades = getValidTrades(villager, villagerData);
 
             // no trades available - continue
             if(validCustomTrades.size() == 0) {
@@ -316,7 +317,7 @@ public class CustomTradeManager {
                 else {
                     // set custom trade
                     newRecipes.add(customTrade.getRecipe());
-                    data.addCustomTradeKey(index, customTrade.getKey());
+                    villagerData.addCustomTradeKey(index, customTrade.getKey());
                 }
             }
 
@@ -325,7 +326,7 @@ public class CustomTradeManager {
         }
         
         villager.setVillagerLevel(villagerLevel);
-
+        villagerManager.saveVillagerData(villagerData);
         return true;
     
     }
@@ -336,7 +337,7 @@ public class CustomTradeManager {
             throw new VillagerNotMerchantException();
         }
         
-        VillagerData data = villagerManager.getData(villager);
+        VillagerData data = villagerManager.loadVillagerData(villager);
         
         List<VanillaTrade> vanillaTrades = data.getVanillaTrades();
         List<MerchantRecipe> recipes = new ArrayList<>();
@@ -346,6 +347,7 @@ public class CustomTradeManager {
 
         villager.setRecipes(recipes);
         data.clearCustomTradeKeys();
+        villagerManager.saveVillagerData(data);
 
     }
 

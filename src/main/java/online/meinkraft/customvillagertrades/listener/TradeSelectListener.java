@@ -49,7 +49,7 @@ public class TradeSelectListener implements Listener {
 
         //TODO handle wandering taders
         Villager villager = (Villager) inventory.getHolder();
-        VillagerData data = plugin.getVillagerManager().getData(villager);
+        VillagerData data = plugin.getVillagerManager().loadVillagerData(villager);
 
         // remove money from inventory before trying to add money to the
         // ingredients since this could cause issues if the denominations

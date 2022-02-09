@@ -235,7 +235,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 
 # The trade gives 2 experience to the villager, but none to the player.
 
-"ingotForEmerald":
+"Iron Ingot for Emeralds":
   result:
     material: IRON_INGOT
     amount: 10 
@@ -251,7 +251,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 # arrows in return, which might be a nice alternative to the vanilla trade
 # for spectral arrows
 
-"spectralArrows":
+"Better Spectral Arrows":
   result:
     material: SPECTRAL_ARROW 
     amount: 5
@@ -273,7 +273,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 # The trade is 20 EMERALDS and a NETHER STAR for 2 NETHER SCRAP. You can make
 # this trade 2 times before the villager needs to replenish its stock.
 
-"netheriteScrapforStar":
+"Netherite Scrap for Start":
   result:
     material: NETHERITE_SCRAP
     amount: 2
@@ -300,7 +300,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 
 # The trades give 4 experience to the villager and the player.
 
-"coolAxe":
+"Cool Axe With Many Conditions":
   result:
     material: DIAMOND_AXE
     enchantments:
@@ -330,7 +330,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 # attribute modifiers that increase your armor by a large amount when you
 # hold it in your hand.
 
-"bulkyPick":
+"Bulky Pick With Attributes":
   result:
     material: DIAMOND_PICKAXE
     attributeModifiers:
@@ -354,7 +354,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 # Buy a diamond for 150 units of your Vault Economy currency.
 # This trade requires Vault and an Econony plugin in work.
 
-"diamondForMoney":
+"Diamond for Money":
   result:
     material: DIAMOND
   ingredients:
@@ -366,7 +366,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 # Sell a diamond for 100 units of your Vault Economy currency.
 # This trade requires Vault and an Econony plugin in work.
 
-"moneyForDiamond":
+"Money for Diamond":
   result:
     money: 100
   ingredients:
@@ -381,7 +381,7 @@ ADD | MULTIPLY | MULTIPLY_ALL_MODIFIERS
 # USE THIS AT YOUR OWN RISK - If the tag is invalid you won't know about it and
 # it could cause unexpected behaviour!
 
-"coolThingy":
+"Scary NBT":
   result:
     material: GOLD_SWORD
     amount: 1

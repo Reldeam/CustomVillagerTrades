@@ -44,17 +44,19 @@ public class VillagerAcquireTradeListener implements Listener {
             return;
         }
 
-        VillagerManager villagerManager = plugin.getVillagerManager();
-        VillagerData data = villagerManager.getData(villager);
-        data.addVanillaTrade(villager.getVillagerLevel(), event.getRecipe());
-        int index = data.getVanillaTrades().size() - 1;
-
         CustomTradeManager tradeManager = plugin.getCustomTradeManager();
+
+        VillagerManager villagerManager = plugin.getVillagerManager();
+        VillagerData villagerData = villagerManager.loadVillagerData(villager);
+        villagerData.addVanillaTrade(villager.getVillagerLevel(), event.getRecipe());
+        int index = villagerData.getVanillaTrades().size() - 1;
 
         List<CustomTrade> trades;
         try {
-            trades = tradeManager.getValidTrades(villager);
-        } catch (VillagerNotMerchantException e) { return; }
+            trades = tradeManager.getValidTrades(villager, villagerData);
+        } catch (VillagerNotMerchantException e) {
+            return; 
+        }
 
         if(trades.size() == 0) {
             // don't allow villager to acquire vanilla trade if they are disabled
@@ -64,31 +66,33 @@ public class VillagerAcquireTradeListener implements Listener {
             ) {
                 event.setCancelled(true);
             }
-            return;
-        }
-
-        CustomTrade trade = tradeManager.chooseRandomTrade(trades);
-
-        // it can happen if all of the trades have a zero chance
-        if(trade == null) return;
-
-        // chance of not getting the trade (if vanilla trades aren't disabled)
-        if(
-            plugin.isVanillaTradesAllowed() && 
-            !plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) &&
-            rand.nextDouble() > trade.getChance()
-        ) {
-            // keep vanilla trade
-            event.setRecipe(event.getRecipe());
         }
         else {
-            // set custom trade
-            event.setRecipe(trade.getRecipe());
-            data.addCustomTradeKey(
-                index,
-                trade.getKey()
-            );
+            CustomTrade trade = tradeManager.chooseRandomTrade(trades);
+
+            // it can happen if all of the trades have a zero chance
+            if(trade != null) {
+                // chance of not getting the trade (if vanilla trades aren't disabled)
+                if(
+                    plugin.isVanillaTradesAllowed() && 
+                    !plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) &&
+                    rand.nextDouble() > trade.getChance()
+                ) {
+                    // keep vanilla trade
+                    event.setRecipe(event.getRecipe());
+                }
+                else {
+                    // set custom trade
+                    event.setRecipe(trade.getRecipe());
+                    villagerData.addCustomTradeKey(
+                        index,
+                        trade.getKey()
+                    );
+                }
+            } 
         }
+
+        villagerManager.saveVillagerData(villagerData);
 
     }
     

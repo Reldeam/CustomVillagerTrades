@@ -204,7 +204,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
 
         // load villager manager
         villagerManager = new VillagerManager(this);
-        villagerManager.load("villagers.data");
+        // villagerManager.load("villagers.data");
 
         // load custom trades
         customTradeManager = new CustomTradeManager(this);
@@ -273,7 +273,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         HandlerList.unregisterAll(inventoryCloseListener);
         
         // save data files
-        villagerManager.save("villagers.data");
+        // villagerManager.save("villagers.data");
 
         // allow plugin to be enabled again
         this.loaded = false;
