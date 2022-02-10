@@ -10,8 +10,9 @@ body:
     attributes:
       label: What happened?
       description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      placeholder: |
+        Tell us what you see!
+        Please attach your _config.yml_, _trades.yml_, and any relevant screenshots.
     validations:
       required: true
   - type: textarea
