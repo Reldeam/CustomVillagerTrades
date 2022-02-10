@@ -1,8 +1,9 @@
-name: Bug report
+name: Bug Report
 description: Create a report to help improve the plugin
-title: '[Bug]: '
-labels: ['bug']
-assignees: ['Reldeam']
+title: "[Bug]: "
+labels: ["bug"]
+assignees: 
+  - Reldeam
 body:
   - type: textarea
     id: what-happened
@@ -14,8 +15,8 @@ body:
     validations:
       required: true
 - type: textarea
-    id: logs
-    attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+  id: logs
+  attributes:
+    label: Relevant log output
+    description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+    render: shell
