@@ -3,7 +3,7 @@ name: CustomVillagerTrades
 version: 1.8-SNAPSHOT
 description: Adds custom villager trades
 api-version: 1.18
-load: STARTUP
+load: POSTWORLD
 author: Reldeam
 website: meinkraft.online
 softdepend: [Vault]

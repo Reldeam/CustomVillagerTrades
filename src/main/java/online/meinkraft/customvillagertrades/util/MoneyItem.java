@@ -1,5 +1,7 @@
 package online.meinkraft.customvillagertrades.util;
 
+import java.util.Arrays;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -32,6 +34,11 @@ public class MoneyItem {
             String.format("%,.2f", amount) +
             plugin.getCurrencySuffix()
         );
+
+        itemMeta.setLore(Arrays.asList(new String[]{
+            "Hover over this in your inventory and",
+            "press §lDROP§r (default §lQ§r) to deposit"
+        }));
 
         // Hide the enchantment details
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
