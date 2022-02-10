@@ -33,7 +33,8 @@ disableVanillaTradesForProfessions: []
 forgetInvalidCustomTrades: false
 
 # true: Villagers forget custom trades when they no longer meet the requirements
-# to acquire that trade (this includes level requirements)
+# to acquire that trade (villagers will only forget custom trades due to level
+# requirements if their level is lower than the lowest required level)
 
 # false: The villager will no lose custom trades they have acquired even if
 # they do not meet the requirements for that trade any longer
