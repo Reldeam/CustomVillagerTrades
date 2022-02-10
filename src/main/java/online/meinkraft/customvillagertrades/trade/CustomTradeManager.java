@@ -1,6 +1,7 @@
 package online.meinkraft.customvillagertrades.trade;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +111,7 @@ public class CustomTradeManager {
         List<CustomTrade> validCustomTrades;
         try {
             if(plugin.forgetInvalidCustomTrades()) {
-                validCustomTrades = getValidTrades(villager, villagerData, true);
+                validCustomTrades = getValidTrades(villager, villagerData, false, true);
             }
             else {
                 validCustomTrades = new ArrayList<>();
@@ -182,7 +183,14 @@ public class CustomTradeManager {
         refreshTrades(villager, null);
     }
 
-    public List<CustomTrade> getValidTrades(Villager villager, VillagerData villagerData, boolean ingoreDuplicates) throws VillagerNotMerchantException {
+    
+
+    public List<CustomTrade> getValidTrades(
+        Villager villager, 
+        VillagerData villagerData,
+        boolean strictLevel, 
+        boolean ingoreDuplicates
+    ) throws VillagerNotMerchantException {
 
         List<CustomTrade> validTrades = new ArrayList<>();
         
@@ -209,9 +217,22 @@ public class CustomTradeManager {
             }
 
             // trader must have the right level(s)
+            // if strictLevels (default is true) then they must have the exact 
+            // level requirement
             if(
                 levels.size() > 0 && 
+                strictLevel &&
                 !levels.contains(villager.getVillagerLevel())
+            ) {
+                continue;
+            }
+
+            // if not strictLevel (default is true) then villager must have at 
+            // least the level of the minimum level in levels
+            if(
+                levels.size() > 0 && 
+                !strictLevel && 
+                villager.getVillagerLevel() < Collections.min(levels)
             ) {
                 continue;
             }
@@ -253,6 +274,14 @@ public class CustomTradeManager {
 
         return validTrades;
 
+    }
+
+    public List<CustomTrade> getValidTrades(
+        Villager villager, 
+        VillagerData villagerData,
+        boolean ingoreDuplicates
+    ) throws VillagerNotMerchantException {
+        return getValidTrades(villager, villagerData, true, ingoreDuplicates);
     }
 
     public List<CustomTrade> getValidTrades(Villager villager, VillagerData villagerData) throws VillagerNotMerchantException {
