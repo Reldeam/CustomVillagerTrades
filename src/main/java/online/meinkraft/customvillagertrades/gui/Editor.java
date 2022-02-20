@@ -123,7 +123,7 @@ public class Editor extends GUI {
                 null, 
                 null, 
                 null, 
-                0, 
+                1, 
                 (double) 0, 
                 0, 
                 true, 
