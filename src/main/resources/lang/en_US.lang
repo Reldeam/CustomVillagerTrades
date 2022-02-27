@@ -281,3 +281,11 @@ blueprintButtonDescription: |
 
 #-------------------------------------------------------------------------------
 # Exceptions
+
+customTradeKeyAlreadyExistsException: "Custom Trade Key already exists"
+economyNotAvailableException: "No Vault compatible economy plugin available"
+economyNotEnabledException: "Economy is disabled"
+ingredientsNotFoundException: "Ingredients not found"
+resultNotFoundException: "Result not found"
+vaultNotAvailableException: "Vault dependency not available"
+villagerNotMerchantException: "Villager is not a merchant (trader)"
