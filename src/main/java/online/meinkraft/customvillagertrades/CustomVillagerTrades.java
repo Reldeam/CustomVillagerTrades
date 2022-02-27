@@ -316,6 +316,8 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     }
 
     public String getMessage(String key) {
+        String message = languageConfig.getString(key);
+        if(message == null) return "";
         return languageConfig.getString(key);
     }
 
@@ -328,15 +330,24 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         saveConfig();
     }
 
+    protected File getLanguageFolder() {
+        File folder = new File(getDataFolder(), "lang");
+        if(!folder.isDirectory()) {
+            folder.mkdir();
+        }
+        return folder;
+    }
+
     private void loadLanguageConfig() {
 
         languageFile = new File(
-            getDataFolder(), 
-            "lang/" + getConfig().getString("language") + ".lang"
+            getLanguageFolder(), 
+            getConfig().getString("language") + ".lang"
         );
 
         if (!languageFile.exists()) {
-            languageFile = new File(getDataFolder(), "lang/en_US.lang");
+            saveResource("lang/en_US.lang", false);
+            languageFile = new File(getLanguageFolder(), "en_US.lang");
         }
 
         languageConfig = new YamlConfiguration();

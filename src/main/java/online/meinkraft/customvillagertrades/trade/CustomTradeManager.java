@@ -167,7 +167,10 @@ public class CustomTradeManager {
                 else  newRecipes.add(oldRecipes.get(index));
 
             }
-            else if(plugin.isVanillaTradesAllowed()) {
+            else if(
+                plugin.isVanillaTradesAllowed() &&
+                !plugin.isVanillaTradesDisabledForProfession(villager.getProfession())
+            ) {
                 newRecipes.add(oldRecipes.get(index));
             }
         }

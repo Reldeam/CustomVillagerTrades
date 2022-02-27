@@ -43,7 +43,7 @@ public class TradeConfigPage extends EditorPage {
         modifiedSlot = new ModifiedSlotIcon();
         emptySlot = new EmptySlotIcon();
 
-        backButton = new ConfigBackButton();
+        backButton = new ConfigBackButton(this);
         setButton(Slot.BACK_BUTTON.index(), "back", backButton);
 
         icons = new HashMap<>();

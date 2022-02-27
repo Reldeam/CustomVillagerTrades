@@ -21,10 +21,6 @@ public class BackButton extends Button {
         this(Material.ARROW, page);
     }
 
-    public BackButton() {
-        this(Material.ARROW, null);
-    }
-
     @Override
     public Result onClick(Page page, InventoryClickEvent event) {
         if(this.page != null) {
