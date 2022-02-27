@@ -167,7 +167,7 @@ public class CustomTradeManager {
                 else  newRecipes.add(oldRecipes.get(index));
 
             }
-            else {
+            else if(plugin.isVanillaTradesAllowed()) {
                 newRecipes.add(oldRecipes.get(index));
             }
         }
