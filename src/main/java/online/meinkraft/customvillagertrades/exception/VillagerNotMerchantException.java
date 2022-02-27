@@ -1,10 +1,12 @@
 
 package online.meinkraft.customvillagertrades.exception;
 
-public class VillagerNotMerchantException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public VillagerNotMerchantException() {
-        super("Villager is not a merchant (trader)");
+public class VillagerNotMerchantException extends CustomVillagerTradesException {
+
+    public VillagerNotMerchantException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("villagerNotMerchantException"));
     }
 
 }

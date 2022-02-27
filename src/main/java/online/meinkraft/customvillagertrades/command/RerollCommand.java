@@ -26,7 +26,10 @@ public class RerollCommand extends PluginCommand {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "You must be a player to use this command");
+            sender.sendMessage(
+                ChatColor.RED + 
+                plugin.getMessage("playerOnlyCommand")
+            );
             return false;
         }
 
@@ -40,7 +43,7 @@ public class RerollCommand extends PluginCommand {
         if(args.length == 0) {
             sender.sendMessage(
                 ChatColor.RED + 
-                "No radius provided: It must be <all> or <number>"
+                plugin.getMessage("noRadiusProvided")
             );
              return false;
         }
@@ -68,7 +71,7 @@ public class RerollCommand extends PluginCommand {
             catch(NumberFormatException expection) {
                 sender.sendMessage(
                     ChatColor.RED + 
-                    "Invalid radius argument: It must be <all> or <number>"
+                    plugin.getMessage("invalidRadiusProvided")
                 );
                 return false;
             }
@@ -83,28 +86,27 @@ public class RerollCommand extends PluginCommand {
                 Villager villager = (Villager) entity;
                 if(tradeManager.rerollCustomTrades(villager)) numRerolled++;
             } catch (VillagerNotMerchantException e) {
-                plugin.getLogger().warning(
-                    sender.getName() +
-                    " tried to reroll the custom trades of an entity that is not a villager (" +
-                    entity.toString() +
-                    ")"
-                );
+                plugin.getLogger().warning(String.format(
+                    plugin.getMessage("invalidRerollTarget"),
+                    sender.getName(),
+                    entity.toString()
+                ));
             }
         }
 
         if(!plugin.isVanillaTradesAllowed()) {
-            sender.sendMessage(
-                ChatColor.GREEN + 
-                "Rerolled all trades for " + numRerolled + 
-                " merchants on " + world.getName()
-            );
+            sender.sendMessage(String.format(
+                ChatColor.GREEN + plugin.getMessage("rerolledAllTrades"),
+                numRerolled,
+                world.getName()
+            ));
         }
         else {
-            sender.sendMessage(
-                ChatColor.GREEN + 
-                "Rerolled custom trades for " + numRerolled + 
-                " merchants on " + world.getName()
-            );
+            sender.sendMessage(String.format(
+                ChatColor.GREEN + plugin.getMessage("rerolledCustomTrades"),
+                numRerolled,
+                world.getName()
+            ));
         }
         
         return true;

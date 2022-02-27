@@ -13,7 +13,7 @@ public class EditorSaveButton extends Button {
 
     public EditorSaveButton(Editor editor) {
 
-        super(Material.SLIME_BALL, "§aSave Changes");
+        super(Material.SLIME_BALL, editor.getMessage("saveButtonLabel"));
         this.editor = editor;
 
     }

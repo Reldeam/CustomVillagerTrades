@@ -5,18 +5,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import online.meinkraft.customvillagertrades.gui.page.EditorPage;
 import online.meinkraft.customvillagertrades.gui.page.Page;
 
 public class BackButton extends Button {
 
-    private Page page;
+    private EditorPage page;
 
-    public BackButton(Material material, Page page) {
-        super(material, "Back");
+    public BackButton(Material material, EditorPage page) {
+        super(material, page.getEditor().getMessage("backButtonLabel"));
         this.page = page;
     }
 
-    public BackButton(Page page) {
+    public BackButton(EditorPage page) {
         this(Material.ARROW, page);
     }
 
@@ -32,7 +33,7 @@ public class BackButton extends Button {
         return Result.DENY;
     }
 
-    public void setPage(Page page) {
+    public void setPage(EditorPage page) {
         this.page = page;
     }
 

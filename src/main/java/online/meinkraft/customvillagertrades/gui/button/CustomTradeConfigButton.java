@@ -5,6 +5,7 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
+import online.meinkraft.customvillagertrades.gui.Editor;
 import online.meinkraft.customvillagertrades.gui.page.Page;
 import online.meinkraft.customvillagertrades.gui.page.TradeConfigPage;
 
@@ -13,10 +14,11 @@ public class CustomTradeConfigButton extends CustomTradeButton {
     private final TradeConfigPage configPage;
 
     public CustomTradeConfigButton(
+        Editor editor,
         TradeConfigPage configPage,
         CustomTradeEntry tradeEntry
     ) {
-        super(tradeEntry, Material.HOPPER, "Configure Custom Trade");
+        super(editor, tradeEntry, Material.HOPPER, editor.getMessage("configureCustomTradeButtonLabel"));
         this.configPage = configPage;
     }
 

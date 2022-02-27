@@ -1,9 +1,11 @@
 package online.meinkraft.customvillagertrades.exception;
 
-public class IngredientsNotFoundException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public IngredientsNotFoundException() {
-        super("Ingredients not found");
+public class IngredientsNotFoundException extends CustomVillagerTradesException {
+
+    public IngredientsNotFoundException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("ingredientsNotFoundException"));
     }
 
 }

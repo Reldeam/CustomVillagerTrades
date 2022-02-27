@@ -32,6 +32,7 @@ public class CustomTradeEntry {
     private boolean isDeleted = false;
 
     public CustomTradeEntry(
+        Editor editor,
         int row, 
         TradeListPage tradeListPage, 
         TradeConfigPage tradeConfigPage,
@@ -50,9 +51,9 @@ public class CustomTradeEntry {
 
         this.keyIcon = new BookIcon(trade.getKey());
 
-        this.configButton = new CustomTradeConfigButton(tradeConfigPage, this);
-        this.blueprintButton = new CustomTradeBlueprintButton(this);
-        this.deleteButton = new CustomTradeDeleteButton(this);
+        this.configButton = new CustomTradeConfigButton(editor, tradeConfigPage, this);
+        this.blueprintButton = new CustomTradeBlueprintButton(editor, this);
+        this.deleteButton = new CustomTradeDeleteButton(editor, this);
 
     }
 

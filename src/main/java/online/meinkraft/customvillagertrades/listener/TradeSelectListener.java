@@ -109,19 +109,17 @@ public class TradeSelectListener implements Listener {
                             if(response.transactionSuccess()) {
                                 inventory.setItem(index, ingredient);
                                 inventory.getItem(index).setAmount(maxStackSize);
-                                player.sendMessage(
-                                    ChatColor.YELLOW +
-                                    "Withdrew " +
-                                    plugin.getEconomy().format(maxStackSize * money) +
-                                    " from your account"
-                                );
+                                player.sendMessage(String.format(
+                                    ChatColor.YELLOW + plugin.getMessage("withdrewMoney"),
+                                    plugin.getEconomy().format(maxStackSize * money)
+                                ));
                             }
                             else {
                                 inventory.setItem(index, null);
                                 event.setCancelled(true);
                                 player.sendMessage(
                                     ChatColor.RED +
-                                    "You have insufficient funds to make this trade"
+                                    plugin.getMessage("InsufficientFunds")
                                 );
                             }
                             
@@ -132,7 +130,7 @@ public class TradeSelectListener implements Listener {
                         event.setCancelled(true);
                         player.sendMessage(
                             ChatColor.RED +
-                            "Economy is disabled - nag a moderator about it"
+                            plugin.getMessage("economyDisabled")
                         );
                     }  
                 }

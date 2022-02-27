@@ -26,7 +26,10 @@ public class RestoreCommand extends PluginCommand {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "You must be a player to use this command");
+            sender.sendMessage(
+                ChatColor.RED + 
+                plugin.getMessage("playerOnlyCommand")
+            );
             return false;
         }
 
@@ -40,7 +43,7 @@ public class RestoreCommand extends PluginCommand {
         if(args.length == 0) {
             sender.sendMessage(
                 ChatColor.RED + 
-                "No radius provided: It must be <all> or <number>"
+                plugin.getMessage("noRadiusProvided")
             );
              return false;
         }
@@ -68,7 +71,7 @@ public class RestoreCommand extends PluginCommand {
             catch(NumberFormatException expection) {
                 sender.sendMessage(
                     ChatColor.RED + 
-                    "Invalid radius argument: It must be <all> or <number>"
+                    plugin.getMessage("invalidRadiusProvided")
                 );
                 return false;
             }
@@ -82,20 +85,19 @@ public class RestoreCommand extends PluginCommand {
                 Villager villager = (Villager) entity;
                 tradeManager.restoreVanillaTrades(villager);
             } catch (VillagerNotMerchantException e) {
-                plugin.getLogger().warning(
-                    sender.getName() +
-                    " tried to restore the vanilla trades of an entity that is not a villager (" +
-                    entity.toString() +
-                    ")"
-                );
+                plugin.getLogger().warning(String.format(
+                    plugin.getMessage("invalidRestoreTarget"),
+                    sender.getName(),
+                    entity.toString()
+                ));
             }
         }
 
-        sender.sendMessage(
-            ChatColor.GREEN + 
-            "Restored all Vanilla Minecraft trades for " + villagers.size() + 
-            " merchants on " + world.getName()
-        );
+        sender.sendMessage(String.format(
+            ChatColor.GREEN + plugin.getMessage("restoredVanillaTrades"),
+            villagers.size(),
+            world.getName()
+        ));
         
         return true;
 

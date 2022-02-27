@@ -17,7 +17,7 @@ public class MoneyItem {
     
     public static ItemStack create(CustomVillagerTrades plugin, double amount) throws EconomyNotEnabledException {
 
-        if(!plugin.isEconomyEnabled()) throw new EconomyNotEnabledException();
+        if(!plugin.isEconomyEnabled()) throw new EconomyNotEnabledException(plugin);
 
         ItemStack itemStack = new ItemStack(plugin.getCurrencyMaterial());
 
@@ -36,8 +36,8 @@ public class MoneyItem {
         );
 
         itemMeta.setLore(Arrays.asList(new String[]{
-            "Hover over this in your inventory and",
-            "press §lDROP§r (default §lQ§r) to deposit"
+            plugin.getMessage("moneyLore1"),
+            plugin.getMessage("moneyLore2")
         }));
 
         // Hide the enchantment details

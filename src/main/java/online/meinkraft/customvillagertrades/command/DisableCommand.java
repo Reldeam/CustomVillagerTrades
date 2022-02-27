@@ -15,7 +15,10 @@ public class DisableCommand extends PluginCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         this.plugin.onDisable();
-        sender.sendMessage(ChatColor.DARK_GRAY + "Plugin disabled");
+        sender.sendMessage(
+            ChatColor.DARK_GRAY + 
+            plugin.getMessage("pluginDisabled")
+        );
         return true;
     }
     

@@ -1,9 +1,11 @@
 package online.meinkraft.customvillagertrades.exception;
 
-public class ResultNotFoundException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public ResultNotFoundException() {
-        super("Result not found");
+public class ResultNotFoundException extends CustomVillagerTradesException {
+
+    public ResultNotFoundException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("resultNotFoundException"));
     }
 
 }

@@ -15,7 +15,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
-import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 import online.meinkraft.customvillagertrades.exception.VillagerNotMerchantException;
 import online.meinkraft.customvillagertrades.util.WeightedCollection;
@@ -139,11 +138,10 @@ public class CustomTradeManager {
 
                         if(!validCustomTrades.contains(customTrade)) {
 
-                            if(player != null) player.sendMessage(
-                                ChatColor.YELLOW + 
-                                "The villager no longer trades " + 
-                                ChatColor.AQUA + customTrade.getKey()
-                            );
+                            if(player != null) player.sendMessage(String.format(
+                                plugin.getMessage("villagerForgotTrade"),
+                                customTrade.getKey()
+                            ));
 
                             newRecipes.add(villagerData.getVanillaTrade(index).getRecipe());
                             villagerData.removeCustomTrade(customTrade);
@@ -195,7 +193,7 @@ public class CustomTradeManager {
         List<CustomTrade> validTrades = new ArrayList<>();
         
         if(!(villager instanceof Merchant)) {
-            throw new VillagerNotMerchantException();
+            throw new VillagerNotMerchantException(plugin);
         }
 
         List<CustomTrade> allTrades = customTrades.values().stream().toList();
@@ -308,7 +306,7 @@ public class CustomTradeManager {
     public boolean rerollCustomTrades(Villager villager) throws VillagerNotMerchantException {
 
         if(!(villager instanceof Merchant)) {
-            throw new VillagerNotMerchantException();
+            throw new VillagerNotMerchantException(plugin);
         }
 
         Random rand = new Random();
@@ -368,7 +366,7 @@ public class CustomTradeManager {
     public void restoreVanillaTrades(Villager villager) throws VillagerNotMerchantException {
 
         if(!(villager instanceof Merchant)) {
-            throw new VillagerNotMerchantException();
+            throw new VillagerNotMerchantException(plugin);
         }
         
         VillagerData data = villagerManager.loadVillagerData(villager);

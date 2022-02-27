@@ -1,9 +1,11 @@
 package online.meinkraft.customvillagertrades.exception;
 
-public class EconomyNotAvailableException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public EconomyNotAvailableException() {
-        super("No Vault compatible economy plugin available");
+public class EconomyNotAvailableException extends CustomVillagerTradesException {
+
+    public EconomyNotAvailableException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("economyNotAvailableException"));
     }
 
 }

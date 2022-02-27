@@ -16,7 +16,10 @@ public class ReloadCommand extends PluginCommand {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         this.plugin.onDisable();
         this.plugin.onEnable();
-        sender.sendMessage(ChatColor.GREEN + "Reload complete");
+        sender.sendMessage(
+            ChatColor.GREEN + 
+            plugin.getMessage("pluginReloaded")
+        );
         
         return true;
     }

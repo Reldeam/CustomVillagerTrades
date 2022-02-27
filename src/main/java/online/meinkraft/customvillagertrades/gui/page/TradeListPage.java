@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
-import online.meinkraft.customvillagertrades.gui.GUI;
+import online.meinkraft.customvillagertrades.gui.Editor;
 import online.meinkraft.customvillagertrades.gui.button.AddCustomTradeEntryButton;
 import online.meinkraft.customvillagertrades.gui.button.EditorCancelButton;
 import online.meinkraft.customvillagertrades.gui.button.NextPageButton;
@@ -23,7 +23,7 @@ import online.meinkraft.customvillagertrades.gui.icon.UnmodifiedSlotIcon;
 import online.meinkraft.customvillagertrades.task.UpdateTradeListPageTask;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
-public class TradeListPage extends Page {
+public class TradeListPage extends EditorPage {
 
     private final int COLUMNS_PER_ROW = 9;
 
@@ -38,7 +38,7 @@ public class TradeListPage extends Page {
     private List<CustomTradeEntry> tradeEntries = new ArrayList<>();
 
     public TradeListPage(
-        GUI gui, 
+        Editor editor, 
         String title,
         int pageIndex,
         int totalPages,
@@ -47,7 +47,7 @@ public class TradeListPage extends Page {
         EditorCancelButton cancelButton,
         MoneyButton moneyButton
     ) {
-        super(gui, title);
+        super(editor, title);
 
         this.pageIndex = pageIndex;
         this.totalPages = totalPages;
@@ -69,10 +69,10 @@ public class TradeListPage extends Page {
         else setIcon(47, emptySlot);
 
         // add previous and next page buttons
-        if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton());
+        if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton(this));
         else setIcon(45, emptySlot);
         
-        if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton());
+        if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton(this));
         else setIcon(53, emptySlot);
 
         setIcon(49, new PageIcon(pageIndex + 1, totalPages));
@@ -111,10 +111,10 @@ public class TradeListPage extends Page {
         setIcon(49, new PageIcon(pageIndex + 1, totalPages));
         
         // add previous and next page buttons
-        if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton());
+        if(pageIndex > 0) setButton(45, "prevPage", new PrevPageButton(this));
         else setIcon(45, emptySlot);
         
-        if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton());
+        if(pageIndex < totalPages - 1) setButton(53, "nextPage", new NextPageButton(this));
         else setIcon(53, emptySlot);
     }
 
@@ -154,6 +154,7 @@ public class TradeListPage extends Page {
         if(row > 4) return false;
 
         CustomTradeEntry entry = new CustomTradeEntry(
+            getEditor(),
             row, 
             this, 
             configPage, 

@@ -1,9 +1,11 @@
 package online.meinkraft.customvillagertrades.exception;
 
-public class CustomTradeKeyAlreadyExistsException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public CustomTradeKeyAlreadyExistsException() {
-        super("Custom Trade Key already exists");
+public class CustomTradeKeyAlreadyExistsException extends CustomVillagerTradesException {
+
+    public CustomTradeKeyAlreadyExistsException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("customTradeKeyAlreadyExistsException"));
     }
 
 }

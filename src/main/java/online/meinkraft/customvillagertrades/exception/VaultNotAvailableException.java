@@ -1,9 +1,11 @@
 package online.meinkraft.customvillagertrades.exception;
 
-public class VaultNotAvailableException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public VaultNotAvailableException() {
-        super("Vault dependency not available");
+public class VaultNotAvailableException extends CustomVillagerTradesException {
+
+    public VaultNotAvailableException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("vaultNotAvailableException"));
     }
 
 }

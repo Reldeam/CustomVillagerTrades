@@ -1,4 +1,13 @@
 # ------------------------------------------------------------------------------
+# Choose which language file to use.
+language: en_US
+
+# You can create your own language file using the en_Us.lang file found in the 
+# lang folder as a template. Make sure to save your language file in the lang 
+# folder and change the value of this variable to match the file name of your 
+# .lang file.
+
+# ------------------------------------------------------------------------------
 # Whether a villager can acquire the same trade more than once.
 allowDuplicateTrades: false 
 

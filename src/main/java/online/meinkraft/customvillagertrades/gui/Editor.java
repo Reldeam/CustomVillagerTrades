@@ -39,14 +39,18 @@ public class Editor extends GUI {
         super(plugin);
 
         tradeListPages = new ArrayList<>();
-        configPage = new TradeConfigPage(this, "CVT Editor - Configuration");
+        configPage = new TradeConfigPage(this, getMessage("configurationPageTitle"));
 
         saveButton = new EditorSaveButton(this);
         cancelButton = new EditorCancelButton(this);
 
         // create add trade button
         newButton = new AddCustomTradeEntryButton(
-            new PlayerPrompt(this.getPlugin(), "Enter a unique name for this custom trade")
+            this,
+            new PlayerPrompt(
+                this.getPlugin(), 
+                getMessage("createCustomTradeButtonPrompt")
+            )
         );
 
         newButton.onResponse(response -> {
@@ -79,7 +83,7 @@ public class Editor extends GUI {
 
             TradeListPage page = new TradeListPage(
                 this, 
-                "CVT Editor - Custom Trades",
+                getMessage("customTradeListPageTitle"),
                 pageIndex,
                 totalPages,
                 newButton,
@@ -102,6 +106,11 @@ public class Editor extends GUI {
 
     }
 
+    public String getMessage(String key) {
+        CustomVillagerTrades plugin = (CustomVillagerTrades) getPlugin();
+        return plugin.getMessage(key);
+    }
+
     public TradeListPage addNewCustomTradeEntry(String key) {
 
         int lastTradeListPageIndex = tradeListPages.size() - 1;
@@ -113,7 +122,7 @@ public class Editor extends GUI {
             for(TradeListPage page : tradeListPages) {
                 for(CustomTradeEntry entry : page.getCustomTradeEntries()) {
                     if(entry.getTrade().getKey().equals(key)) {
-                        throw new CustomTradeKeyAlreadyExistsException();
+                        throw new CustomTradeKeyAlreadyExistsException(getPlugin());
                     }
                 }
             }
@@ -144,11 +153,10 @@ public class Editor extends GUI {
 
         }
         catch(Exception exception) {
-            getPlayer().sendMessage(
-                ChatColor.RED +
-                "Failed to create new custom trade: " +
+            getPlayer().sendMessage(String.format(
+                ChatColor.RED + getMessage("createCustomTradeFailed"),
                 exception.getMessage()
-            );
+            ));
         }
 
         return lastTradeListPage;
@@ -162,7 +170,7 @@ public class Editor extends GUI {
 
         TradeListPage newPage = new TradeListPage(
             this, 
-            "CVT Editor - Custom Trades",
+            getMessage("customTradeListPageTitle"),
             newTradeListPageIndex,
             newTotalPages,
             newButton,
@@ -196,10 +204,10 @@ public class Editor extends GUI {
 
     public void save() {
 
-        getPlugin().getLogger().info(
-            getPlayer().getName() + 
-            " has made changes using the in-game editor"
-        );
+        getPlugin().getLogger().info(String.format(
+            getMessage("logEditorChanges"),
+            getPlayer().getName()
+        ));
 
         for(TradeListPage page : tradeListPages) {
             for(CustomTradeEntry entry : page.getCustomTradeEntries()) {
@@ -222,24 +230,23 @@ public class Editor extends GUI {
                     try {
 
                         if(newTrade.getResult() == null) {
-                            throw new ResultNotFoundException();
+                            throw new ResultNotFoundException(getPlugin());
                         }
 
                         if(
                             newTrade.getFirstIngredient() == null &&
                             newTrade.getSecondIngredient() == null 
                         ) {
-                            throw new IngredientsNotFoundException();
+                            throw new IngredientsNotFoundException(getPlugin());
                         }
                     
                     }
                     catch(IngredientsNotFoundException | ResultNotFoundException exception) {
-                        getPlayer().sendMessage(
-                            ChatColor.YELLOW + "Failed to save custom trade " +
-                            ChatColor.AQUA + tradeKey +
-                            ChatColor.YELLOW + ": " +
-                            ChatColor.RED + exception.getMessage()
-                        );
+                        getPlayer().sendMessage(String.format(
+                            getMessage("saveCustomTradeFailed"),
+                            tradeKey,
+                            exception.getMessage()
+                        ));
                         continue;
                     }
 
@@ -281,8 +288,7 @@ public class Editor extends GUI {
         getPlugin().getCustomTradeManager().load();
 
         getPlayer().sendMessage(
-            ChatColor.GREEN + 
-            "Custom trades have been updated"
+            ChatColor.GREEN + getMessage("editorSaved")
         );
 
     }

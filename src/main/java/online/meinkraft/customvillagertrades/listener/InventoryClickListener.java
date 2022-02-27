@@ -38,7 +38,7 @@ public class InventoryClickListener implements Listener {
             Player player = (Player) event.getWhoClicked();
 
             // check for clicking money ingredients in a merchant inventory
-            if(inventoryType == InventoryType.MERCHANT) {
+            if(inventoryType == InventoryType.MERCHANT) { 
 
                 // stop player from clicking money in merchant inventories
                 if(isItemMoney(item) && !plugin.isCurrencyPhysical()) {

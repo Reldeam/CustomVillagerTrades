@@ -54,12 +54,10 @@ public class RemoveMoneyFromHandTask implements Runnable {
             if(plugin.isEconomyEnabled() && player != null) {
                 double totalAmount = money * item.getAmount();
                 plugin.getEconomy().depositPlayer(player, totalAmount);
-                player.sendMessage(
-                    ChatColor.GREEN +
-                    "Deposited " +
-                    plugin.getEconomy().format(totalAmount) +
-                    " into your account"
-                );
+                player.sendMessage(String.format(
+                    ChatColor.GREEN + plugin.getMessage("depositedMoney"),
+                    plugin.getEconomy().format(totalAmount)
+                ));
             }
             
             return true;

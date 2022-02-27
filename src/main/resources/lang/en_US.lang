@@ -1,0 +1,283 @@
+# This file contains all of the messages that appear on the console and in-game.
+
+# You can create your own language file by using this file as a template and
+# replacing all of the values. Make sure you keep the %s and %d placeholders as
+# they get replaced with important information when sending the message.
+
+# Under each message that has placeholders I will list what the placeholders are
+# in order of appearance.
+
+# Once you have created your language file you can use it by changing the
+# language variable in the config.yml to point the the file you created.
+
+pluginUpdateAvailable: "There is a new %s update available (%s → %s)"
+# update type (EXPERIMENTAL, SNAPSHOT, RELEASE)
+# old version
+# new version
+
+getPluginUpdate: "Visit: §b%s"
+# download link
+
+unreleasedPluginVersion: "You are running an unreleased version of this plugin (%s)"
+# unreleased version
+
+uptodatePluginVersion: "This plugin is up-to-date (%s)"
+# current version
+
+unknownPluginUpdateStatus: "Unable to get the update status of this plugin"
+pluginAlreadyEnabled: "Plugin already enabled"
+
+invalidDisabledProfession: "Invalid profession given (%s) in disableVanillaTradesForProfessions"
+# invalid profession
+
+noEconomyProvider: |
+  No economy provider (money items will not work as expect)!
+  If you do not have Vault and a compatible economy plugin, ensure enableEconomy is set to false in the config.yml
+
+failedToReadTrades: "Failed to read trades.yml: %s"
+# error message
+
+failedToSaveTrades: "Failed to save trades.yml: %s"
+# error message
+
+pluginDisabled: "Plugin disabled"
+pluginEnabled: "Plugin enabled"
+pluginReloaded: "Reload complete"
+playerOnlyCommand: "You must be a player to use this command"
+
+noRadiusProvided: "No radius provided: It must be <all> or <number>"
+invalidRadiusProvided: "Invalid radius argument: It must be <all> or <number>"
+
+invalidRerollTarget: "%s tried to reroll the custom trades of an entity that is not a villager (%s)"
+# player
+# invalid reroll target entity
+
+rerolledAllTrades: "Rerolled all trades for %d merchants on %s"
+# number of merchants that had all trades rerolled
+# world
+
+rerolledCustomTrades: "Rerolled custom trades for %d merchants on %s"
+# number of merchants that had custom trades rerolled
+# world
+
+invalidRestoreTarget: "%s tried to restore the vanilla trades of an entity that is not a villager (%s)"
+# player
+# invalid restore target entity
+
+restoredVanillaTrades: "Restored all Vanilla Minecraft trades for %d merchants on %s"
+# number of merchants that had vanilla trades restored
+# world
+
+restoredVanillaTradesForVillager: "Restored vanilla trades for this villager"
+rerolledAllTradesForVillager: "Rerolled all trades for this villager"
+rerolledCustomTradesForVillager: "Rerolled custom trades for this villager"
+
+withdrewMoney: "Withdrew %s from your account"
+# amount withdrawn (pre-formatted)
+
+depositedMoney: "Deposited %s into your account"
+# amount deposited (pre-formatted)
+
+InsufficientFunds: "You have insufficient funds to make this trade"
+economyDisabled: "Economy is disabled - nag a server moderator about it"
+
+skippingInvalidCustomTrade: "Skipping invalid custom trade: %s"
+# invalid custom trade
+
+skippingInvalidCustomTradeDetailed: "§eSkipping invalid custom trade §b%s §e(%s)"
+# invalid trade location
+# error message
+
+skippingInvalidCustomTradeMalformed: "§eSkipping invalid custom trade §b%s §e(malformed trade; check variable types and line indents)"
+# invalid trade location
+
+skippingInvalidCustomTradeEconomy: "§eSkipping invalid custom trade §b%s §e(trade has a money component but economy is not enabled)"
+# invalid trade location
+
+skippingInvalidCustomNoIngredients: "§eSkipping invalid custom trade §b%s §e(ingredients not found)"
+# invalid trade location
+
+skippingInvalidCustomNoResult: "§eSkipping invalid custom trade §b%s §e(result not found)"
+# invalid trade location
+
+customTradeAlreadyExists: |
+  "§eTrade already exists"
+  "§eReplacing: §b%s"
+  "§eWith: §b%s"
+# previous custom trade
+# new custom trade
+
+loadedCustomTrades: "Loaded %s%d out of §a%d custom trades"
+# color success indicator
+# trades loaded
+# total trades
+
+villagerForgotTrade: "§eThe villager no longer trades §b%s"
+# forgotten trade
+
+moneyLore1: "Hover over this in your inventory and"
+moneyLore2: "press §lDROP§r (default §lQ§r) to deposit"
+
+#-------------------------------------------------------------------------------
+# In-Game Editor (GUI)
+
+configurationPageTitle: "CVT Editor - Configuration"
+customTradeListPageTitle: "CVT Editor - Custom Trades"
+
+createCustomTradeButtonPrompt: "Enter a unique name for this custom trade"
+createCustomTradeFailed: "Failed to create new custom trade: %s"
+# failure reason
+
+saveCustomTradeFailed: "§eFailed to save custom trade §b%s§e: §c%s"
+# custom trade key
+# failure reason
+
+logEditorChanges: "%s has made changes using the in-game editor"
+# player
+
+editorSaved: "Custom trades have been updated"
+
+maxUsesIconDescription: |
+  "The number of times this trade can be made before" 
+  "the villager needs to work to refresh the trade."
+maxUsesIconPossibleValues: |
+  "A positive whole number (e.g. 4)"
+
+priceMultiplierIconDescription: |
+  "Effects how much the cost of the trade changes"
+  "depending on factors such as how much the villager"
+  "likes or hates you, as well as how much you have"
+  "traded with them."
+priceMultiplierIconPossibleValues: |
+  "A positive number (e.g. 0.2)"
+
+villagerExperienceIconDescription: |
+  "The amount of experience the villager and player"
+  "will recieve. (If giveExperienceToPlayer is set"
+  "To FALSE then only the villager will recieve this"
+  "experience."
+villagerExperienceIconPossibleValues: |
+  "A positive whole number (e.g. 4)"
+
+giveExperienceToPlayerIconDescription: |
+  "Whether the player recieves experience when making"
+  "this trade or not."
+giveExperienceToPlayerIconPossibleValues: |
+  "TRUE or FALSE"
+
+giveExperienceIllegalArgumentException: "value must be TRUE or FALSE"
+
+chanceIconDescription: |
+  "The chance that the trade will be acquired when"
+  "all other requirements are met. This chance will"
+  "be weighted with all of the other possible custom"
+  "trades the villager could get."
+chanceIconPossibleValues: |
+  "TRUE or FALSE"
+
+professionsIconDescription: |
+  "The required proffessions a villager needs to"
+  "acquire this trade. No professions means that"
+  "all professions could acquire this trade."
+professionsIconPossibleValues: |
+  "ARMORER, BUTCHER, CARTOGRAPHER,"
+  "CLERIC, FARMER, FISHERMAN, FLETCHER, LEATHERWORKER,"
+  "LIBRARIAN, MASON, SHEPHERD, TOOLSMITH, WEAPONSMITH"
+
+levelsIconDescription: |
+  "The levels at which a trader could acquire"
+  "this trade."
+levelsIconPossibleValues: |
+  "1, 2, 3, 4, 5"
+
+villagerTypesIconDescription: |
+  "The villager types that a villager needs to be"
+  "to acquire this trade. No types means that all"
+  "types could acquire this trade."
+villagerTypesIconPossibleValues: |
+  "DESERT, JUNGLE, PLAINS,"
+  "SAVANNA, SNOW, SWAMP, TAIGA"
+
+biomesIconDescription: |
+  "The biome(s) the villager must be in to be able"
+  "to acquire this trade. No biome(s) means that the"
+  "villager could acquire the trade in any biome."
+biomesIconPossibleValues: |
+  "You can find a full list here:"
+  "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html"
+
+worldsIconDescription: |
+  "The worlds(s) the villager must be in to be able"
+  "to acquire this trade (CASE SENSITIVE). No world(s) means that"
+  "the villager could acquire the trade in any world."
+worldsIconPossibleValues: |
+  "e.g. world, world_nether, world_the_end, etc."
+
+changeValueFailed: "Failed to edit value: %s"
+
+maxUsesButtonLabel: "Edit maxUses"
+maxUsesButtonPrompt: "Enter a new value for maxUses"
+
+priceMultiplierButtonLabel: "Edit priceMultiplier"
+priceMultiplierButtonPrompt: "Enter a new value for priceMultiplier"
+
+villagerExperienceButtonLabel: "Edit villagerExperience"
+villagerExperienceButtonPrompt: "Enter a new value for villagerExperience"
+
+giveExperienceButtonLabel: "Edit giveExperience"
+giveExperienceButtonPrompt: "Enter a new value for giveExperience"
+
+chanceButtonLabel: "Edit chance"
+chanceButtonPrompt: "Enter a new value for chance"
+
+addProfessionButtonLabel: "Add profession"
+addProfessionButtonPrompt: "Enter a profession to add"
+removeProfessionButtonLabel: "Remove profession"
+removeProfessionButtonPrompt: "Enter a profession to remove"
+
+addLevelButtonLabel: "Add level"
+addLevelButtonPrompt: "Enter a level to add"
+removeLevelButtonLabel: "Remove level"
+removeLevelButtonPrompt: "Enter a level to remove"
+
+addVillagerTypeButtonLabel: "Add villager type"
+addVillagerTypeButtonPrompt: "Enter a villager type to add"
+removeVillagerTypeButtonLabel: "Remove villager type"
+removeVillagerTypeButtonPrompt: "Enter a villager type to remove"
+
+addBiomeButtonLabel: "Add biome"
+addBiomeButtonPrompt: "Enter a biome to add"
+removeBiomeButtonLabel: "Remove biome"
+removeBiomeButtonPrompt: "Enter a biome to remove"
+
+addWorldButtonLabel: "Add world"
+addWorldButtonPrompt: "Enter a world to add"
+removeWorldButtonLabel: "Remove world"
+removeWorldButtonPrompt: "Enter a world to remove"
+
+nextPageButtonLabel: "Next Page"
+previousPageButtonLabel: "Previous Page"
+
+createMoneyButtonLabel: "Create Money"
+createMoneyButtonPrompt: "Enter an amount of money"
+createMoneyNumberFormatException: "Invalid Input - The amount must be a number"
+createMoneyEconomyDisabledException: "Economy is not enabled"
+
+saveButtonLabel: "§aSave Changes"
+discardButtonLabel: "§cDiscard Changes"
+backButtonLabel: "Back"
+addCustomTradeButtonLabel: "Add New Custom Trade"
+
+configureCustomTradeButtonLabel: "Configure Custom Trade"
+deleteCustomTradeButtonLabel: "Delete Custom Trade"
+
+blueprintButtonLabel: "Get Blueprint"
+blueprintButtonDescription: |
+  "RIGHT-CLICK on a villager to add this custom trade"
+  ""
+  "RESETTING / REROLLING the villager's trades will turn it into a"
+  "vanilla trade (i.e. The trade will stop being updated by changes"
+  "made to the custom trade definition)."
+
+#-------------------------------------------------------------------------------
+# Exceptions

@@ -15,7 +15,10 @@ public class EnableCommand extends PluginCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         this.plugin.onEnable();
-        sender.sendMessage(ChatColor.GREEN + "Plugin enabled");
+        sender.sendMessage(
+            ChatColor.GREEN + 
+            plugin.getMessage("pluginEnabled")
+        );
 
         return true;
     }

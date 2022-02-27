@@ -26,7 +26,7 @@ public class MoneyButton extends Button implements PromptListener {
         String currencyPrefix, 
         String currencySuffix
     ) {
-        super(material, "Create Money");
+        super(material, plugin.getMessage("createMoneyButtonLabel"));
         this.plugin = plugin;
     }
 
@@ -38,7 +38,7 @@ public class MoneyButton extends Button implements PromptListener {
 
         PlayerPrompt prompt = new PlayerPrompt(
             plugin, 
-            ChatColor.GREEN + "Enter an amount of money"
+            ChatColor.GREEN + plugin.getMessage("createMoneyButtonPrompt")
         );
 
         page.getGUI().close();
@@ -59,9 +59,9 @@ public class MoneyButton extends Button implements PromptListener {
 
         }
         catch(NumberFormatException exception) {
-            player.sendMessage(ChatColor.RED + "Invalid Input - The amount must be a number");
+            player.sendMessage(ChatColor.RED + plugin.getMessage("createMoneyNumberFormatException"));
         } catch (EconomyNotEnabledException e) {
-            player.sendMessage(ChatColor.RED + "Economy is not enabled");
+            player.sendMessage(ChatColor.RED + plugin.getMessage("createMoneyEconomyDisabledException"));
         }
 
         page.getGUI().openPage(page, player);

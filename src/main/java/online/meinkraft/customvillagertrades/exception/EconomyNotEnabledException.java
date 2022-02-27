@@ -1,10 +1,12 @@
 
 package online.meinkraft.customvillagertrades.exception;
 
-public class EconomyNotEnabledException extends Exception {
+import online.meinkraft.customvillagertrades.CustomVillagerTrades;
 
-    public EconomyNotEnabledException() {
-        super("Economy is disabled");
+public class EconomyNotEnabledException extends CustomVillagerTradesException {
+
+    public EconomyNotEnabledException(CustomVillagerTrades plugin) {
+        super(plugin, plugin.getMessage("economyNotEnabledException"));
     }
 
 }

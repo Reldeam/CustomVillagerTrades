@@ -48,10 +48,10 @@ public final class CustomTradeLoader {
             Object dataItem = data.get(tradeName);
             // check item is valid before proceeding
             if(!(dataItem instanceof MemorySection)) {
-                logger.warning(
-                    "Skipping invalid custom trade: " + 
+                logger.warning(String.format(
+                    plugin.getMessage("skippingInvalidCustomTrade"),
                     dataItem.toString()
-                );
+                ));
                 continue;
             }
 
@@ -98,7 +98,7 @@ public final class CustomTradeLoader {
                     MemorySection resultSection = (MemorySection) tradeSection.get("result");
 
                     if(resultSection == null) {
-                        throw new ResultNotFoundException();
+                        throw new ResultNotFoundException(plugin);
                     }
 
                     result = CustomTradeLoader.toItemStack(
@@ -113,7 +113,7 @@ public final class CustomTradeLoader {
 
                     // ingredients
                     if(ingredients == null || ingredients.size() < 1) {
-                        throw new IngredientsNotFoundException();
+                        throw new IngredientsNotFoundException(plugin);
                     }
 
                     firstIngredient = ingredients.get(0);
@@ -125,56 +125,36 @@ public final class CustomTradeLoader {
                 
             }
             catch(IllegalArgumentException exception) {
-                logger.warning(
-                    ChatColor.YELLOW +
-                    "Skipping invalid custom trade " +
-                    ChatColor.AQUA +
-                    tradeSection.getCurrentPath() +
-                    ChatColor.YELLOW +
-                    " (" + exception.getMessage() + ")"
-                );
+                logger.warning(String.format(
+                    plugin.getMessage("skippingInvalidCustomTradeDetailed"),
+                    tradeSection.getCurrentPath(),
+                    exception.getMessage()
+                ));
                 continue;
             }
             catch(ClassCastException exception) {
-                logger.warning(
-                    ChatColor.YELLOW +
-                    "Skipping invalid custom trade " +
-                    ChatColor.AQUA +
-                    tradeSection.getCurrentPath() +
-                    ChatColor.YELLOW +
-                    " (malformed trade; check variable types and line indents)"
-                );
+                logger.warning(String.format(
+                    plugin.getMessage("skippingInvalidCustomTradeMalformed"),
+                    tradeSection.getCurrentPath()
+                ));
                 continue;
             } catch (EconomyNotEnabledException exception) {
-                logger.warning(
-                    ChatColor.YELLOW +
-                    "Skipping invalid custom trade " +
-                    ChatColor.AQUA +
-                    tradeSection.getCurrentPath() +
-                    ChatColor.YELLOW +
-                    " (trade has a money component but economy is not enabled)"
-                    
-                );
+                logger.warning(String.format(
+                    plugin.getMessage("skippingInvalidCustomTradeEconomy"),
+                    tradeSection.getCurrentPath()
+                ));
                 continue;
             } catch (IngredientsNotFoundException exception) {
-                logger.warning(
-                    ChatColor.YELLOW +
-                    "Skipping invalid custom trade " +
-                    ChatColor.AQUA +
-                    tradeSection.getCurrentPath() +
-                    ChatColor.YELLOW +
-                    " (ingredients not found)"
-                );
+                logger.warning(String.format(
+                    plugin.getMessage("skippingInvalidCustomNoIngredients"),
+                    tradeSection.getCurrentPath()
+                ));
                 continue;
             } catch (ResultNotFoundException e) {
-                logger.warning(
-                    ChatColor.YELLOW +
-                    "Skipping invalid custom trade " +
-                    ChatColor.AQUA +
-                    tradeSection.getCurrentPath() +
-                    ChatColor.YELLOW +
-                    " (result not found)"
-                );
+                logger.warning(String.format(
+                    plugin.getMessage("skippingInvalidCustomNoResult"),
+                    tradeSection.getCurrentPath()
+                ));
                 continue;
             }
 
@@ -199,14 +179,11 @@ public final class CustomTradeLoader {
 
             if(trades.containsKey(tradeName)) {
                 CustomTrade duplicateTrade = trades.get(tradeName);
-                logger.warning(
-                    ChatColor.YELLOW +
-                    "Trade already exists\n" +
-                    "Replacing: " + 
-                    ChatColor.AQUA + duplicateTrade.toString() + "\n" +
-                    ChatColor.YELLOW + "With: " + 
-                    ChatColor.AQUA + trade.toString()
-                );
+                logger.warning(String.format(
+                    plugin.getMessage("customTradeAlreadyExists"),
+                    duplicateTrade.toString(),
+                    trade.toString()
+                ));
             }
 
             trades.put(tradeName, trade);
@@ -218,13 +195,12 @@ public final class CustomTradeLoader {
         if(tradesLoaded == tradeNames.size()) loadedColor = ChatColor.GREEN;
         else if(tradesLoaded >= tradeNames.size() / 2) loadedColor = ChatColor.YELLOW;
 
-        logger.info(
-            "Loaded " + 
-            loadedColor + tradesLoaded + 
-            ChatColor.RESET +" out of " + 
-            ChatColor.GREEN + tradeNames.size() + 
-            ChatColor.RESET + " custom trades"
-        );
+        logger.info(String.format(
+            plugin.getMessage("loadedCustomTrades"),
+            loadedColor,
+            tradesLoaded,
+            tradeNames.size()
+        ));
 
         return trades;
 
@@ -272,7 +248,7 @@ public final class CustomTradeLoader {
         if(map.containsKey("money")) {
 
             if(!plugin.isEconomyEnabled()) {
-                throw new EconomyNotEnabledException();
+                throw new EconomyNotEnabledException(plugin);
             }
 
             Double amount;

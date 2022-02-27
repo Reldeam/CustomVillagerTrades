@@ -10,7 +10,7 @@ import org.bukkit.entity.Villager;
 
 import net.md_5.bungee.api.ChatColor;
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
-import online.meinkraft.customvillagertrades.gui.GUI;
+import online.meinkraft.customvillagertrades.gui.Editor;
 import online.meinkraft.customvillagertrades.gui.button.ConfigBackButton;
 import online.meinkraft.customvillagertrades.gui.button.TextInputButton;
 import online.meinkraft.customvillagertrades.gui.icon.DisabledSlotIcon;
@@ -21,7 +21,7 @@ import online.meinkraft.customvillagertrades.gui.icon.UnmodifiedSlotIcon;
 import online.meinkraft.customvillagertrades.prompt.PlayerPrompt;
 import online.meinkraft.customvillagertrades.trade.CustomTrade;
 
-public class TradeConfigPage extends Page {
+public class TradeConfigPage extends EditorPage {
 
     private final DisabledSlotIcon disabledSlot;
     private final UnmodifiedSlotIcon unmodifiedSlot;
@@ -34,9 +34,9 @@ public class TradeConfigPage extends Page {
 
     private CustomTradeEntry tradeEntry;
 
-    public TradeConfigPage(GUI gui, String title) {
+    public TradeConfigPage(Editor editor, String title) {
 
-        super(gui, title);
+        super(editor, title);
 
         disabledSlot = new DisabledSlotIcon();
         unmodifiedSlot = new UnmodifiedSlotIcon();
@@ -50,133 +50,72 @@ public class TradeConfigPage extends Page {
         
         icons.put("maxUses", new PropertyIcon(
             "maxUses", 
-            Arrays.asList(new String[]{
-                "The number of times this trade can be made before",
-                "the villager needs to work to refresh the trade."
-            }),
-            Arrays.asList(new String[]{
-                "A positive whole number (e.g. 4)"
-            })
+            editor.getMessage("maxUsesIconDescription").lines().toList(),
+            editor.getMessage("maxUsesIconPossibleValues").lines().toList()
         ));
         
         icons.put("priceMultiplier", new PropertyIcon(
             "priceMultiplier", 
-            Arrays.asList(new String[]{
-                "Effects how much the cost of the trade changes",
-                "depending on factors such as how much the villager",
-                "likes or hates you, as well as how much you have",
-                "traded with them."
-            }),
-            Arrays.asList(new String[]{ 
-                "A positive number (e.g. 0.2)"
-            })
+            editor.getMessage("priceMultiplierIconDescription").lines().toList(),
+            editor.getMessage("priceMultiplierIconPossibleValues").lines().toList()
         ));
         
         icons.put("villagerExperience", new PropertyIcon(
             "villagerExperience", 
-            Arrays.asList(new String[]{
-                "The amount of experience the villager and player",
-                "will recieve. (If giveExperienceToPlayer is set",
-                "To FALSE then only the villager will recieve this",
-                "experience."
-            }),
-            Arrays.asList(new String[]{
-                "A positive whole number (e.g. 4)"
-            })
+            editor.getMessage("villagerExperienceIconDescription").lines().toList(),
+            editor.getMessage("villagerExperienceIconPossibleValues").lines().toList()
         ));
         
         icons.put("giveExperienceToPlayer", new PropertyIcon(
             "giveExperienceToPlayer",
-            Arrays.asList(new String[]{
-                "Whether the player recieves experience when making",
-                "this trade or not."
-            }), 
-            Arrays.asList(new String[]{
-                "TRUE or FALSE"
-            })
+            editor.getMessage("giveExperienceToPlayerIconDescription").lines().toList(),
+            editor.getMessage("giveExperienceToPlayerIconPossibleValues").lines().toList()
         ));
         
         icons.put("chance", new PropertyIcon(
             "chance",
-            Arrays.asList(new String[]{
-                "The chance that the trade will be acquired when",
-                "all other requirements are met. This chance will",
-                "be weighted with all of the other possible custom",
-                "trades the villager could get."
-            }), 
-            Arrays.asList(new String[]{
-                "TRUE or FALSE"
-            })
+            editor.getMessage("chanceIconDescription").lines().toList(),
+            editor.getMessage("chanceIconPossibleValues").lines().toList()
         ));
         
         icons.put("professions", new PropertyIcon(
             "professions",
-            Arrays.asList(new String[]{
-                "The required proffessions a villager needs to",
-                "acquire this trade. No professions means that",
-                "all professions could acquire this trade."
-            }), 
-            Arrays.asList(new String[]{
-                "ARMORER, BUTCHER, CARTOGRAPHER,",
-                "CLERIC, FARMER, FISHERMAN, FLETCHER, LEATHERWORKER,",
-                "LIBRARIAN, MASON, SHEPHERD, TOOLSMITH, WEAPONSMITH"
-            })
+            editor.getMessage("professionsIconDescription").lines().toList(),
+            editor.getMessage("professionsIconPossibleValues").lines().toList()
         ));
         
         icons.put("levels", new PropertyIcon(
             "levels",
-            Arrays.asList(new String[]{
-                "The levels at which a trader could acquire",
-                "this trade."
-            }), 
-            Arrays.asList(new String[]{
-                "1, 2, 3, 4, 5"
-            })
+            editor.getMessage("levelsIconDescription").lines().toList(),
+            editor.getMessage("levelsIconPossibleValues").lines().toList()
         ));
         
         icons.put("villagerTypes", new PropertyIcon(
             "villagerTypes",
-            Arrays.asList(new String[]{
-                "The villager types that a villager needs to be",
-                "to acquire this trade. No types means that all",
-                "types could acquire this trade."
-            }), 
-            Arrays.asList(new String[]{
-                "DESERT, JUNGLE, PLAINS,",
-                "SAVANNA, SNOW, SWAMP, TAIGA"
-            })
+            editor.getMessage("villagerTypesIconDescription").lines().toList(),
+            editor.getMessage("villagerTypesIconPossibleValues").lines().toList()
         ));
         
         icons.put("biomes", new PropertyIcon(
             "biomes",
-            Arrays.asList(new String[]{
-                "The biome(s) the villager must be in to be able",
-                "to acquire this trade. No biome(s) means that the",
-                "villager could acquire the trade in any biome."
-            }),  
-            Arrays.asList(new String[]{
-                "You can find a full list here:",
-                "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Biome.html"
-            })
+            editor.getMessage("biomesIconDescription").lines().toList(),
+            editor.getMessage("biomesIconPossibleValues").lines().toList()
         ));
 
         icons.put("worlds", new PropertyIcon(
             "worlds",
-            Arrays.asList(new String[]{
-                "The worlds(s) the villager must be in to be able",
-                "to acquire this trade (CASE SENSITIVE). No world(s) means that",
-                "the villager could acquire the trade in any world."
-            }),  
-            Arrays.asList(new String[]{
-                "e.g. world, world_nether, world_the_end, etc."
-            })
+            editor.getMessage("worldsIconDescription").lines().toList(),
+            editor.getMessage("worldsIconPossibleValues").lines().toList()
         ));
 
         // create text prompts
 
         TextInputButton maxUsesPrompt = new TextInputButton(
-            "Edit maxUses", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a new value for maxUses")
+            editor.getMessage("maxUsesButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("maxUsesButtonPrompt")
+            )
         );
         maxUsesPrompt.onResponse(response -> {
             try {
@@ -191,18 +130,21 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.MAX_USES_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton priceMultiplierPrompt = new TextInputButton(
-            "Edit priceMultiplier", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a new value for priceMultiplier")
+            editor.getMessage("priceMultiplierButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("priceMultiplierButtonPrompt")
+            )
         );
         priceMultiplierPrompt.onResponse(response -> {
             try {
@@ -217,18 +159,21 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.PRICE_MULTIPLIER_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton villagerExperiencePrompt = new TextInputButton(
-            "Edit villagerExperience", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a new value for villagerExperience")
+            editor.getMessage("villagerExperienceButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("villagerExperienceButtonPrompt")
+            )
         );
         villagerExperiencePrompt.onResponse(response -> {
             try {
@@ -243,18 +188,21 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.VILLAGER_EXPERIENCE_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton giveExperienceToPlayerPrompt = new TextInputButton(
-            "Edit giveExperienceToPlayer", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a new value for giveExperienceToPlayer")
+            editor.getMessage("giveExperienceButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("giveExperienceButtonPrompt")
+            )
         );
         giveExperienceToPlayerPrompt.onResponse(response -> {
             try {
@@ -263,7 +211,9 @@ public class TradeConfigPage extends Page {
                     !response.toUpperCase().equals("TRUE") ||
                     !response.toUpperCase().equals("FALSE")
                 ) {
-                    throw new IllegalArgumentException("value must be TRUE or FALSE");
+                    throw new IllegalArgumentException(
+                        editor.getMessage("giveExperienceIllegalArgumentException")
+                    );
                 }
 
                 Boolean giveExperienceToPlayer = Boolean.parseBoolean(response);
@@ -277,18 +227,21 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.GIVE_EXPERIENCE_TO_PLAYER_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton chancePrompt = new TextInputButton(
-            "Edit chance", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a new value for chance")
+            editor.getMessage("chanceButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("chanceButtonPrompt")
+            )
         );
         chancePrompt.onResponse(response -> {
             try {
@@ -303,21 +256,24 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.CHANCE_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         // create add prompts
 
         TextInputButton addProfessionPrompt = new TextInputButton(
             Material.AXOLOTL_BUCKET,
-            "Add profession", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a profession to add")
+            editor.getMessage("addProfessionButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("addProfessionButtonPrompt")
+            )
         );
         addProfessionPrompt.onResponse(response -> {
             try {
@@ -332,19 +288,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.PROFESSIONS_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton removeProfessionPrompt = new TextInputButton(
             Material.WATER_BUCKET,
-            "Remove profession", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a profession to remove")
+            editor.getMessage("removeProfessionButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("removeProfessionButtonPrompt")
+            )
         );
         removeProfessionPrompt.onResponse(response -> {
             try {
@@ -359,19 +318,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.PROFESSIONS_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton addLevelPrompt = new TextInputButton(
             Material.AXOLOTL_BUCKET,
-            "Add level", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a level to add")
+            editor.getMessage("addLevelButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("addLevelButtonPrompt")
+            )
         );
         addLevelPrompt.onResponse(response -> {
             try {
@@ -386,19 +348,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.LEVELS_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton removeLevelPrompt = new TextInputButton(
             Material.WATER_BUCKET,
-            "Remove level", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a level to remove")
+            editor.getMessage("removeLevelButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("removeLevelButtonPrompt")
+            )
         );
         removeLevelPrompt.onResponse(response -> {
             try {
@@ -413,19 +378,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.LEVELS_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton addVillagerTypePrompt = new TextInputButton(
             Material.AXOLOTL_BUCKET,
-            "Add villager type", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a villager type to add")
+            editor.getMessage("addVillagerTypeButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("addVillagerTypeButtonPrompt")
+            )
         );
         addVillagerTypePrompt.onResponse(response -> {
             try {
@@ -440,19 +408,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.VILLAGER_TYPES_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton removeVillagerTypePrompt = new TextInputButton(
             Material.WATER_BUCKET,
-            "Remove villager type", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a villager type to remove")
+            editor.getMessage("removeVillagerTypeButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("removeVillagerTypeButtonPrompt")
+            )
         );
         removeVillagerTypePrompt.onResponse(response -> {
             try {
@@ -467,19 +438,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.VILLAGER_TYPES_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton addBiomePrompt = new TextInputButton(
             Material.AXOLOTL_BUCKET,
-            "Add biome", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a biome to add")
+            editor.getMessage("addBiomeButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("addBiomeButtonPrompt")
+            )
         );
         addBiomePrompt.onResponse(response -> {
             try {
@@ -494,19 +468,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.BIOMES_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton removeBiomePrompt = new TextInputButton(
             Material.WATER_BUCKET,
-            "Remove biome", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a biome to remove")
+            editor.getMessage("removeBiomeButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("removeBiomeButtonPrompt")
+            )
         );
         removeBiomePrompt.onResponse(response -> {
             try {
@@ -521,19 +498,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.BIOMES_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton addWorldPrompt = new TextInputButton(
             Material.AXOLOTL_BUCKET,
-            "Add world", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a world to add")
+            editor.getMessage("addWorldButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("addWorldButtonPrompt")
+            )
         );
         addWorldPrompt.onResponse(response -> {
             try {
@@ -547,19 +527,22 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.WORLDS_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         TextInputButton removeWorldPrompt = new TextInputButton(
             Material.WATER_BUCKET,
-            "Remove world", 
-            new PlayerPrompt(gui.getPlugin(), "Enter a world to remove")
+            editor.getMessage("removeWorldButtonLabel"), 
+            new PlayerPrompt(
+                editor.getPlugin(), 
+                editor.getMessage("removeWorldButtonPrompt")
+            )
         );
         removeWorldPrompt.onResponse(response -> {
             try {
@@ -573,13 +556,13 @@ public class TradeConfigPage extends Page {
                 else setIcon(Slot.WORLDS_MODIFY_INDICATOR.index(), unmodifiedSlot);
             }
             catch(IllegalArgumentException exception) {
-                gui.getPlayer().sendMessage(
-                    ChatColor.RED + "Failed to edit value: " +
+                editor.getPlayer().sendMessage(String.format(
+                    ChatColor.RED + editor.getMessage("changeValueFailed"),
                     exception.getMessage()
-                );
+                ));
             }  
 
-            gui.openPage(this, gui.getPlayer());
+            editor.openPage(this, editor.getPlayer());
         });
 
         // place prompts

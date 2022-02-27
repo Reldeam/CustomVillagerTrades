@@ -12,7 +12,7 @@ public class EditorCancelButton extends Button {
     private final Editor editor;
 
     public EditorCancelButton(Editor editor) {
-        super(Material.BLAZE_POWDER, "§cDiscard Changes");
+        super(Material.BLAZE_POWDER, editor.getMessage("discardButtonLabel"));
         this.editor = editor;
     }
 

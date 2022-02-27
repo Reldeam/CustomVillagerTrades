@@ -97,7 +97,7 @@ public class PlayerInteractEntityListener implements Listener {
         ) {
             tradeManager.restoreVanillaTrades((Villager) villager);
             event.getPlayer().sendMessage(
-                ChatColor.GREEN + "Restored vanilla trades for this villager"
+                ChatColor.GREEN + plugin.getMessage("restoredVanillaTradesForVillager")
             );
         }
         else if(
@@ -107,12 +107,12 @@ public class PlayerInteractEntityListener implements Listener {
             if(tradeManager.rerollCustomTrades(villager)) {
                 if(!plugin.isVanillaTradesAllowed()) {
                     event.getPlayer().sendMessage(
-                        ChatColor.GREEN + "Rerolled all trades for this villager"
+                        ChatColor.GREEN + plugin.getMessage("rerolledAllTradesForVillager")
                     );
                 }
                 else {
                     event.getPlayer().sendMessage(
-                        ChatColor.GREEN + "Rerolled custom trades for this villager"
+                        ChatColor.GREEN + plugin.getMessage("rerolledCustomTradesForVillager")
                     );
                 }
             }

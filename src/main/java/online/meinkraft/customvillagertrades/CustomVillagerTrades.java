@@ -47,6 +47,9 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     private File tradesConfigFile;
     private FileConfiguration tradesConfig;
 
+    private File languageFile;
+    private FileConfiguration languageConfig;
+
     //private Map<UUID, VillagerData> villagers = new HashMap<>();
     
     private boolean loaded = false;
@@ -92,6 +95,12 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     @Override
     public void onLoad() {
 
+        // create config file if it doesn't exist
+        createConfig();
+
+        // load the language config
+        loadLanguageConfig();
+
         // register ConfigurationSerializable classes
         ConfigurationSerialization.registerClass(VillagerData.class);
         ConfigurationSerialization.registerClass(VanillaTrade.class);
@@ -105,55 +114,44 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
             case SNAPSHOT:
             case EXPERIMENTAL:
                 if(updateChecker.isUpdateAvailable()) {
-                    getLogger().info(
-                        ChatColor.MAGIC +
-                        "There is a new " + 
-                        updateChecker.getUpdateType().name() + 
-                        " update available (" +
-                        updateChecker.getCurrentVersion() +
-                        " → " +
-                        updateChecker.getLatestVersion() +
-                        ")"
-                    );
-                    getLogger().info(
-                        ChatColor.MAGIC + "Visit: " + 
-                        ChatColor.BLUE + updateChecker.getResourceURL()
-                    );
+                    getLogger().info(String.format(
+                        ChatColor.MAGIC + getMessage("pluginUpdateAvailable"),
+                        updateChecker.getUpdateType().name(),
+                        updateChecker.getCurrentVersion(),
+                        updateChecker.getLatestVersion()
+                    ));
+                    getLogger().info(String.format(
+                        ChatColor.MAGIC + getMessage("getPluginUpdate"),
+                        updateChecker.getResourceURL()
+                    ));
                 }
                 else {
-                    getLogger().info(
-                        ChatColor.MAGIC +
-                        "You are running an unreleased version of this plugin " +
-                        "(" + updateChecker.getCurrentVersion() + ")"
-                    );
+                    getLogger().info(String.format(
+                        ChatColor.MAGIC + getMessage("unreleasedPluginVersion"),
+                        updateChecker.getCurrentVersion()
+                    ));
                 }
                 break;
             case CURRENT:
-                getLogger().info(
-                    "This plugin is up-to-date (" +
-                    updateChecker.getCurrentVersion() +
-                    ")"
-                );
+                getLogger().info(String.format(
+                    getMessage("uptodatePluginVersion"),
+                    updateChecker.getCurrentVersion()
+                ));
                 break;
             default:
-                getLogger().warning(
-                    "Unable to get the update status of this plugin"
-                );
+                getLogger().warning(getMessage("unknownPluginUpdateStatus"));
         }
 
     }
 
     @Override
     public void onEnable() {
-        
+
         // ensure plugin doesn't get enabled more than once
         if(loaded) {
-            getLogger().warning("Plugin already enabled");
+            getLogger().warning(getMessage("pluginAlreadyEnabled"));
             return;
         }
-
-        // create config file if it doesn't exist
-        createConfig();
 
         // set config values
         isDuplicateTradesAllowed = getConfig().getBoolean("allowDuplicateTrades");
@@ -173,11 +171,10 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
             Villager.Profession profession = Villager.Profession.valueOf(professionString);
             if(profession != null) vanillaDisabledProfessions.add(profession);
             else {
-                getLogger().warning(
-                    "Invalid profession given (" +
-                    professionString + 
-                    ") in disableVanillaTradesForProfessions"
-                );
+                getLogger().warning(String.format(
+                    getMessage("invalidDisabledProfession"),
+                    professionString
+                ));
             }
         }
         
@@ -189,10 +186,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
                     isEconomyEnabled = true;
                 }
                 else {
-                    getLogger().warning(
-                        "No economy provider (money items will not work as expect)!\n" +
-                        "If you do not have Vault and a compatible economy plugin, ensure enableEconomy is set to false in the config.yml"
-                    );
+                    getLogger().warning(getMessage("noEconomyProvider"));
                 }
             } catch (VaultNotAvailableException | EconomyNotAvailableException exception) {
                 getLogger().warning(exception.getMessage());   
@@ -321,6 +315,10 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         return economy;
     }
 
+    public String getMessage(String key) {
+        return languageConfig.getString(key);
+    }
+
     private void createConfig() {
         File configFile = new File(getDataFolder(), "config.yml");
         if(!configFile.exists()) {
@@ -330,23 +328,47 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         saveConfig();
     }
 
+    private void loadLanguageConfig() {
+
+        languageFile = new File(
+            getDataFolder(), 
+            "lang/" + getConfig().getString("language") + ".lang"
+        );
+
+        if (!languageFile.exists()) {
+            languageFile = new File(getDataFolder(), "lang/en_US.lang");
+        }
+
+        languageConfig = new YamlConfiguration();
+
+        try {
+            languageConfig.load(languageFile);
+        } catch (IOException | InvalidConfigurationException exception) {
+            getLogger().warning(
+                "Failed to read language file: " +
+                exception.getMessage()
+            );
+        }
+
+    }
+
     private void createTradesConfig() {
 
         tradesConfigFile = new File(getDataFolder(), "trades.yml");
         if (!tradesConfigFile.exists()) {
             tradesConfigFile.getParentFile().mkdirs();
             saveResource("trades.yml", false);
-         }
+        }
 
         tradesConfig = new YamlConfiguration();
 
         try {
             tradesConfig.load(tradesConfigFile);
         } catch (IOException | InvalidConfigurationException exception) {
-            getLogger().warning(
-                "Failed to read trades.yml: " +
+            getLogger().warning(String.format(
+                getMessage("failedToReadTrades"),
                 exception.getMessage()
-            );
+            ));
         }
         
     }
@@ -355,10 +377,10 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         try {
             tradesConfig.save(tradesConfigFile);
         } catch (IOException exception) {
-            getLogger().warning(
-                "Failed to save trades.yml: " +
+            getLogger().warning(String.format(
+                getMessage("failedToSaveTrades"),
                 exception.getMessage()
-            );
+            ));
         }
     }
 
@@ -366,12 +388,12 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
 
         // get vault plugin
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            throw new VaultNotAvailableException();
+            throw new VaultNotAvailableException(this);
         }
         
         // get economy plugin
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) throw new EconomyNotAvailableException();
+        if (rsp == null) throw new EconomyNotAvailableException(this);
 
         economy = rsp.getProvider();
         return economy != null;

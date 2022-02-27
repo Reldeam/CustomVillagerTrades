@@ -1,6 +1,5 @@
 package online.meinkraft.customvillagertrades.gui.button;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -16,27 +15,29 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import online.meinkraft.customvillagertrades.gui.CustomTradeEntry;
+import online.meinkraft.customvillagertrades.gui.Editor;
 import online.meinkraft.customvillagertrades.gui.page.Page;
 
 public class CustomTradeBlueprintButton extends CustomTradeButton {
 
-    private static List<String> LORE = Arrays.asList(new String[]{
-        "RIGHT-CLICK on a villager to add this custom trade",
-        "",
-        "RESETTING / REROLLING the villager's trades will turn it into a",
-        "vanilla trade (i.e. The trade will stop being updated by changes",
-        "made to the custom trade definition)."
-    });
+    private final List<String> lore;
 
-    public CustomTradeBlueprintButton(CustomTradeEntry tradeEntry) {
+    public CustomTradeBlueprintButton(Editor editor, CustomTradeEntry tradeEntry) {
         
-        super(tradeEntry, Material.FILLED_MAP, "Get Blueprint");
+        super(
+            editor, 
+            tradeEntry, 
+            Material.FILLED_MAP, 
+            editor.getMessage("blueprintButtonLabel")
+        );
 
         ItemStack item = getItem();
         item.addUnsafeEnchantment(Enchantment.MENDING, 1);
         ItemMeta meta = item.getItemMeta();
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
+
+        lore = editor.getMessage("blueprintButtonDescription").lines().toList();
 
     }
 
@@ -51,7 +52,7 @@ public class CustomTradeBlueprintButton extends CustomTradeButton {
 
         meta.setDisplayName("§d" + tradeEntry.getTrade().getKey() + " Blueprint");
 
-        meta.setLore(LORE);
+        meta.setLore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         
         PersistentDataContainer data = meta.getPersistentDataContainer();
