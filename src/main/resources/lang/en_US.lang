@@ -15,7 +15,7 @@ pluginUpdateAvailable: There is a new %s update available (%s → %s)
 # old version
 # new version
 
-getPluginUpdate: Visit: §b%s
+getPluginUpdate: "Visit: §b%s"
 # download link
 
 unreleasedPluginVersion: You are running an unreleased version of this plugin (%s)
@@ -107,7 +107,7 @@ customTradeAlreadyExists: |
 # previous custom trade
 # new custom trade
 
-loadedCustomTrades: Loaded %s%d out of §a%d custom trades
+loadedCustomTrades: Loaded %s%d §rout of §a%d §rcustom trades
 # color success indicator
 # trades loaded
 # total trades

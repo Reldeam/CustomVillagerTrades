@@ -48,15 +48,16 @@ public class VillagerAcquireTradeListener implements Listener {
 
         VillagerManager villagerManager = plugin.getVillagerManager();
         VillagerData villagerData = villagerManager.loadVillagerData(villager);
-        villagerData.addVanillaTrade(villager.getVillagerLevel(), event.getRecipe());
-        int index = villagerData.getVanillaTrades().size() - 1;
-
+        
         List<CustomTrade> trades;
         try {
             trades = tradeManager.getValidTrades(villager, villagerData);
         } catch (VillagerNotMerchantException e) {
             return; 
         }
+
+        villagerData.addVanillaTrade(villager.getVillagerLevel(), event.getRecipe());
+        int index = villagerData.getVanillaTrades().size() - 1;
 
         if(trades.size() == 0) {
             // don't allow villager to acquire vanilla trade if they are disabled
