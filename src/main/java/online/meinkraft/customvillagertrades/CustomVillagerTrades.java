@@ -95,11 +95,7 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
     @Override
     public void onLoad() {
 
-        // create config file if it doesn't exist
-        createConfig();
-
-        // load the language config
-        loadLanguageConfig();
+        loadConfig();
 
         // register ConfigurationSerializable classes
         ConfigurationSerialization.registerClass(VillagerData.class);
@@ -146,6 +142,9 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
 
     @Override
     public void onEnable() {
+
+        // ensure config is loaded/reloaded
+        loadConfig();
 
         // ensure plugin doesn't get enabled more than once
         if(loaded) {
@@ -272,6 +271,16 @@ public class CustomVillagerTrades extends JavaPlugin implements PluginConfig {
         // allow plugin to be enabled again
         this.loaded = false;
 
+    }
+
+    public void loadConfig() {
+
+        // create config file if it doesn't exist
+        createConfig();
+
+        // load the language config
+        loadLanguageConfig();
+        
     }
 
     @Override
