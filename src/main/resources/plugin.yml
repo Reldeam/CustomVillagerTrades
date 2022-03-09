@@ -1,6 +1,6 @@
 main: online.meinkraft.customvillagertrades.CustomVillagerTrades
 name: CustomVillagerTrades
-version: 1.10-SNAPSHOT
+version: 1.11-SNAPSHOT
 description: Adds custom villager trades
 api-version: 1.18
 load: POSTWORLD

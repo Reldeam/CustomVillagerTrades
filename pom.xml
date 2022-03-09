@@ -5,7 +5,7 @@
   <groupId>online.meinkraft</groupId>
   <artifactId>customvillagertrades</artifactId>
   <packaging>jar</packaging>
-  <version>1.10-SNAPSHOT</version>
+  <version>1.11-SNAPSHOT</version>
   <name>CustomVillagerTrades</name>
   <url>http://maven.apache.org</url>
 
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.18.1-R0.1-SNAPSHOT</version>
+      <version>1.18.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
