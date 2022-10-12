@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -98,6 +99,7 @@ public class CustomTradeManager {
     public void refreshTrades(Villager villager, Player player) {
 
         Merchant merchant = (Merchant) villager;
+        Set<String> tagSet = villager.getScoreboardTags(); // [Cruxien]: Potential addition to allow exceptions to the Disabled Vanilla Professions.
 
         VillagerManager villagerManager = plugin.getVillagerManager();
         VillagerData villagerData = villagerManager.loadVillagerData(villager);
@@ -169,14 +171,17 @@ public class CustomTradeManager {
             }
             else if(
                 plugin.isVanillaTradesAllowed() &&
-                !plugin.isVanillaTradesDisabledForProfession(villager.getProfession())
+                (!plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) || (plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) && tagSet.contains("cvt_trade_override"))) // [Cruxien]: Potential addition to allow exceptions to the Disabled Vanilla Professions. 
             ) {
                 newRecipes.add(oldRecipes.get(index));
             }
         }
 
-        merchant.setRecipes(newRecipes);
-        villagerManager.saveVillagerData(villagerData);
+        if (!tagSet.contains("cvt_trade_override")) { // [Cruxien]: Hopefully allows the individual villager to bypass this entirely and use the trades already in its data
+        	merchant.setRecipes(newRecipes);
+        	villagerManager.saveVillagerData(villagerData);
+        }
+        
 
     }
 
