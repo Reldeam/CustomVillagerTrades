@@ -2,6 +2,7 @@ package online.meinkraft.customvillagertrades.listener;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import online.meinkraft.customvillagertrades.trade.CustomTradeManager;
 import online.meinkraft.customvillagertrades.villager.VillagerData;
@@ -36,6 +37,8 @@ public class VillagerAcquireTradeListener implements Listener {
 
         Villager villager = (Villager) event.getEntity();
 
+        Set<String> tagSet = villager.getScoreboardTags(); // [Cruxien]: Potential addition to allow exceptions to the Disabled Vanilla Professions.
+
         // don't allow nitwits or villagers with no profession to acquire trades
         if(
             villager.getProfession().equals(Villager.Profession.NONE) ||
@@ -63,7 +66,7 @@ public class VillagerAcquireTradeListener implements Listener {
             // don't allow villager to acquire vanilla trade if they are disabled
             if(
                 !plugin.isVanillaTradesAllowed() ||
-                plugin.isVanillaTradesDisabledForProfession(villager.getProfession())
+                (plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) && !tagSet.contains("cvt_trade_override"))
             ) {
                 event.setCancelled(true);
             }
@@ -75,9 +78,11 @@ public class VillagerAcquireTradeListener implements Listener {
             if(trade != null) {
                 // chance of not getting the trade (if vanilla trades aren't disabled)
                 if(
-                    plugin.isVanillaTradesAllowed() && 
+                    (plugin.isVanillaTradesAllowed() && 
                     !plugin.isVanillaTradesDisabledForProfession(villager.getProfession()) &&
-                    rand.nextDouble() > trade.getChance()
+                    rand.nextDouble() > trade.getChance()) || 
+                    tagSet.contains("cvt_trade_override") // [Cruxien] Overrides those conditions if it has the tag. 
+                    // Allows admins to include "cvt_trade_override" in the tags to allow mapmakers to use villager codes with custom trades without the plugin mistaking them for normal ones
                 ) {
                     // keep vanilla trade
                     event.setRecipe(event.getRecipe());
